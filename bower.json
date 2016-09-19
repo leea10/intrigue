@@ -1,0 +1,28 @@
+{
+  "name": "Intrigue",
+  "description": "It's like Tinder for characters",
+  "main": "server.js",
+  "authors": [
+    "Ezra Dowd <ezra.dowd@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "twitch"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7",
+    "bootstrap": "^3.3.6",
+    "sweetalert": "^1.1.3"
+  }
+}

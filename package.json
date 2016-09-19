@@ -1,0 +1,16 @@
+{
+  "name": "Intrigue",
+  "version": "0.0.1",
+  "description": "It's like Tinder for characters",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "config": "^1.21.0",
+    "connect-mongo": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "mongoose": "latest"
+  }
+}
