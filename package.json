@@ -12,6 +12,7 @@
     "ejs": "latest",
     "express": "latest",
     "express-session": "latest",
+    "less": "^2.7.1",
     "mongoose": "latest"
   }
 }
