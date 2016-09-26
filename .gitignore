@@ -1,6 +1,5 @@
 # Logs
 logs
-*.log
 
 # Runtime data
 pids
@@ -18,6 +17,7 @@ coverage
 
 # node-waf configuration
 .lock-wscript
+.idea
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
@@ -28,3 +28,5 @@ node_modules
 bower_components
 
 config/default.json
+public/css/
+public/js/
