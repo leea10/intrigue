@@ -3,10 +3,14 @@ module.exports = function(app) {
     var landing = require('../controllers/landing.server.controller');
     var dashboard = require('../controllers/dashboard.server.controller');
     var session = require('../controllers/session.server.controller');
+    var editor = require('../controllers/editor.server.controller');
 
     //Pages
     app.get('/', landing.render);
     app.get('/dashboard', session.isLoggedIn, dashboard.render);
+
+    // TODO(Ariel): Make sure the current user has access to the given story.
+    app.get('/editor', session.isLoggedIn, editor.render);
 
     //Auth
     app.post('/register', session.register);
