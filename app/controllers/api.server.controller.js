@@ -16,6 +16,26 @@ var Tag = require("./../schema.js").Tag;
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveStory = function(req, res) {
+    var sObj = req.body.storyObj;
+    if(sObj._id){
+        Story.update({ _id: sObj._id }, { $set: { sObj }}, callback);
+    } else {
+        let story = new Story({
+            title : sObj.title,
+            description : sObj.description,
+            image : sObj.image,
+            characters : [],
+            snapshots : []
+        });
+        story.save(function(err, sObj){
+            if(err){
+                console.error(err);
+                res.json({status : -1, message : "Unable to save story"});
+            } else {
+                res.json({status : 1, message: "Successfully saved story", data : sObj});
+            }
+        });
+    }
 };
 
 /**
