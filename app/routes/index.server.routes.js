@@ -5,7 +5,7 @@ module.exports = function(app) {
     var session = require('../controllers/session.server.controller');
 
     //Pages
-    app.get('/', landing.render);
+    app.get('/', session.indexRedirect, landing.render);
     app.get('/dashboard', session.isLoggedIn, dashboard.render);
 
     //Auth

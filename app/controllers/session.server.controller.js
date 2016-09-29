@@ -3,6 +3,12 @@ var bcrypt = require("bcrypt");
 var config = require("config");
 var saltRounds = config.get("saltRounds");
 
+/**
+ * Function to validate user registration inputs
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ */
 function validateInputs(req){
     if(!req.body.name || req.body.name == ""){
         req.session.message = "Please enter a valid name";
@@ -25,7 +31,7 @@ function validateInputs(req){
  * Backend endpoint for registering a user
  *
  * @param {object} req
- *   The express HTTP request containing the information require for the function
+ *   The express HTTP request containing the information required for the function
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
@@ -119,10 +125,10 @@ exports.logout = function(req, res){
  *   The express HTTP request containing the information require for the function
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
- * @param {object} next
+ * @param {function} next
  *   The next middleware function in the sequence
  */
-exports.isLoggedIn = function(req,res,next){
+exports.isLoggedIn = function(req, res, next){
     if(req.session.loggedin){
         next();
     } else {
@@ -138,10 +144,10 @@ exports.isLoggedIn = function(req,res,next){
  *   The express HTTP request containing the information require for the function
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
- * @param {object} next
+ * @param {function} next
  *   The next middleware function in the sequence
  */
-exports.indexRedir = function(req,res,next){
+exports.indexRedirect = function(req,res,next){
     if(req.session.loggedin){
         if(req.session.loggedin == true)
             res.redirect("/dashboard");
