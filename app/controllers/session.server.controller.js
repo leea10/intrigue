@@ -55,7 +55,7 @@ exports.register = function(req, res) {
                         req.session.loggedin = false;
                         res.redirect("/");
                     } else {
-                        console.log("Added user " + email + " with password " + password + " hashed as "  + hash);
+                        console.debug("Added user " + email + " with password " + password + " hashed as "  + hash);
                         req.session.loggedin = true;
                         req.session.name = name;
                         res.redirect("/dashboard");
@@ -77,7 +77,7 @@ exports.register = function(req, res) {
 exports.login = function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
-    console.log("Attempting to find user " + email + " with password " + password);
+    console.debug("Attempting to find user " + email + " with password " + password);
     User.findOne({email : email} , "name password", function(err, person){
         if(err){
             req.session.loggedin = false;

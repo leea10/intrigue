@@ -1,8 +1,9 @@
 module.exports = function(app) {
 
-    var landing = require('../controllers/landing.server.controller');
-    var dashboard = require('../controllers/dashboard.server.controller');
-    var session = require('../controllers/session.server.controller');
+    const landing = require('../controllers/landing.server.controller');
+    const dashboard = require('../controllers/dashboard.server.controller');
+    const session = require('../controllers/session.server.controller');
+    const api = require('../controllers/api.server.controller');
 
     //Pages
     app.get('/', session.indexRedirect, landing.render);
@@ -11,4 +12,5 @@ module.exports = function(app) {
     //Auth
     app.post('/register', session.register);
     app.post('/login', session.login);
+    app.post('/logout', session.isLoggedIn, session.logout);
 };

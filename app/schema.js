@@ -14,7 +14,7 @@ var StorySchema = new mongoose.Schema({
     description : String,
     image : String,
     characters : [mongoose.Schema.Types.ObjectId],
-    Snapshots : [mongoose.Schema.Types.ObjectId]
+    snapshots : [mongoose.Schema.Types.ObjectId]
 });
 
 var Story = mongoose.model("Story", StorySchema);
@@ -25,10 +25,10 @@ var CharacterSchema = new mongoose.Schema({
     description : String,
     history : String,
     personality : String,
-    Tags : [mongoose.Schema.Types.ObjectId]
+    tags : [mongoose.Schema.Types.ObjectId]
 });
 
-var Character = new mongoose.model("Character", CharacterSchema);
+var Character = mongoose.model("Character", CharacterSchema);
 
 var SnapshotSchema = new mongoose.Schema({
     label : String,
@@ -36,7 +36,7 @@ var SnapshotSchema = new mongoose.Schema({
     relationships : [mongoose.Schema.Types.ObjectId]
 });
 
-var Snapshot = new mongoose.model("Snapshot", SnapshotSchema);
+var Snapshot = mongoose.model("Snapshot", SnapshotSchema);
 
 var RelationshipSchema = new mongoose.Schema({
     nodes : [mongoose.Schema.Types.ObjectId],
@@ -44,13 +44,13 @@ var RelationshipSchema = new mongoose.Schema({
     tags : [mongoose.Schema.Types.ObjectId]
 });
 
-var Relationship = new mongoose.model("Relationship", RelationshipSchema);
+var Relationship = mongoose.model("Relationship", RelationshipSchema);
 
 var TagSchema = new mongoose.Schema({
     name : {type : String, required : true}
 });
 
-var Tag = new mongoose.model("Tag", TagSchema);
+var Tag = mongoose.model("Tag", TagSchema);
 
 var NodeSchema = new mongoose.Schema({
     character : {type : mongoose.Schema.Types.ObjectId, required : true},
@@ -58,7 +58,7 @@ var NodeSchema = new mongoose.Schema({
     y : {type : Number, required : true}
 });
 
-var Node = new mongoose.model("Node", NodeSchema);
+var Node = mongoose.model("Node", NodeSchema);
 
 module.exports = {
     User : User,
