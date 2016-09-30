@@ -1,1 +1,6 @@
-Yo you're all logged in <%=name%>
+Yo you're all logged in <%=name%><br/>
+<!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
+For now, click this button to log out
+<form action="/logout" method="post">
+    <input type="submit">
+</form>
