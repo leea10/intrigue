@@ -1,13 +1,13 @@
 {
-  "name": "Intrigue",
+  "name": "intrigue",
   "description": "It's like Tinder for characters",
   "main": "server.js",
   "authors": [
-    "Ezra Dowd <ezra.dowd@gmail.com>"
+    "Ezra Dowd <ezra.dowd@gmail.com>",
+    "Ariel Lee <ariellee616@gmail.com>"
   ],
   "license": "MIT",
   "keywords": [
-    "twitch"
   ],
   "moduleType": [
     "node"
@@ -22,7 +22,6 @@
   ],
   "dependencies": {
     "angular": "^1.5.7",
-    "bootstrap": "^3.3.6",
     "sweetalert": "^1.1.3"
   }
 }
