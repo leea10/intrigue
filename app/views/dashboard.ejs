@@ -1,1 +1,12 @@
-Yo you're all logged in <%=name%>
+<!DOCTYPE html>
+<html lang="en">
+<%- include('templates/head', {title: 'Dashboard - ' + name}) %>
+<body>
+    Yo you're all logged in <%=name%><br/>
+    <!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
+    For now, click this button to log out
+    <form action="/logout" method="post">
+        <input type="submit">
+    </form>
+</body>
+</html>
