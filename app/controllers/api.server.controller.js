@@ -24,34 +24,27 @@ exports.saveStory = function(req, res) {
                 console.error(err);
                 res.json({status : -1, message : "An error occurred saving the story"});
             } else {
-                res.json({status : 1, message: "Successfully saved story", data : rObj});
+                res.json({status : 1, message: "Successfully saved the story", data : rObj});
             }
         });
     } else {
-        let story = new Story({
+        Story.create({
             title : sObj.title,
             description : sObj.description,
             image : sObj.image,
             characters : [],
             snapshots : []
-        });
-        story.save(function(err, rObj){
+        }, function(err, rObj){
             if(err){
                 console.error(err);
                 res.json({status : -1, message : "An error occurred saving the story"});
             } else {
-                User.findByIdAndUpdate(
-                    req.session.id,
-                    {$push: {"stories": rObj._id}},
-                    function(err, model) {
-                        if(err){
-                            console.error(err);
-                            res.json({status : -1, message : "An error occurred saving the story"});
-                        } else {
-                            res.json({status : 1, message: "Successfully saved story", data : rObj});
-                        }
-                    }
-                );
+                if (err) {
+                    console.error(err);
+                    res.json({status: -1, message: "An error occurred saving the story"});
+                } else {
+                    res.json({status: 1, message: "Successfully saved the story", data: rObj});
+                }
             }
         });
     }
@@ -71,7 +64,7 @@ exports.removeStory = function(req, res) {
             console.error(err);
             res.json({status : -1, message : "An error occurred removing the story"});
         } else {
-            res.json({status : 1, message: "Successfully removed story", data : num});
+            res.json({status : 1, message: "Successfully removed the story", data : num});
         }
     });
 };
@@ -91,7 +84,7 @@ exports.saveCharacter = function(req, res) {
                 console.error(err);
                 res.json({status : -1, message : "An error occurred saving the character"});
             } else {
-                res.json({status : 1, message: "Successfully saved character", data : rObj});
+                res.json({status : 1, message: "Successfully saved the character", data : rObj});
             }
         });
     } else {
@@ -107,7 +100,7 @@ exports.saveCharacter = function(req, res) {
                 console.error(err);
                 res.json({status : -1, message : "An error occurred saving the character"});
             } else {
-                res.json({status : 1, message: "Successfully saved character", data : rObj});
+                res.json({status : 1, message: "Successfully saved the character", data : rObj});
             }
         });
     }
@@ -127,7 +120,145 @@ exports.removeCharacter = function(req, res) {
             console.error(err);
             res.json({status : -1, message : "An error occurred removing the character"});
         } else {
-            res.json({status : 1, message: "Successfully removed character", data : num});
+            res.json({status : 1, message: "Successfully removed the character", data : num});
+        }
+    });
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.saveSnapshot = function(req, res){
+    let sObj = req.body.snapshotObj;
+    if(sObj._id){
+        Snapshot.update({ _id: OIDType(sObj._id) }, { $set: { sObj }}, function(err, rObj){
+            if(err){
+                console.error(err);
+                res.json({status : -1, message : "An error occurred saving the snapshot"});
+            } else {
+                res.json({status : 1, message: "Successfully saved the snapshot", data : rObj});
+            }
+        });
+    } else {
+        Snapshot.create({
+            story : sObj.story,
+            label : sObj.label,
+            nodes : [],
+            relationships : []
+        }, function(err, rObj){
+            if(err){
+                console.error(err);
+                res.json({status : -1, message : "An error occurred saving the snapshot"});
+            } else {
+                if (err) {
+                    console.error(err);
+                    res.json({status: -1, message: "An error occurred saving the snapshot"});
+                } else {
+                    res.json({status: 1, message: "Successfully saved the snapshot", data: rObj});
+                }
+            }
+        });
+    }
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.removeSnapshot = function(req, res) {
+    let id = OIDType(req.body.id);
+    Snapshot.remove({_id : id}, function(err, num){
+        if(err){
+            console.error(err);
+            res.json({status : -1, message : "An error occurred removing the snapshot"});
+        } else {
+            res.json({status : 1, message: "Successfully removed the snapshot", data : num});
+        }
+    });
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.saveNode = function(req, res){
+    let sObj = req.body.nodeObj;
+    if(sObj._id){
+        Node.update({ _id: OIDType(sObj._id) }, { $set: { sObj }}, function(err, rObj){
+            if(err){
+                console.error(err);
+                res.json({status : -1, message : "An error occurred saving the node"});
+            } else {
+                res.json({status : 1, message: "Successfully saved the node", data : rObj});
+            }
+        });
+    } else {
+        Node.create({
+            snapshot : sObj.story,
+            character : sObj.label,
+            x : sObj.x,
+            y : sObj.y
+        }, function(err, rObj){
+            if(err){
+                console.error(err);
+                res.json({status : -1, message : "An error occurred saving the node"});
+            } else {
+                if (err) {
+                    console.error(err);
+                    res.json({status: -1, message: "An error occurred saving the node"});
+                } else {
+                    res.json({status: 1, message: "Successfully saved the node", data: rObj});
+                }
+            }
+        });
+    }
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.removeNode = function(req, res) {
+    let id = OIDType(req.body.id);
+    Node.remove({_id : id}, function(err, num){
+        if(err){
+            console.error(err);
+            res.json({status : -1, message : "An error occurred removing the node"});
+        } else {
+            res.json({status : 1, message: "Successfully removed the node", data : num});
+        }
+    });
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.addTagToStory = function(req, res) {
+    let storyId = OIDType(req.body.storyId);
+    let tagName = req.body.tagName;
+    Tag.create({ parent : storyId, name : tagName}, function(err, rObj){
+        if(err){
+            console.error(err);
+            res.json({status : -1, message : "An error occurred saving the tag"});
+        } else {
+            res.json({status : 1, message: "Successfully created the tag", data : rObj});
         }
     });
 };

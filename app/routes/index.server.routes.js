@@ -13,4 +13,14 @@ module.exports = function(app) {
     app.post('/register', auth.register);
     app.post('/login', auth.login);
     app.post('/logout', auth.isLoggedIn, auth.logout);
+
+    //API
+    app.post('/saveStory', auth.isLoggedIn, api.saveStory);
+    app.post('/removeStory', auth.isLoggedIn, api.removeStory);
+    app.post('/saveCharacter', auth.isLoggedIn, api.saveCharacter);
+    app.post('/removeCharacter', auth.isLoggedIn, api.removeCharacter);
+    app.post('/saveSnapshot', auth.isLoggedIn, api.saveSnapshot);
+    app.post('/removeSnapshot', auth.isLoggedIn, api.removeSnapshot);
+    app.post('/saveNode', auth.isLoggedIn, api.saveNode);
+    app.post('/removeNode', auth.isLoggedIn, api.removeNode);
 };

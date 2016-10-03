@@ -7,6 +7,14 @@ const UserSchema = new mongoose.Schema({
     stories : [mongoose.Schema.Types.ObjectId]
 });
 
+//Bofore the user is removed, delete all their stories
+UserSchema.pre("remove", function(next){
+    for(let i = 0; i < this.characters.length; i++){
+        Story.remove({_id : this.stories[i]}).exec();
+    }
+    next();
+});
+
 const User = mongoose.model("User", UserSchema);
 
 const StorySchema = new mongoose.Schema({
@@ -19,7 +27,8 @@ const StorySchema = new mongoose.Schema({
     tags : [mongoose.Schema.Types.ObjectId]
 });
 
-
+//Before the story is removed, delete all of its characters, snapshots, and tags
+//Then remove the reference to this story from the user object
 StorySchema.pre("remove", function(next){
     for(let i = 0; i < this.characters.length; i++){
         Character.remove({_id : this.characters[i]}).exec();
@@ -34,6 +43,7 @@ StorySchema.pre("remove", function(next){
     next();
 });
 
+//After the story is saved the first time add a reference to it to the author's user object
 StorySchema.post("save", function(doc, next){
     User.findByIdAndUpdate(doc.author, {$push : {"stories" : doc._id}}).exec();
     next();
@@ -51,11 +61,13 @@ const CharacterSchema = new mongoose.Schema({
     tags : [mongoose.Schema.Types.ObjectId]
 });
 
+//Before a character is removed, delete it's relationships
 CharacterSchema.pre("remove", function(next){
     Relationship.remove({characters : this._id}).exec();
     next();
 });
 
+//After a character is saved the first time, add a reference to it to the story object
 CharacterSchema.post("save", function(doc, next){
     Story.findByIdAndUpdate(doc.story, {$push : {"characters" : doc._id}}).exec();
     next();
@@ -70,6 +82,7 @@ const SnapshotSchema = new mongoose.Schema({
     relationships : [mongoose.Schema.Types.ObjectId]
 });
 
+//Before a snapshot is removed, delete it's nodes, relationships, and update it's story reference
 SnapshotSchema.pre("remove", function(next){
     for(let i = 0; i < this.nodes.length; i++){
         Node.remove({_id : this.nodes[i]}).exec();
@@ -81,6 +94,7 @@ SnapshotSchema.pre("remove", function(next){
     next();
 });
 
+//After a snapshot is saved the first time, add a reference to it to the story object
 SnapshotSchema.post("save", function(doc, next){
     Story.findByIdAndUpdate(doc.story, {$push : {"snapshots" : doc._id}}).exec();
     next();
@@ -96,12 +110,13 @@ const RelationshipSchema = new mongoose.Schema({
     tags : [mongoose.Schema.Types.ObjectId]
 });
 
+//
 RelationshipSchema.pre("remove", function(next){
-    Relationship.findByIdAndUpdate(this.snapshot, {$pull : {"relationships" : this._id}}).exec();
+    Snapshot.findByIdAndUpdate(this.snapshot, {$pull : {"relationships" : this._id}}).exec();
 });
 
 RelationshipSchema.post("save", function(doc, next){
-    Snapshot.findByIdAndUpdate(doc.story, {$push : {"relationships" : doc._id}}).exec();
+    Snapshot.findByIdAndUpdate(doc.snapshot, {$push : {"relationships" : doc._id}}).exec();
     next();
 });
 
