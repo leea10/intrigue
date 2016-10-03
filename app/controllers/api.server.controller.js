@@ -46,5 +46,5 @@ exports.saveStory = function(req, res) {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeStory = function(req, res) {
-    const id = req.body.id;as
+    const id = req.body.id;
 };
