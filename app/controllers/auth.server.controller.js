@@ -58,7 +58,7 @@ exports.register = function(req, res) {
                         console.log("Added user " + email + " with password " + password + " hashed as "  + hash);
                         req.session.loggedin = true;
                         req.session.name = name;
-                        req.session.id = docs._id;
+                        req.session.uid = docs._id;
                         res.redirect("/dashboard");
                     }
                 });
