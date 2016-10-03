@@ -1,0 +1,9 @@
+{
+  "saltRounds" : 10,
+  "serverPort" : 1338,
+  "mongo" : {
+    "mongoPort" : 27017,
+    "dbName" : "intriguedb",
+    "dbLoc" : "localhost"
+  }
+}
