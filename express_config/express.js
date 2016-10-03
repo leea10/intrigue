@@ -26,8 +26,8 @@ module.exports = function() {
     }));
 
 
-    require('../app/db');
-    require('../app/routes/index.server.routes.js')(app);
+    require('../app/db-compiled');
+    require('../app/routes/index.server.routes-compiled')(app);
 
     return app;
 };
