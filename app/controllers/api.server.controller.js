@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
-const User = require("./../schema-compiled").User;
-const Story = require("./../schema-compiled").Story;
-const Character = require("./../schema-compiled").Character;
-const Snapshot = require("./../schema-compiled").Snapshot;
-const Relationship = require("./../schema-compiled").Relationship;
-const Node = require("./../schema-compiled").Node;
-const Tag = require("./../schema-compiled").Tag;
+const schemaLocation = "./../schema-compiled"
+const User = require(schemaLocation).User;
+const Story = require(schemaLocation).Story;
+const Character = require(schemaLocation).Character;
+const Snapshot = require(schemaLocation).Snapshot;
+const Relationship = require(schemaLocation).Relationship;
+const Node = require(schemaLocation).Node;
+const Tag = require(schemaLocation).Tag;
 const OIDType = mongoose.Schema.Types.ObjectId;
 
 
