@@ -1,11 +1,13 @@
+const config = require('config');
 
 // Bring Mongoose into the app
 const mongoose = require('mongoose');
 
 // Build the connection string
-const mongoPort = 27017;
-const dbname = 'intriguedb';
-const dbURI = 'mongodb://localhost:' + mongoPort + '/' + dbname;
+const mongoPort = config.get('mongo.mongoPort');
+const dbName = config.get('mongo.dbName');
+const dbLoc = config.get('mongo.dbLoc');
+const dbURI = 'mongodb://' + dbLoc + ':' + mongoPort + '/' + dbName;
 
 // Create the database connection
 mongoose.connect(dbURI);

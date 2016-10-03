@@ -89,7 +89,7 @@ exports.login = function(req, res) {
                 if(valid){
                     req.session.loggedin = true;
                     req.session.name = person.name;
-                    req.session.id = person._id;
+                    req.session.uid = person._id;
                     req.session.message = "You have been successfully logged in!";
                     res.redirect("/dashboard");
                 } else {
