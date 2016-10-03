@@ -16,7 +16,7 @@ var Tag = require("./../schema.js").Tag;
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveStory = function(req, res) {
-    var sObj = req.body.storyObj;
+    const sObj = req.body.storyObj;
     if(sObj._id){
         Story.update({ _id: sObj._id }, { $set: { sObj }}, callback);
     } else {
@@ -27,12 +27,12 @@ exports.saveStory = function(req, res) {
             characters : [],
             snapshots : []
         });
-        story.save(function(err, sObj){
+        story.save(function(err, rObj){
             if(err){
                 console.error(err);
                 res.json({status : -1, message : "Unable to save story"});
             } else {
-                res.json({status : 1, message: "Successfully saved story", data : sObj});
+                res.json({status : 1, message: "Successfully saved story", data : rObj});
             }
         });
     }
@@ -46,5 +46,5 @@ exports.saveStory = function(req, res) {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeStory = function(req, res) {
-
+    const id = req.body.id;as
 };
