@@ -15,6 +15,9 @@ module.exports = function(app) {
     app.post('/logout', auth.isLoggedIn, auth.logout);
 
     //API
+    app.get('/getStories', auth.isLoggedIn, api.getStories);
+    app.get('/getStoryDetails', auth.isLoggedIn, api.getStoryDetails);
+
     app.post('/saveStory', auth.isLoggedIn, api.saveStory);
     app.post('/removeStory', auth.isLoggedIn, api.removeStory);
     app.post('/saveCharacter', auth.isLoggedIn, api.saveCharacter);
