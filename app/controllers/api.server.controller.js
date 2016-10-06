@@ -77,6 +77,72 @@ exports.removeStory = function(req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
+exports.getStories = function(req, res){
+    let userID = req.session.uid;
+    Story.find({author : userID}, "title description", function(err, docs){
+        if(err){
+            console.error(err);
+            res.json({status : -1, message : "An error occurred retrieving the stories"});
+        } else {
+            res.json({status : 1, message: `Successfully retrieved ${docs.length} stories`, data : docs});
+        }
+    });
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
+exports.getStoryDetails = function(req, res){
+    let storyID = req.query.storyID;
+    let userID = req.session.uid;
+    Story.
+    findOne({author : userID, _id : storyID}).
+    populate("characters snapshots tags").
+    exec(function(err, s1){
+        if(err){
+            console.error(err);
+            res.json({status: -1, message: "An error occurred retrieving the story"});
+        } else {
+            Character.populate(s1, {path: "characters.tags", model: "Tag"}, function (err, s2) {
+                if(err){
+                    console.error(err);
+                    res.json({status: -1, message: "An error occurred retrieving the story"});
+                } else {
+                    Snapshot.populate(s2, {path: "snapshots.nodes", model: "Node"}, function (err, s3) {
+                        if(err){
+                            console.error(err);
+                            res.json({status: -1, message: "An error occurred retrieving the story"});
+                        } else {
+                            Snapshot.populate(s3, {
+                                path: "snapshots.relationships",
+                                model: "Relationship"
+                            }, function (err, s4) {
+                                if (err) {
+                                    console.error(err);
+                                    res.json({status: -1, message: "An error occurred retrieving the story"});
+                                } else {
+                                    res.json({status: 1, message: `Successfully retrieved stories`, data: s4});
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+};
+
+/**
+ *
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
 exports.saveCharacter = function(req, res) {
     let cObj = req.body.characterObj;
     if(cObj._id){
