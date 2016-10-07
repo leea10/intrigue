@@ -1,11 +1,13 @@
+const config = require('config');
 
 // Bring Mongoose into the app
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // Build the connection string
-var mongoPort = 27017;
-var dbname = 'intriguedb';
-var dbURI = 'mongodb://localhost:' + mongoPort + '/' + dbname;
+const mongoPort = config.get('mongo.mongoPort');
+const dbName = config.get('mongo.dbName');
+const dbLoc = config.get('mongo.dbLoc');
+const dbURI = 'mongodb://' + dbLoc + ':' + mongoPort + '/' + dbName;
 
 // Create the database connection
 mongoose.connect(dbURI);
@@ -35,4 +37,4 @@ process.on('SIGINT', function() {
 });
 
 
-require('./schema.js');
+require('./schema-compiled');
