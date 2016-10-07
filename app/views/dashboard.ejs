@@ -2,11 +2,22 @@
 <html lang="en">
 <%- include('templates/head', {title: 'Dashboard - ' + name}) %>
 <body>
-    Yo you're all logged in <%=name%><br/>
-    <!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
-    For now, click this button to log out
-    <form action="/logout" method="post">
-        <input type="submit">
-    </form>
+    <div>
+        Yo you're all logged in <%=name%><br/>
+        <!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
+        For now, click this button to log out
+        <form action="/logout" method="post">
+            <input type="submit">
+        </form>
+    </div>
+
+    <div>
+        <h1>My Stories:</h1>
+        <form action="/addstory" method="post">
+            <input type="submit">
+        </form>
+    </div>
+
+
 </body>
 </html>

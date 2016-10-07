@@ -8,6 +8,7 @@ module.exports = function(app) {
     //Pages
     app.get('/', session.indexRedirect, landing.render);
     app.get('/dashboard', session.isLoggedIn, dashboard.render);
+    app.get('/addstory', addstory.render);
 
     //Auth
     app.post('/register', session.register);
