@@ -1,4 +1,4 @@
-export class Canvas {
+/*export*/ class EditorCanvas {
     constructor(ctx, sInc, bInc) {
         this.canvas_ = ctx;
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
@@ -12,19 +12,17 @@ export class Canvas {
         // Clear the background
         this.canvas_.fillStyle = '#222222';
         this.canvas_.fillRect(0, 0, this.width(), this.height());
-        this.drawGrid_(10, 100);
+        this.drawGrid_();
         // Draw the nodes
         for(let i = 0; i < this.nodes_.length; i++) {
             let node = this.nodes_[i];
-            this.drawCircle_(node.x, node.y, node.radius);
+            this.drawCircle_(node.x, node.y, node.r);
         }
     }
 
-    // getters
     width() {   return this.canvas_.canvas.width;   }
     height() {  return this.canvas_.canvas.height;  }
 
-    // mutators
     /**
      * Adds a node of radius r at absolute position (x, y).
      * @param x
@@ -36,10 +34,8 @@ export class Canvas {
             x: x,
             y: y,
             r: r
-        })
+        });
     }
-
-    // private methods
 
     /**
      * Draws a grid on the canvas.
@@ -72,7 +68,7 @@ export class Canvas {
         this.canvas_.moveTo(p1.x,p1.y);
         this.canvas_.lineTo(p2.x, p2.y);
         this.canvas_.stroke();
-    };
+    }
 
     /**
      * Draws a node of radius at position x, y on the canvas.
@@ -80,7 +76,7 @@ export class Canvas {
      * @param y
      * @param radius
      */
-    drawCircle_ = function(x, y, radius) {
+    drawCircle_(x, y, radius) {
         // Set properties
         this.canvas_.fillStyle = '#eeeeee';
         this.canvas_.strokeStyle = '#8fd3d2';
@@ -91,5 +87,5 @@ export class Canvas {
         this.canvas_.arc(x, y, radius, 0, 2*Math.PI, false);
         this.canvas_.fill();
         this.canvas_.stroke();
-    };
+    }
 }
