@@ -7,7 +7,17 @@ const Snapshot = schema.Snapshot;
 const Relationship = schema.Relationship;
 const Node = schema.Node;
 const Tag = schema.Tag;
-const OIDType = mongoose.Schema.Types.ObjectId;
+const OIDType = mongoose.Types.ObjectId;
+
+function pojoify(obj){
+    let pojo = {};
+    for(var trait in obj){
+        if(obj.hasOwnProperty(trait) && trait != "_id"){
+            pojo[trait] = obj[trait];
+        }
+    }
+    return pojo
+}
 
 
 /**
@@ -20,7 +30,7 @@ const OIDType = mongoose.Schema.Types.ObjectId;
 exports.saveStory = function (req, res) {
     let sObj = req.body.storyObj;
     if (sObj._id) {
-        Story.update({_id: OIDType(sObj._id)}, {$set: {sObj}}, function (err, rObj) {
+        Story.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, function (err, rObj) {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: "An error occurred saving the story"});
@@ -144,7 +154,7 @@ exports.getStoryDetails = function (req, res) {
 exports.saveCharacter = function (req, res) {
     let cObj = req.body.characterObj;
     if (cObj._id) {
-        Character.update({_id: OIDType(cObj._id)}, {$set: {cObj}}, function (err, rObj) {
+        Character.update({_id: OIDType(cObj._id)}, {$set: pojoify(cObj)}, function (err, rObj) {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: "An error occurred saving the character"});
@@ -200,7 +210,7 @@ exports.removeCharacter = function (req, res) {
 exports.saveSnapshot = function (req, res) {
     let sObj = req.body.snapshotObj;
     if (sObj._id) {
-        Snapshot.update({_id: OIDType(sObj._id)}, {$set: {sObj}}, function (err, rObj) {
+        Snapshot.update({_id: OIDType(sObj._id)},{$set: pojoify(sObj)}, function (err, rObj) {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: "An error occurred saving the snapshot"});
@@ -259,7 +269,7 @@ exports.removeSnapshot = function (req, res) {
 exports.saveNode = function (req, res) {
     let sObj = req.body.nodeObj;
     if (sObj._id) {
-        Node.update({_id: OIDType(sObj._id)}, {$set: {sObj}}, function (err, rObj) {
+        Node.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, function (err, rObj) {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: "An error occurred saving the node"});

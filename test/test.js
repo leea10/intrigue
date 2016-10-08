@@ -8,7 +8,7 @@ before(function(done){
     server = require('./../server');
     schema = require("./../app/schema-compiled");
     schema.User.remove({email : "dowde@rpi.edu"},function(){
-        schema.Story.remove({title : "Test Story"},done);
+        schema.Story.remove({title : "Test Title"},done);
     });
 });
 
@@ -160,23 +160,47 @@ describe("API", function(){
             });
     });
 
+    var container = {
+        storyObj: {
+            title: "Test Title",
+            description: "Test Description",
+            image: "Test Image"
+        }
+    };
+
     it("should successfully save a new story", function(done){
-        var storyObj = {
-            storyObj: {
-                title: "Test Title",
-                description: "Test Description",
-                image: "Test Image"
-            }
-        };
         request(server)
             .post('/saveStory')
-            .send(storyObj)
+            .send(container)
             .set('Cookie', [sessionCookie])
             .end(function(err, res){
                 if(err)
                     throw err;
                 res.should.have.status(200);
                 res.should.be.json;
+                res.body.should.have.property('data');
+                res.body.data.should.have.property('_id');
+                res.body.data.title.should.equal(container.storyObj.title);
+                res.body.data.description.should.equal(container.storyObj.description);
+                container.storyObj._id = res.body.data._id;
+                done();
+            });
+    });
+
+    it("should successfully update a saved story", function(done){
+        container.storyObj.description = "New Test Description";
+        request(server)
+            .post('/saveStory')
+            .send(container)
+            .set('Cookie', [sessionCookie])
+            .end(function(err, res){
+                if(err)
+                    throw err;
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property('data');
+                res.body.data.should.have.property('nModified');
+                res.body.data.nModified.should.equal(1);
                 done();
             });
     });
