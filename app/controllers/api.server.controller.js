@@ -23,13 +23,14 @@ exports.saveStory = function (req, res) {
         Story.update({_id: OIDType(sObj._id)}, {$set: {sObj}}, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the story"});
+                res.status(500).json({message: "An error occurred saving the story"});
             } else {
-                res.json({status: 1, message: "Successfully saved the story", data: rObj});
+                res.json({message: "Successfully saved the story", data: rObj});
             }
         });
     } else {
         Story.create({
+            author : req.session.uid,
             title: sObj.title,
             description: sObj.description,
             image: sObj.image,
@@ -38,13 +39,13 @@ exports.saveStory = function (req, res) {
         }, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the story"});
+                res.status(500).json({message: "An error occurred saving the story"});
             } else {
                 if (err) {
                     console.error(err);
-                    res.json({status: -1, message: "An error occurred saving the story"});
+                    res.status(500).json({message: "An error occurred saving the story"});
                 } else {
-                    res.json({status: 1, message: "Successfully saved the story", data: rObj});
+                    res.json({message: "Successfully saved the story", data: rObj});
                 }
             }
         });
@@ -63,9 +64,9 @@ exports.removeStory = function (req, res) {
     Story.findByIdAndRemove(id, function (err, num) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred removing the story"});
+            res.status(500).json({message: "An error occurred removing the story"});
         } else {
-            res.json({status: 1, message: "Successfully removed the story", data: num});
+            res.json({message: "Successfully removed the story", data: num});
         }
     });
 };
@@ -82,9 +83,9 @@ exports.getStories = function (req, res) {
     Story.find({author: userID}, "_id title description", function (err, docs) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred retrieving the stories"});
+            res.status(500).json({message: "An error occurred retrieving the stories"});
         } else {
-            res.json({status: 1, message: `Successfully retrieved ${docs.length} stories`, data: docs});
+            res.json({message: `Successfully retrieved ${docs.length} stories`, data: docs});
         }
     });
 };
@@ -102,17 +103,17 @@ exports.getStoryDetails = function (req, res) {
     Story.findOne({author: userID, _id: storyID}).populate("characters snapshots tags").exec(function (err, s1) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred retrieving the story"});
+            res.status(500).json({message: "An error occurred retrieving the story"});
         } else {
             Character.populate(s1, {path: "characters.tags", model: "Tag"}, function (err, s2) {
                 if (err) {
                     console.error(err);
-                    res.json({status: -1, message: "An error occurred retrieving the story"});
+                    res.status(500).json({message: "An error occurred retrieving the story"});
                 } else {
                     Snapshot.populate(s2, {path: "snapshots.nodes", model: "Node"}, function (err, s3) {
                         if (err) {
                             console.error(err);
-                            res.json({status: -1, message: "An error occurred retrieving the story"});
+                            res.status(500).json({message: "An error occurred retrieving the story"});
                         } else {
                             Snapshot.populate(s3, {
                                 path: "snapshots.relationships",
@@ -120,9 +121,9 @@ exports.getStoryDetails = function (req, res) {
                             }, function (err, s4) {
                                 if (err) {
                                     console.error(err);
-                                    res.json({status: -1, message: "An error occurred retrieving the story"});
+                                    res.status(500).json({message: "An error occurred retrieving the story"});
                                 } else {
-                                    res.json({status: 1, message: `Successfully retrieved story data`, data: s4});
+                                    res.json({message: `Successfully retrieved story data`, data: s4});
                                 }
                             });
                         }
@@ -146,9 +147,9 @@ exports.saveCharacter = function (req, res) {
         Character.update({_id: OIDType(cObj._id)}, {$set: {cObj}}, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the character"});
+                res.status(500).json({message: "An error occurred saving the character"});
             } else {
-                res.json({status: 1, message: "Successfully saved the character", data: rObj});
+                res.json({message: "Successfully saved the character", data: rObj});
             }
         });
     } else {
@@ -162,9 +163,9 @@ exports.saveCharacter = function (req, res) {
         char.save(function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the character"});
+                res.status(500).json({message: "An error occurred saving the character"});
             } else {
-                res.json({status: 1, message: "Successfully saved the character", data: rObj});
+                res.json({message: "Successfully saved the character", data: rObj});
             }
         });
     }
@@ -182,9 +183,9 @@ exports.removeCharacter = function (req, res) {
     Character.remove({_id: id}, function (err, num) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred removing the character"});
+            res.status(500).json({message: "An error occurred removing the character"});
         } else {
-            res.json({status: 1, message: "Successfully removed the character", data: num});
+            res.json({message: "Successfully removed the character", data: num});
         }
     });
 };
@@ -202,9 +203,9 @@ exports.saveSnapshot = function (req, res) {
         Snapshot.update({_id: OIDType(sObj._id)}, {$set: {sObj}}, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the snapshot"});
+                res.status(500).json({message: "An error occurred saving the snapshot"});
             } else {
-                res.json({status: 1, message: "Successfully saved the snapshot", data: rObj});
+                res.json({message: "Successfully saved the snapshot", data: rObj});
             }
         });
     } else {
@@ -216,13 +217,13 @@ exports.saveSnapshot = function (req, res) {
         }, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the snapshot"});
+                res.status(500).json({message: "An error occurred saving the snapshot"});
             } else {
                 if (err) {
                     console.error(err);
-                    res.json({status: -1, message: "An error occurred saving the snapshot"});
+                    res.status(500).json({message: "An error occurred saving the snapshot"});
                 } else {
-                    res.json({status: 1, message: "Successfully saved the snapshot", data: rObj});
+                    res.json({message: "Successfully saved the snapshot", data: rObj});
                 }
             }
         });
@@ -241,9 +242,9 @@ exports.removeSnapshot = function (req, res) {
     Snapshot.remove({_id: id}, function (err, num) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred removing the snapshot"});
+            res.status(500).json({message: "An error occurred removing the snapshot"});
         } else {
-            res.json({status: 1, message: "Successfully removed the snapshot", data: num});
+            res.json({message: "Successfully removed the snapshot", data: num});
         }
     });
 };
@@ -261,9 +262,9 @@ exports.saveNode = function (req, res) {
         Node.update({_id: OIDType(sObj._id)}, {$set: {sObj}}, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the node"});
+                res.status(500).json({message: "An error occurred saving the node"});
             } else {
-                res.json({status: 1, message: "Successfully saved the node", data: rObj});
+                res.json({message: "Successfully saved the node", data: rObj});
             }
         });
     } else {
@@ -275,13 +276,13 @@ exports.saveNode = function (req, res) {
         }, function (err, rObj) {
             if (err) {
                 console.error(err);
-                res.json({status: -1, message: "An error occurred saving the node"});
+                res.status(500).json({message: "An error occurred saving the node"});
             } else {
                 if (err) {
                     console.error(err);
-                    res.json({status: -1, message: "An error occurred saving the node"});
+                    res.status(500).json({message: "An error occurred saving the node"});
                 } else {
-                    res.json({status: 1, message: "Successfully saved the node", data: rObj});
+                    res.json({message: "Successfully saved the node", data: rObj});
                 }
             }
         });
@@ -300,9 +301,9 @@ exports.removeNode = function (req, res) {
     Node.remove({_id: id}, function (err, num) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred removing the node"});
+            res.status(500).json({message: "An error occurred removing the node"});
         } else {
-            res.json({status: 1, message: "Successfully removed the node", data: num});
+            res.json({message: "Successfully removed the node", data: num});
         }
     });
 };
@@ -320,9 +321,9 @@ exports.addTagToStory = function (req, res) {
     Tag.create({parent: storyId, name: tagName}, function (err, rObj) {
         if (err) {
             console.error(err);
-            res.json({status: -1, message: "An error occurred saving the tag"});
+            res.status(500).json({message: "An error occurred saving the tag"});
         } else {
-            res.json({status: 1, message: "Successfully created the tag", data: rObj});
+            res.json({message: "Successfully created the tag", data: rObj});
         }
     });
 };

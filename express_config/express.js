@@ -25,6 +25,8 @@ module.exports = function() {
         })
     }));
 
+    const morgan = require('morgan');
+    app.use(morgan('dev'));
 
     require('../app/db-compiled');
     require('../app/routes/index.server.routes-compiled')(app);
