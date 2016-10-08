@@ -1,6 +1,25 @@
 <!DOCTYPE html>
+<style>
+    h1 {
+        font-family: "Century Gothic";
+    }
+    body {
+        background-color: #2F3A4C;
+    }
+    div{
+        border: 1px solid black;
+        border-radius: 25px;
+        background-color: rgba(255, 255, 255, .75);
+        padding-top: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+        padding-left: 80px;
+        margin: 25px;
+    }
+</style>
 <html lang="en">
 <%- include('templates/head', {title: 'Dashboard - ' + name}) %>
+
 <body>
     <div>
         Yo you're all logged in <%=name%><br/>
@@ -12,10 +31,24 @@
     </div>
 
     <div>
-        <h1>My Stories:</h1>
-        <form action="/addstory" method="post">
-            <input type="submit">
-        </form>
+        <h1>Story Library:</h1>
+        Empty...
+    </div>
+
+    <div>
+        <h1>Add New Story</h1>
+            <form action="/saveStory" method="post">
+                <label for="title">Title: </label>
+                <input type="text" name="title" placeholder="Enter title">
+                <br>
+                <label for="description">Blurb: </label>
+                <input type="text" name="description" placeholder="Enter description">
+                <br>
+                <label for="image">Cover: </label>
+                <input type="file" name="image" accept="image/*">
+                <br>
+                <input type="submit">
+            </form>
     </div>
 
 

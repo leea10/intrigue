@@ -4,11 +4,13 @@ module.exports = function(app) {
     const dashboard = require('../controllers/dashboard.server.controller');
     const auth = require('../controllers/auth.server.controller-compiled');
     const api = require('../controllers/api.server.controller-compiled');
+    const addNewStory = require('../controllers/addNewStory.server.controller');
 
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
     app.get('/dashboard', auth.isLoggedIn, dashboard.render);
-    app.get('/addstory', addstory.render);
+    app.get('/addNewStory', addNewStory.render);
+
 
     //Auth
     app.post('/register', auth.register);
