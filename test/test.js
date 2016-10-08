@@ -7,9 +7,7 @@ var schema;
 before(function(done){
     server = require('./../server');
     schema = require("./../app/schema-compiled");
-    schema.User.remove({email : "dowde@rpi.edu"},function(){
-        schema.Story.remove({title : "Test Title"},done);
-    });
+    schema.User.remove({email : "testuser@rpi.edu"},done)
 });
 
 describe("Authentication", function(){
@@ -18,7 +16,7 @@ describe("Authentication", function(){
        var user = {
            name : "Ezra Dowd",
            password : "Vroomvroom",
-           email : "dowde@rpi.edu"
+           email : "testuser@rpi.edu"
        };
        request(server)
            .post('/register')
@@ -35,7 +33,7 @@ describe("Authentication", function(){
     it("should successfully login an existing user", function(done){
         var user = {
             password : "Vroomvroom",
-            email : "dowde@rpi.edu"
+            email : "testuser@rpi.edu"
         };
         request(server)
             .post('/login')
@@ -70,7 +68,7 @@ describe("Authentication", function(){
         var user = {
             name : "Ezra Dowd",
             password : "Vroomvroom",
-            email : "dowde@rpi.edu"
+            email : "testuser@rpi.edu"
         };
         request(server)
             .post('/register')
@@ -145,7 +143,7 @@ describe("API", function(){
     it("should successfully login an existing user", function(done){
         var user = {
             password : "Vroomvroom",
-            email : "dowde@rpi.edu"
+            email : "testuser@rpi.edu"
         };
         request(server)
             .post('/login')
@@ -205,4 +203,8 @@ describe("API", function(){
             });
     });
 
+});
+
+after(function(done){
+    schema.User.remove({email : "testuser@rpi.edu"},done);
 });
