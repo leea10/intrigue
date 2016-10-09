@@ -1,7 +1,7 @@
-var User = require("./../schema").User;
-var bcrypt = require("bcrypt");
-var config = require("config");
-var saltRounds = config.get("saltRounds");
+var User = require('./../schema').User;
+var bcrypt = require('bcrypt');
+var config = require('config');
+var saltRounds = config.get('saltRounds');
 
 /**
  * Function to validate user registration inputs
@@ -10,18 +10,18 @@ var saltRounds = config.get("saltRounds");
  *   The express HTTP request containing the information required for the function
  */
 function validateInputs(req){
-    if(!req.body.name || req.body.name == ""){
-        req.session.message = "Please enter a valid name";
+    if(!req.body.name || req.body.name == ''){
+        req.session.message = 'Please enter a valid name';
         return false;
     }
-    if(!req.body.password || req.body.password == ""){
-        req.session.message = "Please enter a valid password";
+    if(!req.body.password || req.body.password == ''){
+        req.session.message = 'Please enter a valid password';
         return false;
     }
-    var email_pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var email_pattern = /^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var email_valid = email_pattern.test(req.body.email);
     if(!email_valid){
-        req.session.message = "Please enter a valid email address";
+        req.session.message = 'Please enter a valid email address';
         return false;
     }
     return true;
@@ -37,7 +37,7 @@ function validateInputs(req){
  */
 exports.register = function(req, res) {
     if(!validateInputs(req)){
-        res.redirect("/");
+        res.redirect('/');
         return;
     }
     var name = req.body.name;
@@ -46,20 +46,20 @@ exports.register = function(req, res) {
     User.find({email : email}, function(err, docs){
         if(docs.length){
             req.session.loggedin = false;
-            req.session.message = "A user with email: " + email + " already exists!";
-            res.redirect("/");
+            req.session.message = 'A user with email: ' + email + ' already exists!';
+            res.redirect('/');
         } else {
             bcrypt.hash(password, saltRounds, function(err, hash) {
                 User.create({name : name, password : hash, email : email}, function(err, docs){
                     if(err){
                         req.session.loggedin = false;
-                        res.redirect("/");
+                        res.redirect('/');
                     } else {
-                        console.log("Added user " + email + " with password " + password + " hashed as "  + hash);
+                        console.log('Added user ' + email + ' with password ' + password + ' hashed as '  + hash);
                         req.session.loggedin = true;
                         req.session.name = name;
                         req.session.uid = docs._id;
-                        res.redirect("/dashboard");
+                        res.redirect('/dashboard');
                     }
                 });
             });
@@ -78,30 +78,30 @@ exports.register = function(req, res) {
 exports.login = function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
-    console.log("Attempting to find user " + email + " with password " + password);
-    User.findOne({email : email} , "name password", function(err, person){
+    console.log('Attempting to find user ' + email + ' with password ' + password);
+    User.findOne({email : email} , 'name password', function(err, person){
         if(err){
             req.session.loggedin = false;
-            req.session.message = "An error occurred logging you in";
-            res.redirect("/");
+            req.session.message = 'An error occurred logging you in';
+            res.redirect('/');
         } else if(person != null){
             bcrypt.compare(password, person.password, function(err, valid){
                 if(valid){
                     req.session.loggedin = true;
                     req.session.name = person.name;
                     req.session.uid = person._id;
-                    req.session.message = "You have been successfully logged in!";
-                    res.redirect("/dashboard");
+                    req.session.message = 'You have been successfully logged in!';
+                    res.redirect('/dashboard');
                 } else {
                     req.session.loggedin = false;
-                    req.session.message = "Invalid username or password!";
-                    res.redirect("/");
+                    req.session.message = 'Invalid username or password!';
+                    res.redirect('/');
                 }
             });
         } else {
             req.session.loggedin = false;
-            req.session.message = "Invalid username or password!";
-            res.redirect("/");
+            req.session.message = 'Invalid username or password!';
+            res.redirect('/');
         }
     });
 };
@@ -116,8 +116,8 @@ exports.login = function(req, res) {
  */
 exports.logout = function(req, res){
     req.session.loggedin = false;
-    req.session.message = "You have been logged out!";
-    res.redirect("/");
+    req.session.message = 'You have been logged out!';
+    res.redirect('/');
 };
 
 /**
@@ -134,7 +134,7 @@ exports.isLoggedIn = function(req, res, next){
     if(req.session.loggedin){
         next();
     } else {
-        res.redirect("/");
+        res.redirect('/');
     }
 };
 
@@ -152,7 +152,7 @@ exports.isLoggedIn = function(req, res, next){
 exports.indexRedirect = function(req,res,next){
     if(req.session.loggedin){
         if(req.session.loggedin == true)
-            res.redirect("/dashboard");
+            res.redirect('/dashboard');
     } else {
         next();
     }

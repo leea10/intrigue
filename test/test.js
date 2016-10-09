@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 const assert = require('assert');
 const request = require('supertest');
 const server = require('./../server');
-const schema = require("./../app/schema");
+const schema = require('./../app/schema');
 
 process.env.NODE_ENV = 'test';
 
-describe("General Tests", function(){
-    describe("Authentication", function () {
+describe('General Tests', function(){
+    describe('Authentication', function () {
 
         beforeEach(function (done) {
             schema.User.remove({}, function () {
@@ -17,11 +17,11 @@ describe("General Tests", function(){
             });
         });
 
-        it("should successfully create a new user", function (done) {
-            var user = {
-                name: "Ezra Dowd",
-                password: "Vroomvroom",
-                email: "testuser@rpi.edu"
+        it('should successfully create a new user', function (done) {
+            let user = {
+                name: 'Ezra Dowd',
+                password: 'Vroomvroom',
+                email: 'testuser@rpi.edu'
             };
             request(server)
                 .post('/register')
@@ -30,16 +30,16 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/dashboard");
+                    res.should.have.header('location', '/dashboard');
                     done();
                 });
         });
 
-        it("should successfully login an existing user", function (done) {
-            var user = {
-                name: "Ezra Dowd",
-                password: "Vroomvroom",
-                email: "testuser@rpi.edu"
+        it('should successfully login an existing user', function (done) {
+            let user = {
+                name: 'Ezra Dowd',
+                password: 'Vroomvroom',
+                email: 'testuser@rpi.edu'
             };
             request(server)
                 .post('/register')
@@ -48,7 +48,7 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/dashboard");
+                    res.should.have.header('location', '/dashboard');
                     request(server)
                         .post('/login')
                         .send(user)
@@ -56,17 +56,17 @@ describe("General Tests", function(){
                             if (err)
                                 throw err;
                             res.should.have.status(302);
-                            res.should.have.header("location", "/dashboard");
+                            res.should.have.header('location', '/dashboard');
                             done();
                         });
                 });
         });
 
 
-        it("should fail to login an non-existent user", function (done) {
-            var user = {
-                password: "Vroomvroom",
-                email: "notarealuser@rpi.edu"
+        it('should fail to login an non-existent user', function (done) {
+            let user = {
+                password: 'Vroomvroom',
+                email: 'notarealuser@rpi.edu'
             };
             request(server)
                 .post('/login')
@@ -75,16 +75,16 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/");
+                    res.should.have.header('location', '/');
                     done();
                 });
         });
 
-        it("should fail to create a duplicate user", function (done) {
-            var user = {
-                name: "Ezra Dowd",
-                password: "Vroomvroom",
-                email: "testuser@rpi.edu"
+        it('should fail to create a duplicate user', function (done) {
+            let user = {
+                name: 'Ezra Dowd',
+                password: 'Vroomvroom',
+                email: 'testuser@rpi.edu'
             };
             request(server)
                 .post('/register')
@@ -93,7 +93,7 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/dashboard");
+                    res.should.have.header('location', '/dashboard');
                     request(server)
                         .post('/register')
                         .send(user)
@@ -101,17 +101,17 @@ describe("General Tests", function(){
                             if (err)
                                 throw err;
                             res.should.have.status(302);
-                            res.should.have.header("location", "/");
+                            res.should.have.header('location', '/');
                             done();
                         });
                 });
         });
 
-        it("should fail to create a user with an invalid email", function (done) {
-            var user = {
-                name: "Ezra Dowd",
-                password: "Vroomvroom",
-                email: "not an email"
+        it('should fail to create a user with an invalid email', function (done) {
+            let user = {
+                name: 'Ezra Dowd',
+                password: 'Vroomvroom',
+                email: 'not an email'
             };
             request(server)
                 .post('/register')
@@ -120,16 +120,16 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/");
+                    res.should.have.header('location', '/');
                     done();
                 });
         });
 
-        it("should fail to create a user with an blank name", function (done) {
-            var user = {
-                name: "",
-                password: "Vroomvroom",
-                email: "blankname@rpi.edu"
+        it('should fail to create a user with an blank name', function (done) {
+            let user = {
+                name: '',
+                password: 'Vroomvroom',
+                email: 'blankname@rpi.edu'
             };
             request(server)
                 .post('/register')
@@ -138,16 +138,16 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/");
+                    res.should.have.header('location', '/');
                     done();
                 });
         });
 
-        it("should fail to create a user with an blank password", function (done) {
-            var user = {
-                name: "Blank Password",
-                password: "",
-                email: "blankpassword@rpi.edu"
+        it('should fail to create a user with an blank password', function (done) {
+            let user = {
+                name: 'Blank Password',
+                password: '',
+                email: 'blankpassword@rpi.edu'
             };
             request(server)
                 .post('/register')
@@ -156,13 +156,13 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     res.should.have.status(302);
-                    res.should.have.header("location", "/");
+                    res.should.have.header('location', '/');
                     done();
                 });
         });
     });
 
-    describe("API", function () {
+    describe('API', function () {
 
         let sessionCookie;
         let user_id;
@@ -170,9 +170,9 @@ describe("General Tests", function(){
         before(function (done) {
             schema.User.remove({}, function () {
                 let user = {
-                    name: "Ezra Dowd",
-                    password: "Vroomvroom",
-                    email: "testuser@rpi.edu"
+                    name: 'Ezra Dowd',
+                    password: 'Vroomvroom',
+                    email: 'testuser@rpi.edu'
                 };
                 request(server)
                     .post('/register')
@@ -181,7 +181,7 @@ describe("General Tests", function(){
                         if (err)
                             throw err;
                         sessionCookie = res.headers['set-cookie'].pop().split(';')[0];
-                        schema.User.findOne({email: user.email}, "_id", function (err, doc) {
+                        schema.User.findOne({email: user.email}, '_id', function (err, doc) {
                             if (err)
                                 throw err;
                             user_id = doc._id;
@@ -197,12 +197,12 @@ describe("General Tests", function(){
             })
         });
 
-        it("should successfully save a new story", function (done) {
+        it('should successfully save a new story', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             request(server)
@@ -222,12 +222,12 @@ describe("General Tests", function(){
                 });
         });
 
-        it("should successfully update a saved story", function (done) {
+        it('should successfully update a saved story', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -238,7 +238,7 @@ describe("General Tests", function(){
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                storyContainer.storyObj.description = "New Test Description";
+                storyContainer.storyObj.description = 'New Test Description';
                 storyContainer.storyObj._id = rObj._id;
                 request(server)
                     .post('/saveStory')
@@ -257,12 +257,12 @@ describe("General Tests", function(){
             });
         });
 
-        it("should successfully add a character to an existing story", function (done) {
+        it('should successfully add a character to an existing story', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -275,11 +275,11 @@ describe("General Tests", function(){
             }, function (err, rObj) {
                 let characterContainer = {
                     characterObj: {
-                        name: "Test Character",
+                        name: 'Test Character',
                         age: 1,
-                        description: "Test Character Description",
-                        history: "Test Character History",
-                        personality: "Test Character Personality",
+                        description: 'Test Character Description',
+                        history: 'Test Character History',
+                        personality: 'Test Character Personality',
                         story: rObj._id,
                         tags: []
                     }
@@ -302,12 +302,12 @@ describe("General Tests", function(){
             });
         });
 
-        it("should successfully update an existing character", function (done) {
+        it('should successfully update an existing character', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -321,11 +321,11 @@ describe("General Tests", function(){
                 storyContainer.storyObj._id = rObj._id;
                 let characterContainer = {
                     characterObj: {
-                        name: "Test Character",
+                        name: 'Test Character',
                         age: 1,
-                        description: "Test Character Description",
-                        history: "Test Character History",
-                        personality: "Test Character Personality",
+                        description: 'Test Character Description',
+                        history: 'Test Character History',
+                        personality: 'Test Character Personality',
                         story: rObj._id,
                         tags: []
                     }
@@ -334,7 +334,7 @@ describe("General Tests", function(){
                     if (err)
                         throw err;
                     characterContainer.characterObj._id = cObj._id;
-                    characterContainer.characterObj.description = "New Test Character Description";
+                    characterContainer.characterObj.description = 'New Test Character Description';
                     request(server)
                         .post('/saveCharacter')
                         .send(characterContainer)
@@ -353,12 +353,12 @@ describe("General Tests", function(){
             });
         });
 
-        it("should successfully create a new snapshot", function (done) {
+        it('should successfully create a new snapshot', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -373,7 +373,7 @@ describe("General Tests", function(){
                 let snapshotContainer = {
                     snapshotObj: {
                         story: rObj._id,
-                        label: "Test Snapshot Label"
+                        label: 'Test Snapshot Label'
                     }
                 };
                 request(server)
@@ -393,12 +393,12 @@ describe("General Tests", function(){
             });
         });
 
-        it("should successfully update an existing snapshot", function (done) {
+        it('should successfully update an existing snapshot', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -412,12 +412,12 @@ describe("General Tests", function(){
                 let snapshotContainer = {
                     snapshotObj: {
                         story: rObj._id,
-                        label: "Test Snapshot Label"
+                        label: 'Test Snapshot Label'
                     }
                 };
                 schema.Snapshot.create(snapshotContainer.snapshotObj, function (err, sObj) {
                     snapshotContainer.snapshotObj._id = sObj._id;
-                    snapshotContainer.snapshotObj.label = "New Snapshot Label";
+                    snapshotContainer.snapshotObj.label = 'New Snapshot Label';
                     request(server)
                         .post('/saveSnapshot')
                         .send(snapshotContainer)
@@ -437,12 +437,12 @@ describe("General Tests", function(){
 
         });
 
-        it("should successfully create a new node", function (done) {
+        it('should successfully create a new node', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -456,16 +456,16 @@ describe("General Tests", function(){
                 let snapshotContainer = {
                     snapshotObj: {
                         story: rObj._id,
-                        label: "Test Snapshot Label"
+                        label: 'Test Snapshot Label'
                     }
                 };
                 let characterContainer = {
                     characterObj: {
-                        name: "Test Character",
+                        name: 'Test Character',
                         age: 1,
-                        description: "Test Character Description",
-                        history: "Test Character History",
-                        personality: "Test Character Personality",
+                        description: 'Test Character Description',
+                        history: 'Test Character History',
+                        personality: 'Test Character Personality',
                         story: rObj._id,
                         tags: []
                     }
@@ -505,12 +505,12 @@ describe("General Tests", function(){
             });
         });
 
-        it("should successfully update an existing node", function (done) {
+        it('should successfully update an existing node', function (done) {
             let storyContainer = {
                 storyObj: {
-                    title: "Test Title",
-                    description: "Test Description",
-                    image: "Test Image"
+                    title: 'Test Title',
+                    description: 'Test Description',
+                    image: 'Test Image'
                 }
             };
             schema.Story.create({
@@ -524,16 +524,16 @@ describe("General Tests", function(){
                 let snapshotContainer = {
                     snapshotObj: {
                         story: rObj._id,
-                        label: "Test Snapshot Label"
+                        label: 'Test Snapshot Label'
                     }
                 };
                 let characterContainer = {
                     characterObj: {
-                        name: "Test Character",
+                        name: 'Test Character',
                         age: 1,
-                        description: "Test Character Description",
-                        history: "Test Character History",
-                        personality: "Test Character Personality",
+                        description: 'Test Character Description',
+                        history: 'Test Character History',
+                        personality: 'Test Character Personality',
                         story: rObj._id,
                         tags: []
                     }
@@ -579,7 +579,7 @@ describe("General Tests", function(){
             });
         });
 
-        it("should get all stories for logged in user", function (done) {
+        it('should get all stories for logged in user', function (done) {
             request(server)
                 .get('/getStories')
                 .set('Cookie', [sessionCookie])
@@ -594,11 +594,10 @@ describe("General Tests", function(){
                 });
         });
 
-        var getStoryDetailsQuery = {
-            storyID: 1
-        };
-
-        it("should get detailed information for an existing story", function (done) {
+        it('should get detailed information for an existing story', function (done) {
+            let getStoryDetailsQuery = {
+                storyID: 1
+            };
             request(server)
                 .get('/getStoryDetails')
                 .set('Cookie', [sessionCookie])
