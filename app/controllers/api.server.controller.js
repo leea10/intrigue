@@ -9,7 +9,7 @@ const Node = schema.Node;
 const Tag = schema.Tag;
 const OIDType = mongoose.Types.ObjectId;
 
-function pojoify(obj){
+let pojoify = (obj) => {
     let pojo = {};
     for(var trait in obj){
         if(obj.hasOwnProperty(trait) && trait != '_id'){
@@ -27,10 +27,10 @@ function pojoify(obj){
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.saveStory = function (req, res) {
+exports.saveStory = (req, res) => {
     let sObj = req.body.storyObj;
     if (sObj._id) {
-        Story.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, function (err, rObj) {
+        Story.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the story'});
@@ -46,7 +46,7 @@ exports.saveStory = function (req, res) {
             image: sObj.image,
             characters: [],
             snapshots: []
-        }, function (err, rObj) {
+        }, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the story'});
@@ -71,7 +71,7 @@ exports.saveStory = function (req, res) {
  */
 exports.removeStory = function (req, res) {
     let id = OIDType(req.body.id);
-    Story.findByIdAndRemove(id, function (err, num) {
+    Story.findByIdAndRemove(id, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the story'});
@@ -88,9 +88,9 @@ exports.removeStory = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.getStories = function (req, res) {
+exports.getStories = (req, res) => {
     let userID = req.session.uid;
-    Story.find({author: userID}, '_id title description', function (err, docs) {
+    Story.find({author: userID}, '_id title description', (err, docs) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred retrieving the stories'});
@@ -110,17 +110,17 @@ exports.getStories = function (req, res) {
 exports.getStoryDetails = function (req, res) {
     let storyID = OIDType(req.query.storyID);
     let userID = req.session.uid;
-    Story.findOne({author: userID, _id: storyID}).populate('characters snapshots tags').exec(function (err, s1) {
+    Story.findOne({author: userID, _id: storyID}).populate('characters snapshots tags').exec((err, s1) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred retrieving the story'});
         } else {
-            Character.populate(s1, {path: 'characters.tags', model: 'Tag'}, function (err, s2) {
+            Character.populate(s1, {path: 'characters.tags', model: 'Tag'}, (err, s2) => {
                 if (err) {
                     console.error(err);
                     res.status(500).json({message: 'An error occurred retrieving the story'});
                 } else {
-                    Snapshot.populate(s2, {path: 'snapshots.nodes', model: 'Node'}, function (err, s3) {
+                    Snapshot.populate(s2, {path: 'snapshots.nodes', model: 'Node'}, (err, s3) => {
                         if (err) {
                             console.error(err);
                             res.status(500).json({message: 'An error occurred retrieving the story'});
@@ -128,7 +128,7 @@ exports.getStoryDetails = function (req, res) {
                             Snapshot.populate(s3, {
                                 path: 'snapshots.relationships',
                                 model: 'Relationship'
-                            }, function (err, s4) {
+                            }, (err, s4) => {
                                 if (err) {
                                     console.error(err);
                                     res.status(500).json({message: 'An error occurred retrieving the story'});
@@ -154,7 +154,7 @@ exports.getStoryDetails = function (req, res) {
 exports.saveCharacter = function (req, res) {
     let cObj = req.body.characterObj;
     if (cObj._id) {
-        Character.update({_id: OIDType(cObj._id)}, {$set: pojoify(cObj)}, function (err, rObj) {
+        Character.update({_id: OIDType(cObj._id)}, {$set: pojoify(cObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the character'});
@@ -163,7 +163,7 @@ exports.saveCharacter = function (req, res) {
             }
         });
     } else {
-        let char = new Character({
+        Character.create({
             name: cObj.name,
             age: cObj.age,
             description: cObj.description,
@@ -171,8 +171,7 @@ exports.saveCharacter = function (req, res) {
             personality : cObj.personality,
             story : OIDType(cObj.story),
             tags: []
-        });
-        char.save(function (err, rObj) {
+        }, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the character'});
@@ -190,9 +189,9 @@ exports.saveCharacter = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.removeCharacter = function (req, res) {
+exports.removeCharacter = (req, res) => {
     let id = OIDType(req.body.id);
-    Character.remove({_id: id}, function (err, num) {
+    Character.remove({_id: id}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the character'});
@@ -209,10 +208,10 @@ exports.removeCharacter = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.saveSnapshot = function (req, res) {
+exports.saveSnapshot = (req, res) => {
     let sObj = req.body.snapshotObj;
     if (sObj._id) {
-        Snapshot.update({_id: OIDType(sObj._id)},{$set: pojoify(sObj)}, function (err, rObj) {
+        Snapshot.update({_id: OIDType(sObj._id)},{$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the snapshot'});
@@ -226,7 +225,7 @@ exports.saveSnapshot = function (req, res) {
             label: sObj.label,
             nodes: [],
             relationships: []
-        }, function (err, rObj) {
+        }, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the snapshot'});
@@ -249,9 +248,9 @@ exports.saveSnapshot = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.removeSnapshot = function (req, res) {
+exports.removeSnapshot = (req, res) => {
     let id = OIDType(req.body.id);
-    Snapshot.remove({_id: id}, function (err, num) {
+    Snapshot.remove({_id: id}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the snapshot'});
@@ -268,10 +267,10 @@ exports.removeSnapshot = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.saveNode = function (req, res) {
+exports.saveNode = (req, res) => {
     let sObj = req.body.nodeObj;
     if (sObj._id) {
-        Node.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, function (err, rObj) {
+        Node.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the node'});
@@ -285,7 +284,7 @@ exports.saveNode = function (req, res) {
             character: OIDType(sObj.character),
             x: sObj.x,
             y: sObj.y
-        }, function (err, rObj) {
+        }, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the node'});
@@ -308,9 +307,9 @@ exports.saveNode = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.removeNode = function (req, res) {
+exports.removeNode = (req, res) => {
     let id = OIDType(req.body.id);
-    Node.remove({_id: id}, function (err, num) {
+    Node.remove({_id: id}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the node'});
@@ -327,10 +326,10 @@ exports.removeNode = function (req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.addTagToStory = function (req, res) {
+exports.addTagToStory = (req, res) => {
     let storyId = OIDType(req.body.storyId);
     let tagName = req.body.tagName;
-    Tag.create({parent: storyId, name: tagName}, function (err, rObj) {
+    Tag.create({parent: storyId, name: tagName}, (err, rObj) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred saving the tag'});

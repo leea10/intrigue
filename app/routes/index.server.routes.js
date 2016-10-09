@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = (app) => {
 
     const landing = require('../controllers/landing.server.controller');
     const dashboard = require('../controllers/dashboard.server.controller');

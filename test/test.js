@@ -8,7 +8,7 @@ const schema = require('./../app/schema');
 
 process.env.NODE_ENV = 'test';
 
-describe('General Tests', function(){
+describe('Endpoint Testing', function(){
     describe('Authentication', function () {
 
         beforeEach(function (done) {
@@ -618,4 +618,8 @@ describe('General Tests', function(){
         mongoose.connection.db.dropDatabase();
         done();
     });
+});
+
+describe("Model Testing", function(){
+
 });

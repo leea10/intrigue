@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 //Bofore the user is removed, delete all their stories
-UserSchema.pre('remove', function(next){
+UserSchema.pre('remove', (next) => {
     for(let i = 0; i < this.stories.length; i++){
         Story.remove({_id : this.stories[i]}).exec();
     }

@@ -1,4 +1,4 @@
-exports.render = function(req, res) {
+exports.render = (req, res) => {
     req.session.message = '';
     res.render('dashboard', {
         name: req.session.name

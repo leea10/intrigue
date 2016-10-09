@@ -1,5 +1,5 @@
 const express = require('express');
-module.exports = function() {
+module.exports = () => {
     const app = express();
 
     app.set('views', './app/views');

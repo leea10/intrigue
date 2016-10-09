@@ -1,3 +1,3 @@
-exports.render = function(req, res) {
+exports.render = (req, res) => {
     res.render('landing', {message : req.session.message});
 };

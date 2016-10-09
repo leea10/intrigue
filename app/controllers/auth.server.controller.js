@@ -1,7 +1,8 @@
-var User = require('./../schema').User;
-var bcrypt = require('bcrypt');
-var config = require('config');
-var saltRounds = config.get('saltRounds');
+const User = require('./../schema').User;
+const bcrypt = require('bcrypt');
+const config = require('config');
+const saltRounds = config.get('saltRounds');
+
 
 /**
  * Function to validate user registration inputs
@@ -9,7 +10,7 @@ var saltRounds = config.get('saltRounds');
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  */
-function validateInputs(req){
+let validateInputs = (req) =>{
     if(!req.body.name || req.body.name == ''){
         req.session.message = 'Please enter a valid name';
         return false;
@@ -18,14 +19,14 @@ function validateInputs(req){
         req.session.message = 'Please enter a valid password';
         return false;
     }
-    var email_pattern = /^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    var email_valid = email_pattern.test(req.body.email);
+    let email_pattern = /^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let email_valid = email_pattern.test(req.body.email);
     if(!email_valid){
         req.session.message = 'Please enter a valid email address';
         return false;
     }
     return true;
-}
+};
 
 /**
  * Backend endpoint for registering a user
@@ -35,22 +36,22 @@ function validateInputs(req){
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.register = function(req, res) {
+exports.register = (req, res) => {
     if(!validateInputs(req)){
         res.redirect('/');
         return;
     }
-    var name = req.body.name;
-    var password = req.body.password;
-    var email = req.body.email;
-    User.find({email : email}, function(err, docs){
+    let name = req.body.name;
+    let password = req.body.password;
+    let email = req.body.email;
+    User.find({email : email}, (err, docs) => {
         if(docs.length){
             req.session.loggedin = false;
             req.session.message = 'A user with email: ' + email + ' already exists!';
             res.redirect('/');
         } else {
-            bcrypt.hash(password, saltRounds, function(err, hash) {
-                User.create({name : name, password : hash, email : email}, function(err, docs){
+            bcrypt.hash(password, saltRounds, (err, hash) => {
+                User.create({name : name, password : hash, email : email}, (err, docs) => {
                     if(err){
                         req.session.loggedin = false;
                         res.redirect('/');
@@ -75,17 +76,17 @@ exports.register = function(req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.login = function(req, res) {
-    var email = req.body.email;
-    var password = req.body.password;
+exports.login = (req, res) => {
+    let email = req.body.email;
+    let password = req.body.password;
     console.log('Attempting to find user ' + email + ' with password ' + password);
-    User.findOne({email : email} , 'name password', function(err, person){
+    User.findOne({email : email} , 'name password', (err, person) => {
         if(err){
             req.session.loggedin = false;
             req.session.message = 'An error occurred logging you in';
             res.redirect('/');
         } else if(person != null){
-            bcrypt.compare(password, person.password, function(err, valid){
+            bcrypt.compare(password, person.password, (err, valid) => {
                 if(valid){
                     req.session.loggedin = true;
                     req.session.name = person.name;
@@ -114,7 +115,7 @@ exports.login = function(req, res) {
  * @param {object} res
  *   The express HTTP response to be sent back to the requester
  */
-exports.logout = function(req, res){
+exports.logout = (req, res) => {
     req.session.loggedin = false;
     req.session.message = 'You have been logged out!';
     res.redirect('/');
@@ -130,7 +131,7 @@ exports.logout = function(req, res){
  * @param {function} next
  *   The next middleware function in the sequence
  */
-exports.isLoggedIn = function(req, res, next){
+exports.isLoggedIn = (req, res, next) => {
     if(req.session.loggedin){
         next();
     } else {
@@ -149,7 +150,7 @@ exports.isLoggedIn = function(req, res, next){
  * @param {function} next
  *   The next middleware function in the sequence
  */
-exports.indexRedirect = function(req,res,next){
+exports.indexRedirect = (req,res,next) => {
     if(req.session.loggedin){
         if(req.session.loggedin == true)
             res.redirect('/dashboard');
