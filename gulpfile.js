@@ -7,7 +7,7 @@ const less = require('gulp-less');
 
 const lessGlob = './app/views/less/*.less';
 const clientJsGlob = './app/client/*.js';
-const serverJsPaths = ['./app/**/*.js', '!./app/**/*-compiled.js'];
+const serverJsPaths = ['./app/**/*.js', '!./app/**/*-compiled.js', '!./app/client/*'];
 
 // Default task: runs all build tasks and sets up all file watchers
 gulp.task('default', ['build-all', 'watch-all']);
