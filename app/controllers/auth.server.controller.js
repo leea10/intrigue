@@ -1,4 +1,4 @@
-var User = require("./../schema-compiled.js").User;
+var User = require("./../schema").User;
 var bcrypt = require("bcrypt");
 var config = require("config");
 var saltRounds = config.get("saltRounds");
@@ -50,7 +50,7 @@ exports.register = function(req, res) {
             res.redirect("/");
         } else {
             bcrypt.hash(password, saltRounds, function(err, hash) {
-                User.create({name : name, password : hash, email : email}, function(err){
+                User.create({name : name, password : hash, email : email}, function(err, docs){
                     if(err){
                         req.session.loggedin = false;
                         res.redirect("/");

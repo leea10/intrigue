@@ -3,11 +3,15 @@ const config = require('config');
 // Bring Mongoose into the app
 const mongoose = require('mongoose');
 
-// Build the connection string
-const mongoPort = config.get('mongo.mongoPort');
-const dbName = config.get('mongo.dbName');
-const dbLoc = config.get('mongo.dbLoc');
-const dbURI = 'mongodb://' + dbLoc + ':' + mongoPort + '/' + dbName;
+let mongoPort;
+let dbName;
+let dbLoc;
+let dbURI;
+
+mongoPort = config.get('mongo.mongoPort');
+dbName = config.get('mongo.dbName');
+dbLoc = config.get('mongo.dbLoc');
+dbURI = 'mongodb://' + dbLoc + ':' + mongoPort + '/' + dbName;
 
 // Create the database connection
 mongoose.connect(dbURI);
@@ -37,4 +41,5 @@ process.on('SIGINT', function() {
 });
 
 
-require('./schema-compiled');
+require('./schema');
+

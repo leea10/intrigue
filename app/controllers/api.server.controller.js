@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const schema = require("./../schema-compiled");
+const schema = require("./../schema");
 const User = schema.User;
 const Story = schema.Story;
 const Character = schema.Character;
@@ -108,7 +108,7 @@ exports.getStories = function (req, res) {
  *   The express HTTP response to be sent back to the requester
  */
 exports.getStoryDetails = function (req, res) {
-    let storyID = req.query.storyID;
+    let storyID = OIDType(req.query.storyID);
     let userID = req.session.uid;
     Story.findOne({author: userID, _id: storyID}).populate("characters snapshots tags").exec(function (err, s1) {
         if (err) {
@@ -164,11 +164,13 @@ exports.saveCharacter = function (req, res) {
         });
     } else {
         let char = new Character({
-            title: cObj.title,
+            name: cObj.name,
+            age: cObj.age,
             description: cObj.description,
-            image: cObj.image,
-            characters: [],
-            snapshots: []
+            history : cObj.history,
+            personality : cObj.personality,
+            story : OIDType(cObj.story),
+            tags: []
         });
         char.save(function (err, rObj) {
             if (err) {
@@ -220,7 +222,7 @@ exports.saveSnapshot = function (req, res) {
         });
     } else {
         Snapshot.create({
-            story: sObj.story,
+            story: OIDType(sObj.story),
             label: sObj.label,
             nodes: [],
             relationships: []
@@ -279,8 +281,8 @@ exports.saveNode = function (req, res) {
         });
     } else {
         Node.create({
-            snapshot: sObj.story,
-            character: sObj.label,
+            snapshot: OIDType(sObj.snapshot),
+            character: OIDType(sObj.character),
             x: sObj.x,
             y: sObj.y
         }, function (err, rObj) {
