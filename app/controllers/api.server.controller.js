@@ -17,7 +17,7 @@ let pojoify = (obj) => {
         }
     }
     return pojo
-}
+};
 
 
 /**
