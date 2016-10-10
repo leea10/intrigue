@@ -28,5 +28,6 @@ build/config.gypi
 node_modules
 bower_components
 config/default.json
-*-compiled.js*
 public/css/
+public/js/
+/build/
