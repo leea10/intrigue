@@ -12,6 +12,7 @@
         background-color: rgba(255, 255, 255, .75);
         padding-top: 30px;
         padding-right: 30px;
+        padding-right: 30px;
         padding-bottom: 30px;
         padding-left: 80px;
         margin: 25px;
@@ -28,6 +29,7 @@
         <form action="/logout" method="post">
             <input type="submit">
         </form>
+
     </div>
 
     <div>
@@ -37,18 +39,15 @@
 
     <div>
         <h1>Add New Story</h1>
-            <form action="/saveStory" method="post">
-                <label for="title">Title: </label>
-                <input type="text" name="title" placeholder="Enter title">
-                <br>
-                <label for="description">Blurb: </label>
-                <input type="text" name="description" placeholder="Enter description">
-                <br>
-                <label for="image">Cover: </label>
-                <input type="file" name="image" accept="image/*">
-                <br>
-                <input type="submit">
-            </form>
+        <form action='/saveStory' method="post">
+            <label for="title">Title: </label>
+            <input type="text" name="title"> <br>
+            <label for="description">Description: </label>
+            <input type="text" name="description"> <br>
+            <label for="image">Image: </label>
+            <input type="text" name="image"> <br>
+            <input type="submit">
+        </form>
     </div>
 
 
