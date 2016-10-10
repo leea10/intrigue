@@ -10,7 +10,7 @@
 
     draw() {
         // Clear the background
-        this.canvas_.fillStyle = '#222222';
+        this.canvas_.fillStyle = '#171717';
         this.canvas_.fillRect(0, 0, this.width(), this.height());
         this.drawGrid_();
         // Draw the nodes
@@ -42,7 +42,7 @@
      */
     drawGrid_() {
         for(let i = 0; i < this.width(); i += this.smallInc_) {
-            this.canvas_.strokeStyle = '#444444';
+            this.canvas_.strokeStyle = '#2c2c2c';
             this.canvas_.lineWidth = i % this.bigInc_ === 0 ? 2 : 1;
             // Draw vertical grid line
             this.drawLine_(
@@ -78,7 +78,7 @@
      */
     drawCircle_(x, y, radius) {
         // Set properties
-        this.canvas_.fillStyle = '#eeeeee';
+        this.canvas_.fillStyle = '#fefefe';
         this.canvas_.strokeStyle = '#8fd3d2';
         this.canvas_.lineWidth = 4;
 
