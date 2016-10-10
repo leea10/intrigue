@@ -1,13 +1,16 @@
-module.exports = (app) => {
+module.exports = function(app) {
 
     const landing = require('../controllers/landing.server.controller');
     const dashboard = require('../controllers/dashboard.server.controller');
     const auth = require('../controllers/auth.server.controller');
     const api = require('../controllers/api.server.controller');
+    const editor = require('../controllers/editor.server.controller');
 
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
     app.get('/dashboard', auth.isLoggedIn, dashboard.render);
+    // TODO(Ariel): Make sure the current user has access to the given story.
+    app.get('/editor', auth.isLoggedIn, editor.render);
 
     //Auth
     app.post('/register', auth.register);
