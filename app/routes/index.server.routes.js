@@ -2,9 +2,9 @@ module.exports = function(app) {
 
     const landing = require('../controllers/landing.server.controller');
     const dashboard = require('../controllers/dashboard.server.controller');
-    const auth = require('../controllers/auth.server.controller-compiled');
-    const api = require('../controllers/api.server.controller-compiled');
-    const editor = require('../controllers/editor.server.controller-compiled');
+    const auth = require('../controllers/auth.server.controller');
+    const api = require('../controllers/api.server.controller');
+    const editor = require('../controllers/editor.server.controller');
 
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
