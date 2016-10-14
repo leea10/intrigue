@@ -2,7 +2,9 @@
 
 app.controller('CanvasController', function($scope) {
     // Initialization
-    let editorCanvas = new EditorCanvas(document.getElementById('canvas').getContext('2d'), 10, 100);
+    let editorCanvas = new EditorCanvas(document.getElementById('canvas'), 10, 100);
+    editorCanvas.changeSize(window.innerWidth, window.innerHeight);
+
     // TODO(Ariel): Pull these nodes from the server
     let nodes = [
         { x: 100, y: 100, radius: 30 },

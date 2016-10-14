@@ -1,12 +1,28 @@
 /*export*/ class EditorCanvas {
-    constructor(ctx, sInc, bInc) {
-        this.canvas_ = ctx;
+    /**
+     * @param domElement The element in the DOM that the editor should be associated with
+     * @param sInc distance between lines on the fine grid.
+     * @param bInc distance between lines on the main grid.
+     * @constructor
+     */
+    constructor(domElement, sInc, bInc) {
+        this.domElement_ = domElement;
+        this.canvas_ = domElement.getContext('2d');
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
         this.nodes_ = [];
     }
 
     // public methods
+    /**
+     * Changes the editor canvas's dimensions to (width, height).
+     * @param width in pixels.
+     * @param height in pixels.
+     */
+    changeSize(width, height) {
+        this.domElement_.width = width;
+        this.domElement_.height = height;
+    }
 
     draw() {
         // Clear the background
