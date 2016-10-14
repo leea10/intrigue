@@ -1,9 +1,37 @@
+// Colors
 @grey-dk: #171717;
 @grey-md: #2c2c2c;
 @grey-lt: #fefefe;
+@shadow-color: #111;
+
+// Sizing
+@navbar-height: 60px;
+
+// Padding & Margins
+@padding: 10px;
 
 body {
   background-color: @grey-dk;
   color: @grey-lt;
   font-family: Arial;
+  margin: 0;
+}
+
+.navbar {
+  .logo {
+    height: 100%;
+  }
+  background-color: @grey-md;
+  box-shadow: 3px 3px 5px @shadow-color;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: @navbar-height;
+  padding: @padding;
+  position: fixed;
+  width: 100%;
+}
+
+.body-content {
+  padding-top: @navbar-height;
 }
