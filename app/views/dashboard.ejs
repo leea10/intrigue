@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('templates/head', {title: 'Dashboard - ' + name}) %>
-
 <body>
-    <div>
+    <%- include('templates/navbar') %>
+    <div class="body-content">
         Yo you're all logged in <%=name%><br/>
         <!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
         For now, click this button to log out
@@ -11,14 +11,6 @@
             <input type="submit">
         </form>
 
-    </div>
-
-    <div>
-        <h1>Story Library:</h1>
-        Empty...
-    </div>
-
-    <div>
         <h1>Add New Story</h1>
         <form action='/saveStory' method="post">
             <label for="title">Title: </label>
@@ -29,8 +21,7 @@
             <input type="text" name="image"> <br>
             <input type="submit">
         </form>
+
     </div>
-
-
 </body>
 </html>
