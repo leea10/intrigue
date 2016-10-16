@@ -4,12 +4,14 @@ app.directive('editor', function($window, Snapshot) {
         link: function(scope, element) {
             // Initialization
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
-            // TODO(Ariel): Pull these nodes from the server
-            let dragging = false;
             for(let i = 0; i < Snapshot.nodes.length; i++) {
                 let node = Snapshot.nodes[i];
                 editorCanvas.addNode(node.x, node.y, node.radius);
             }
+
+            let dragging = false;
+            let draggedNode = null;
+            this.selectedNode_ = null;
 
             // Drawing
             scope.onResize = function() {
@@ -19,21 +21,31 @@ app.directive('editor', function($window, Snapshot) {
             angular.element($window).on('resize', scope.onResize);
             scope.onResize();
 
-            // TODO(Ariel): Temporary, should only draw a new node if adding a valid character.
             element.bind('click', (event) => {
-                editorCanvas.addNode(event.offsetX, event.offsetY, 30);
-                Snapshot.addNode(event.offsetX, event.offsetY, 30);
+                let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                if(this.selectedNode_ === selectedNode) {
+                    return;
+                } else if(this.selectedNode_ !== null) {
+                    this.selectedNode_.deselect();
+                }
+                this.selectedNode_ = selectedNode;
+                console.log(this.selectedNode_);
+                if(this.selectedNode_ !== null) {
+                    this.selectedNode_.select();
+                }
                 editorCanvas.draw();
             });
 
             element.bind('mousedown', (event) => {
-                dragging = true;
-                console.log(event);
                 let selected = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                console.log(selected);
-                // If the mouse is inside the bounds of a node
-                    // remove that node from the list of nodes to draw
-                    // set it as dragged node
+                if(event.button === 1) {
+                    dragging = true;
+                } else if (event.button === 2) {
+                    editorCanvas.addNode(event.offsetX, event.offsetY, 40);
+                    Snapshot.addNode(event.offsetX, event.offsetY, 40);
+                    editorCanvas.draw();
+                }
+                // console.log(selected);
             });
 
             // TODO(Ariel): Give the user x pixels of drag inertia
@@ -44,11 +56,14 @@ app.directive('editor', function($window, Snapshot) {
             });
 
             element.bind('mouseup', (event) => {
-                dragging = false;
-                // If there's a node being held, release it
-                    // put that node back into the list of nodes to draw (At the end)
-                    // set dragged node to null
+                if(event.which === 1) {
+                    dragging = false;
+                }
             });
+
+            element.bind('contextmenu', (event) => {
+                event.preventDefault();
+            })
         }
     }
 });

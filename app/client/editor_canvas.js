@@ -47,7 +47,7 @@
      * @returns {Node} The top node that intersects the point (x,y)
      */
     getNodeAtPoint(x, y) {
-        for(let i = 0; i < this.nodes_.length; i++) {
+        for(let i = this.nodes_.length - 1; i >= 0; i--) {
             if(this.nodes_[i].intersectsPoint(x, y)) {
                 return this.nodes_[i];
             }
@@ -104,13 +104,15 @@
         this.x_ = x;
         this.y_ = y;
         this.radius_ = radius;
+        this.strokeColor_ = '#8fd3d2';
+        this.strokeWeight_ = 4;
     }
 
     draw(ctx) {
         // Set properties
         ctx.fillStyle = '#fefefe';
-        ctx.strokeStyle = '#8fd3d2';
-        ctx.lineWidth = 4;
+        ctx.strokeStyle = this.strokeColor_;
+        ctx.lineWidth = this.strokeWeight_;
 
         // Draw the circle
         ctx.beginPath();
@@ -128,5 +130,21 @@
     intersectsPoint(x, y) {
         // Distance check
         return Math.sqrt(Math.pow(x-this.x_, 2) + Math.pow(y-this.y_, 2)) <= this.radius_;
+    }
+
+    /**
+     * Changes the node to draw in a selected state.
+     */
+    select() {
+        this.strokeColor_ = 'blue';
+        this.strokeWeight_ = 6;
+    }
+
+    /**
+     * Changes the node to draw in a normal state.
+     */
+    deselect() {
+        this.strokeColor_ = '#8fd3d2';
+        this.strokeWeight_ = 4;
     }
 }
