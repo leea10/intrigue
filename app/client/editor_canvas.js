@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Class solely responsible for drawing onto the editor canvas.
+ */
 /*export*/ class EditorCanvas {
     /**
      * @param domElement The element in the DOM that the editor should be associated with
@@ -10,7 +13,7 @@
         this.canvas_ = domElement.getContext('2d');
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
-        this.nodes_ = [];
+        this.nodes_ = []; // Nodes to draw (in order)
     }
 
     // public methods
@@ -37,6 +40,20 @@
 
     width() {   return this.canvas_.canvas.width;   }
     height() {  return this.canvas_.canvas.height;  }
+
+    /**
+     * @param x
+     * @param y
+     * @returns {Node} The top node that intersects the point (x,y)
+     */
+    getNodeAtPoint(x, y) {
+        for(let i = 0; i < this.nodes_.length; i++) {
+            if(this.nodes_[i].intersectsPoint(x, y)) {
+                return this.nodes_[i];
+            }
+        }
+        return null;
+    }
 
     /**
      * Adds a node of radius r at absolute position (x, y).
@@ -109,7 +126,7 @@
      * @returns {boolean}
      */
     intersectsPoint(x, y) {
-        // Perform a distance check from the center
-        return false;
+        // Distance check
+        return Math.sqrt(Math.pow(x-this.x_, 2) + Math.pow(y-this.y_, 2)) <= this.radius_;
     }
 }

@@ -24,10 +24,13 @@ app.directive('editor', function($window) {
             scope.onResize();
 
             element.bind('mousedown', (event) => {
+                dragging = true;
+                console.log(event);
+                let selected = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                console.log(selected);
                 // If the mouse is inside the bounds of a node
                     // remove that node from the list of nodes to draw
                     // set it as dragged node
-                dragging = true;
             });
 
             element.bind('mousemove', (event) => {
@@ -37,10 +40,10 @@ app.directive('editor', function($window) {
             });
 
             element.bind('mouseup', (event) => {
+                dragging = false;
                 // If there's a node being held, release it
                     // put that node back into the list of nodes to draw (At the end)
                     // set dragged node to null
-                dragging = false;
             });
         }
     }
