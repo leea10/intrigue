@@ -28,7 +28,7 @@ let pojoify = (obj) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveStory = (req, res) => {
-    let sObj = req.body.storyObj;
+    let sObj = req.body;
     if (sObj._id) {
         Story.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {

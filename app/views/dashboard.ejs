@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('templates/head', {title: 'Dashboard - ' + name}) %>
-<body>
+<body ng-app="app">
     <%- include('templates/navbar') %>
     <div class="body-content">
         Yo you're all logged in <%=name%><br/>
@@ -11,17 +11,37 @@
             <input type="submit">
         </form>
 
-        <h1>Add New Story</h1>
-        <form action='/saveStory' method="post">
-            <label for="title">Title: </label>
-            <input type="text" name="title"> <br>
-            <label for="description">Description: </label>
-            <input type="text" name="description"> <br>
-            <label for="image">Image: </label>
-            <input type="text" name="image"> <br>
-            <input type="submit">
-        </form>
+        <div ng-controller='AddStoryCrtl'>
+            <h1>Add New Story</h1>
+            <form role='form'>
+                Title: <input type="text" name="title" ng-model="title"> <br/>
+                Description: <input type="text" name="description" ng-model="description"> <br/>
+                Image: <input type="text" name="image" ng-model="image"> <br/>
+                <button ng-click="addStory()" class="btn btn-default"> Add Story </button>
+            </form>
+        </div>
 
     </div>
+    <script>
+        app.controller('AddStoryCrtl', function($scope, $http){
+            $http.get('/getStories').success(function (container) {
+                $scope.container = container;
+            });
+
+            $scope.addStory = function() {
+                $http.post('/saveStory',{
+                    title : $scope.title,
+                    description : $scope.description,
+                    image: $scope.image
+                }).success(function (obj){
+                    console.log(obj);
+                }).error(function (err){
+                    console.log(err);
+                });
+
+            }
+        });
+
+    </script>
 </body>
 </html>
