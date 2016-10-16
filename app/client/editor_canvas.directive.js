@@ -1,13 +1,13 @@
-app.directive('editor', function($window, SnapshotService) {
+app.directive('editor', function($window, Snapshot) {
     return {
         restrict: 'A',
-        link: function(scope, element, attributes) {
+        link: function(scope, element) {
             // Initialization
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
             // TODO(Ariel): Pull these nodes from the server
             let dragging = false;
-            for(let i = 0; i < SnapshotService.nodes.length; i++) {
-                let node = SnapshotService.nodes[i];
+            for(let i = 0; i < Snapshot.nodes.length; i++) {
+                let node = Snapshot.nodes[i];
                 editorCanvas.addNode(node.x, node.y, node.radius);
             }
 
@@ -19,6 +19,13 @@ app.directive('editor', function($window, SnapshotService) {
             angular.element($window).on('resize', scope.onResize);
             scope.onResize();
 
+            // TODO(Ariel): Temporary, should only draw a new node if adding a valid character.
+            element.bind('click', (event) => {
+                editorCanvas.addNode(event.offsetX, event.offsetY, 30);
+                Snapshot.addNode(event.offsetX, event.offsetY, 30);
+                editorCanvas.draw();
+            });
+
             element.bind('mousedown', (event) => {
                 dragging = true;
                 console.log(event);
@@ -29,6 +36,7 @@ app.directive('editor', function($window, SnapshotService) {
                     // set it as dragged node
             });
 
+            // TODO(Ariel): Give the user x pixels of drag inertia
             element.bind('mousemove', (event) => {
                if(dragging === true) {
                    console.log('dragging...');
