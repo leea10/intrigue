@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const objId = mongoose.Schema.Types.ObjectId;
 
 const UserSchema = new mongoose.Schema({
     name : String,
     email : { type : String, unique : true, required : true },
     password : {type : String, required : true },
-    stories : [mongoose.Schema.Types.ObjectId]
+    stories : [{type : objId, ref : 'Story'}]
 });
 
 //Bofore the user is removed, delete all their stories
@@ -18,13 +19,13 @@ UserSchema.pre('remove', (next) => {
 const User = mongoose.model('User', UserSchema);
 
 const StorySchema = new mongoose.Schema({
-    author :  {type : mongoose.Schema.Types.ObjectId, required : true},
+    author :  {type : objId, required : true, ref : 'User'},
     title : {type : String, required : true},
     description : String,
     image : String,
-    characters : [mongoose.Schema.Types.ObjectId],
-    snapshots : [mongoose.Schema.Types.ObjectId],
-    tags : [mongoose.Schema.Types.ObjectId]
+    characters : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Character' }],
+    snapshots : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Snapshot'} ],
+    tags : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Tag' }]
 });
 
 //Before the story is removed, delete all of its characters, snapshots, and tags
@@ -52,13 +53,13 @@ StorySchema.post('save', function(doc, next){
 const Story = mongoose.model('Story', StorySchema);
 
 const CharacterSchema = new mongoose.Schema({
-    story : {type : mongoose.Schema.Types.ObjectId, required : true},
+    story : {type : mongoose.Schema.Types.ObjectId, required : true, ref : 'Story'},
     name : String,
     age : Number,
     description : String,
     history : String,
     personality : String,
-    tags : [mongoose.Schema.Types.ObjectId]
+    tags : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Tag'}]
 });
 
 //Before a character is removed, delete it's relationships
@@ -76,10 +77,10 @@ CharacterSchema.post('save', function(doc, next){
 const Character = mongoose.model('Character', CharacterSchema);
 
 const SnapshotSchema = new mongoose.Schema({
-    story : {type : mongoose.Schema.Types.ObjectId, required : true},
+    story : {type : mongoose.Schema.Types.ObjectId, required : true, ref : 'Story'},
     label : String,
-    nodes : [mongoose.Schema.Types.ObjectId],
-    relationships : [mongoose.Schema.Types.ObjectId]
+    nodes : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Node' }],
+    relationships : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Relationship' }]
 });
 
 //Before a snapshot is removed, delete it's nodes, relationships, and update it's story reference
@@ -103,11 +104,11 @@ SnapshotSchema.post('save', function(doc, next){
 const Snapshot = mongoose.model('Snapshot', SnapshotSchema);
 
 const RelationshipSchema = new mongoose.Schema({
-    snapshot : {type : mongoose.Schema.Types.ObjectId, required : true},
-    characters : [mongoose.Schema.ObjectId],
-    nodes : [mongoose.Schema.Types.ObjectId],
+    snapshot : {type : mongoose.Schema.Types.ObjectId, required : true, ref : 'Snapshot' },
+    characters : [{ type : mongoose.Schema.ObjectId, ref : 'Character' }],
+    nodes : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Node' }],
     description : String,
-    tags : [mongoose.Schema.Types.ObjectId]
+    tags : [{ type : mongoose.Schema.Types.ObjectId, ref : 'Tag' }]
 });
 
 //
@@ -135,8 +136,8 @@ TagSchema.post('save', function(doc, next){
 const Tag = mongoose.model('Tag', TagSchema);
 
 const NodeSchema = new mongoose.Schema({
-    snapshot : {type : mongoose.Schema.Types.ObjectId, required : true},
-    character : {type : mongoose.Schema.Types.ObjectId, required : true},
+    snapshot : {type : mongoose.Schema.Types.ObjectId, required : true, ref : 'Snapshot' },
+    character : {type : mongoose.Schema.Types.ObjectId, required : true, ref : 'Character' },
     x : {type : Number, required : true},
     y : {type : Number, required : true}
 });
