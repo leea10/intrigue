@@ -1,4 +1,4 @@
-app.directive('editor', function($window) {
+app.directive('editor', function($window, SnapshotService) {
     return {
         restrict: 'A',
         link: function(scope, element, attributes) {
@@ -6,13 +6,9 @@ app.directive('editor', function($window) {
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
             // TODO(Ariel): Pull these nodes from the server
             let dragging = false;
-            let nodes = [
-                { x: 100, y: 100, radius: 30 },
-                { x: 200, y: 300, radius: 60 },
-                { x: 550, y: 400, radius: 60 },
-            ];
-            for(let i = 0; i < nodes.length; i++) {
-                editorCanvas.addNode(nodes[i].x, nodes[i].y, nodes[i].radius);
+            for(let i = 0; i < SnapshotService.nodes.length; i++) {
+                let node = SnapshotService.nodes[i];
+                editorCanvas.addNode(node.x, node.y, node.radius);
             }
 
             // Drawing
