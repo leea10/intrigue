@@ -31,8 +31,7 @@
         this.drawGrid_();
         // Draw the nodes
         for(let i = 0; i < this.nodes_.length; i++) {
-            let node = this.nodes_[i];
-            this.drawCircle_(node.x, node.y, node.r);
+            this.nodes_[i].draw(this.canvas_);
         }
     }
 
@@ -46,11 +45,7 @@
      * @param r
      */
     addNode(x, y, r) {
-        this.nodes_.push({
-            x: x,
-            y: y,
-            r: r
-        });
+        this.nodes_.push(new Node(x, y, r));
     }
 
     /**
@@ -85,23 +80,36 @@
         this.canvas_.lineTo(p2.x, p2.y);
         this.canvas_.stroke();
     }
+}
 
-    /**
-     * Draws a node of radius at position x, y on the canvas.
-     * @param x
-     * @param y
-     * @param radius
-     */
-    drawCircle_(x, y, radius) {
+/* export */ class Node {
+    constructor(x, y, radius) {
+        this.x_ = x;
+        this.y_ = y;
+        this.radius_ = radius;
+    }
+
+    draw(ctx) {
         // Set properties
-        this.canvas_.fillStyle = '#fefefe';
-        this.canvas_.strokeStyle = '#8fd3d2';
-        this.canvas_.lineWidth = 4;
+        ctx.fillStyle = '#fefefe';
+        ctx.strokeStyle = '#8fd3d2';
+        ctx.lineWidth = 4;
 
         // Draw the circle
-        this.canvas_.beginPath();
-        this.canvas_.arc(x, y, radius, 0, 2*Math.PI, false);
-        this.canvas_.fill();
-        this.canvas_.stroke();
+        ctx.beginPath();
+        ctx.arc(this.x_, this.y_, this.radius_, 0, 2*Math.PI, false);
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    /**
+     * Checks if point (x, y) lies inside the node
+     * @param x
+     * @param y
+     * @returns {boolean}
+     */
+    intersectsPoint(x, y) {
+        // Perform a distance check from the center
+        return false;
     }
 }
