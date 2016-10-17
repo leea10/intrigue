@@ -8,7 +8,7 @@ const schema = require('./../app/schema');
 
 process.env.NODE_ENV = 'test';
 
-describe('Endpoint Testing', function(){
+describe('Endpoint Testing', function () {
     describe('Authentication', function () {
 
         beforeEach(function (done) {
@@ -198,16 +198,14 @@ describe('Endpoint Testing', function(){
         });
 
         it('should successfully save a new story', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             request(server)
                 .post('/saveStory')
-                .send(storyContainer)
+                .send(storyObj)
                 .set('Cookie', [sessionCookie])
                 .end(function (err, res) {
                     if (err)
@@ -216,33 +214,31 @@ describe('Endpoint Testing', function(){
                     res.should.be.json;
                     res.body.should.have.property('data');
                     res.body.data.should.have.property('_id');
-                    res.body.data.title.should.equal(storyContainer.storyObj.title);
-                    res.body.data.description.should.equal(storyContainer.storyObj.description);
+                    res.body.data.title.should.equal(storyObj.title);
+                    res.body.data.description.should.equal(storyObj.description);
                     done();
                 });
         });
 
         it('should successfully update a saved story', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                storyContainer.storyObj.description = 'New Test Description';
-                storyContainer.storyObj._id = rObj._id;
+                storyObj.description = 'New Test Description';
+                storyObj._id = rObj._id;
                 request(server)
                     .post('/saveStory')
-                    .send(storyContainer)
+                    .send(storyObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
                         if (err)
@@ -258,35 +254,31 @@ describe('Endpoint Testing', function(){
         });
 
         it('should successfully add a character to an existing story', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                let characterContainer = {
-                    characterObj: {
-                        name: 'Test Character',
-                        age: 1,
-                        description: 'Test Character Description',
-                        history: 'Test Character History',
-                        personality: 'Test Character Personality',
-                        story: rObj._id,
-                        tags: []
-                    }
+                let characterObj = {
+                    name: 'Test Character',
+                    age: 1,
+                    description: 'Test Character Description',
+                    history: 'Test Character History',
+                    personality: 'Test Character Personality',
+                    story: rObj._id,
+                    tags: []
                 };
                 request(server)
                     .post('/saveCharacter')
-                    .send(characterContainer)
+                    .send(characterObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
                         if (err)
@@ -295,49 +287,45 @@ describe('Endpoint Testing', function(){
                         res.should.be.json;
                         res.body.should.have.property('data');
                         res.body.data.should.have.property('_id');
-                        res.body.data.name.should.equal(characterContainer.characterObj.name);
-                        res.body.data.description.should.equal(characterContainer.characterObj.description);
+                        res.body.data.name.should.equal(characterObj.name);
+                        res.body.data.description.should.equal(characterObj.description);
                         done();
                     });
             });
         });
 
         it('should successfully update an existing character', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                storyContainer.storyObj._id = rObj._id;
-                let characterContainer = {
-                    characterObj: {
-                        name: 'Test Character',
-                        age: 1,
-                        description: 'Test Character Description',
-                        history: 'Test Character History',
-                        personality: 'Test Character Personality',
-                        story: rObj._id,
-                        tags: []
-                    }
+                storyObj._id = rObj._id;
+                let characterObj = {
+                    name: 'Test Character',
+                    age: 1,
+                    description: 'Test Character Description',
+                    history: 'Test Character History',
+                    personality: 'Test Character Personality',
+                    story: rObj._id,
+                    tags: []
                 };
-                schema.Character.create(characterContainer.characterObj, function (err, cObj) {
+                schema.Character.create(characterObj, function (err, cObj) {
                     if (err)
                         throw err;
-                    characterContainer.characterObj._id = cObj._id;
-                    characterContainer.characterObj.description = 'New Test Character Description';
+                    characterObj._id = cObj._id;
+                    characterObj.description = 'New Test Character Description';
                     request(server)
                         .post('/saveCharacter')
-                        .send(characterContainer)
+                        .send(characterObj)
                         .set('Cookie', [sessionCookie])
                         .end(function (err, res) {
                             if (err)
@@ -354,31 +342,27 @@ describe('Endpoint Testing', function(){
         });
 
         it('should successfully create a new snapshot', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                storyContainer.storyObj._id = rObj._id
-                let snapshotContainer = {
-                    snapshotObj: {
-                        story: rObj._id,
-                        label: 'Test Snapshot Label'
-                    }
+                storyObj._id = rObj._id;
+                let snapshotObj = {
+                    story: rObj._id,
+                    label: 'Test Snapshot Label'
                 };
                 request(server)
                     .post('/saveSnapshot')
-                    .send(snapshotContainer)
+                    .send(snapshotObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
                         if (err)
@@ -387,40 +371,36 @@ describe('Endpoint Testing', function(){
                         res.should.be.json;
                         res.body.should.have.property('data');
                         res.body.data.should.have.property('_id');
-                        res.body.data.label.should.equal(snapshotContainer.snapshotObj.label);
+                        res.body.data.label.should.equal(snapshotObj.label);
                         done();
                     });
             });
         });
 
         it('should successfully update an existing snapshot', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                let snapshotContainer = {
-                    snapshotObj: {
-                        story: rObj._id,
-                        label: 'Test Snapshot Label'
-                    }
+                let snapshotObj = {
+                    story: rObj._id,
+                    label: 'Test Snapshot Label'
                 };
-                schema.Snapshot.create(snapshotContainer.snapshotObj, function (err, sObj) {
-                    snapshotContainer.snapshotObj._id = sObj._id;
-                    snapshotContainer.snapshotObj.label = 'New Snapshot Label';
+                schema.Snapshot.create(snapshotObj, function (err, sObj) {
+                    snapshotObj._id = sObj._id;
+                    snapshotObj.label = 'New Snapshot Label';
                     request(server)
                         .post('/saveSnapshot')
-                        .send(snapshotContainer)
+                        .send(snapshotObj)
                         .set('Cookie', [sessionCookie])
                         .end(function (err, res) {
                             if (err)
@@ -438,55 +418,47 @@ describe('Endpoint Testing', function(){
         });
 
         it('should successfully create a new node', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                let snapshotContainer = {
-                    snapshotObj: {
-                        story: rObj._id,
-                        label: 'Test Snapshot Label'
-                    }
+                let snapshotObj = {
+                    story: rObj._id,
+                    label: 'Test Snapshot Label'
                 };
-                let characterContainer = {
-                    characterObj: {
-                        name: 'Test Character',
-                        age: 1,
-                        description: 'Test Character Description',
-                        history: 'Test Character History',
-                        personality: 'Test Character Personality',
-                        story: rObj._id,
-                        tags: []
-                    }
+                let characterObj = {
+                    name: 'Test Character',
+                    age: 1,
+                    description: 'Test Character Description',
+                    history: 'Test Character History',
+                    personality: 'Test Character Personality',
+                    story: rObj._id,
+                    tags: []
                 };
-                schema.Character.create(characterContainer.characterObj, function(err, cObj) {
+                schema.Character.create(characterObj, function (err, cObj) {
                     if (err)
                         throw err;
-                    characterContainer.characterObj._id = cObj._id;
-                    schema.Snapshot.create(snapshotContainer.snapshotObj, function (err, sObj) {
-                        snapshotContainer.snapshotObj._id = sObj._id;
-                        let nodeContainer = {
-                            nodeObj: {
-                                snapshot: snapshotContainer.snapshotObj._id,
-                                character: characterContainer.characterObj._id,
-                                x: 15,
-                                y: 15
-                            }
+                    characterObj._id = cObj._id;
+                    schema.Snapshot.create(snapshotObj, function (err, sObj) {
+                        snapshotObj._id = sObj._id;
+                        let nodeObj = {
+                            snapshot: snapshotObj._id,
+                            character: characterObj._id,
+                            x: 15,
+                            y: 15
                         };
                         request(server)
                             .post('/saveNode')
-                            .send(nodeContainer)
+                            .send(nodeObj)
                             .set('Cookie', [sessionCookie])
                             .end(function (err, res) {
                                 if (err)
@@ -495,9 +467,9 @@ describe('Endpoint Testing', function(){
                                 res.should.be.json;
                                 res.body.should.have.property('data');
                                 res.body.data.should.have.property('_id');
-                                res.body.data.x.should.equal(nodeContainer.nodeObj.x);
-                                res.body.data.y.should.equal(nodeContainer.nodeObj.y);
-                                nodeContainer.nodeObj._id = res.body.data._id;
+                                res.body.data.x.should.equal(nodeObj.x);
+                                res.body.data.y.should.equal(nodeObj.y);
+                                nodeObj._id = res.body.data._id;
                                 done();
                             });
                     });
@@ -506,62 +478,54 @@ describe('Endpoint Testing', function(){
         });
 
         it('should successfully update an existing node', function (done) {
-            let storyContainer = {
-                storyObj: {
-                    title: 'Test Title',
-                    description: 'Test Description',
-                    image: 'Test Image'
-                }
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
             };
             schema.Story.create({
                 author: user_id,
-                title: storyContainer.storyObj.title,
-                description: storyContainer.storyObj.description,
-                image: storyContainer.storyObj.image,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
                 characters: [],
                 snapshots: []
             }, function (err, rObj) {
-                let snapshotContainer = {
-                    snapshotObj: {
-                        story: rObj._id,
-                        label: 'Test Snapshot Label'
-                    }
+                let snapshotObj = {
+                    story: rObj._id,
+                    label: 'Test Snapshot Label'
                 };
-                let characterContainer = {
-                    characterObj: {
-                        name: 'Test Character',
-                        age: 1,
-                        description: 'Test Character Description',
-                        history: 'Test Character History',
-                        personality: 'Test Character Personality',
-                        story: rObj._id,
-                        tags: []
-                    }
+                let characterObj = {
+                    name: 'Test Character',
+                    age: 1,
+                    description: 'Test Character Description',
+                    history: 'Test Character History',
+                    personality: 'Test Character Personality',
+                    story: rObj._id,
+                    tags: []
                 };
-                schema.Character.create(characterContainer.characterObj, function(err, cObj){
-                    if(err)
+                schema.Character.create(characterObj, function (err, cObj) {
+                    if (err)
                         throw err;
-                    characterContainer.characterObj._id = cObj._id;
-                    schema.Snapshot.create(snapshotContainer.snapshotObj, function (err, sObj) {
-                        if(err)
+                    characterObj._id = cObj._id;
+                    schema.Snapshot.create(snapshotObj, function (err, sObj) {
+                        if (err)
                             throw err;
-                        snapshotContainer.snapshotObj._id = sObj._id;
-                        let nodeContainer = {
-                            nodeObj: {
-                                snapshot: snapshotContainer.snapshotObj._id,
-                                character: characterContainer.characterObj._id,
-                                x: 15,
-                                y: 15
-                            }
+                        snapshotObj._id = sObj._id;
+                        let nodeObj = {
+                            snapshot: snapshotObj._id,
+                            character: characterObj._id,
+                            x: 15,
+                            y: 15
                         };
-                        schema.Node.create(nodeContainer.nodeObj, function (err, nObj){
-                            if(err)
+                        schema.Node.create(nodeObj, function (err, nObj) {
+                            if (err)
                                 throw err;
-                            nodeContainer.nodeObj._id = nObj._id;
-                            nodeContainer.nodeObj.x = 14;
+                            nodeObj._id = nObj._id;
+                            nodeObj.x = 14;
                             request(server)
                                 .post('/saveNode')
-                                .send(nodeContainer)
+                                .send(nodeObj)
                                 .set('Cookie', [sessionCookie])
                                 .end(function (err, res) {
                                     if (err)
@@ -614,12 +578,12 @@ describe('Endpoint Testing', function(){
 
     });
 
-    after(function(done){
+    after(function (done) {
         mongoose.connection.db.dropDatabase();
         done();
     });
 });
 
-describe("Model Testing", function(){
+describe("Model Testing", function () {
 
 });
