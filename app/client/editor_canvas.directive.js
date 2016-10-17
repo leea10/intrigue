@@ -40,7 +40,6 @@ app.directive('editor', function($window, Snapshot) {
                     this.selectedNode_.deselect();
                 }
                 this.selectedNode_ = selectedNode;
-                console.log(this.selectedNode_);
                 if(this.selectedNode_ !== null) {
                     this.selectedNode_.select();
                 }
