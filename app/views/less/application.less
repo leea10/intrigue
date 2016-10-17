@@ -10,6 +10,13 @@
 // Padding & Margins
 @padding: 10px;
 
+// mixins
+.border-box {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
 body {
   background-color: @grey-dk;
   color: @grey-lt;
@@ -18,14 +25,12 @@ body {
 }
 
 .navbar {
+  .border-box;
   .logo {
     height: 100%;
   }
   background-color: @grey-md;
   box-shadow: 3px 3px 5px @shadow-color;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   height: @navbar-height;
   padding: @padding;
   position: fixed;
@@ -34,4 +39,10 @@ body {
 
 .body-content {
   padding-top: @navbar-height;
+}
+
+.canvas-container {
+  .border-box;
+  height: 100vh;
+  overflow: hidden;
 }

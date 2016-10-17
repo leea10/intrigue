@@ -3,8 +3,8 @@
 <%- include('templates/head', {title: 'Edit - [TODO: STORY NAME HERE]'}) %>
 <body ng-app="app">
     <%- include('templates/navbar') %>
-    <div class="body-content" ng-controller="CanvasController">
-        <canvas id="canvas" width="800" height="600">
+    <div class="body-content canvas-container">
+        <canvas editor id="canvas" width="800" height="600">
             Your browser doesn't support HTML5 canvas!
         </canvas>
     </div>
