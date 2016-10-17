@@ -10,7 +10,7 @@ app.directive('editor', function($window, Snapshot) {
             }
 
             let dragging = false;
-            let draggedNode = null;
+            this.draggedNode_ = null;
             this.selectedNode_ = null;
 
             // Drawing
@@ -21,8 +21,19 @@ app.directive('editor', function($window, Snapshot) {
             angular.element($window).on('resize', scope.onResize);
             scope.onResize();
 
-            element.bind('click', (event) => {
+            element.bind('dblclick', (event) => {
+                editorCanvas.addNode(event.offsetX, event.offsetY, 40);
+                Snapshot.addNode(event.offsetX, event.offsetY, 40);
+                editorCanvas.draw();
+            });
+
+            element.bind('mousedown', (event) => {
+                event.preventDefault();
                 let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                if(event.button === 0) {
+                    dragging = true;
+                    this.draggedNode_ = selectedNode;
+                }
                 if(this.selectedNode_ === selectedNode) {
                     return;
                 } else if(this.selectedNode_ !== null) {
@@ -36,28 +47,18 @@ app.directive('editor', function($window, Snapshot) {
                 editorCanvas.draw();
             });
 
-            element.bind('mousedown', (event) => {
-                let selected = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                if(event.button === 0) {
-                    dragging = true;
-                } else if (event.button === 2) {
-                    editorCanvas.addNode(event.offsetX, event.offsetY, 40);
-                    Snapshot.addNode(event.offsetX, event.offsetY, 40);
-                    editorCanvas.draw();
-                }
-                // console.log(selected);
-            });
-
             // TODO(Ariel): Give the user x pixels of drag inertia
             element.bind('mousemove', (event) => {
-               if(dragging === true) {
-                   console.log('dragging...');
+               if(dragging === true && this.draggedNode_ !== null) {
+                   this.draggedNode_.setPos(event.offsetX, event.offsetY);
+                   editorCanvas.draw();
                }
             });
 
             element.bind('mouseup', (event) => {
-                if(event.which === 1) {
+                if(event.button === 0) {
                     dragging = false;
+                    this.draggedNode_ = null;
                 }
             });
 

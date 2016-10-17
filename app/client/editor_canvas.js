@@ -122,6 +122,16 @@
     }
 
     /**
+     * Sets the point's position to (x,y);
+     * @param x
+     * @param y
+     */
+    setPos(x, y) {
+        this.x_ = x;
+        this.y_ = y;
+    }
+
+    /**
      * Checks if point (x, y) lies inside the node
      * @param x
      * @param y
