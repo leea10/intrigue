@@ -38,7 +38,7 @@ app.directive('editor', function($window, Snapshot) {
 
             element.bind('mousedown', (event) => {
                 let selected = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                if(event.button === 1) {
+                if(event.button === 0) {
                     dragging = true;
                 } else if (event.button === 2) {
                     editorCanvas.addNode(event.offsetX, event.offsetY, 40);
