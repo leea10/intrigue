@@ -50,7 +50,7 @@ app.directive('editor', function($window, Snapshot) {
             // TODO(Ariel): Give the user x pixels of drag inertia
             element.bind('mousemove', (event) => {
                if(dragging === true && this.draggedNode_ !== null) {
-                   this.draggedNode_.setPos(event.offsetX, event.offsetY);
+                   this.draggedNode_.move(event.movementX, event.movementY);
                    editorCanvas.draw();
                }
             });

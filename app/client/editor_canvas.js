@@ -122,13 +122,13 @@
     }
 
     /**
-     * Sets the point's position to (x,y);
-     * @param x
-     * @param y
+     * Dispplaces the node
+     * @param x Number of pixels to displace horizontally
+     * @param y Number of pixles to displace vertically
      */
-    setPos(x, y) {
-        this.x_ = x;
-        this.y_ = y;
+    move(x, y) {
+        this.x_ += x;
+        this.y_ += y;
     }
 
     /**
