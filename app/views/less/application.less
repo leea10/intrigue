@@ -10,28 +10,32 @@
 // Padding & Margins
 @padding: 10px;
 
-// Linking
+// mixins
+.border-box {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
 @base-url: "/assets";
-
-
+  
 body {
-  //background-color: @grey-dk;
+  background-color: @grey-dk;
   background-image: url("@{base-url}/background_00-01.png");
-  background-size: cover;
+	background-position: center top;
+  background-size: 100% auto;
   color: @grey-lt;
   font-family: Open Sans, serif;
   margin: 0;
 }
 
 .navbar {
+  .border-box;
   .logo {
     height: 100%;
   }
   background-color: @grey-md;
   box-shadow: 3px 3px 5px @shadow-color;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   height: @navbar-height;
   padding: @padding;
   position: fixed;
@@ -40,4 +44,10 @@ body {
 
 .body-content {
   padding-top: @navbar-height;
+}
+
+.canvas-container {
+  .border-box;
+  height: 100vh;
+  overflow: hidden;
 }
