@@ -1,7 +1,7 @@
 /**
  * @fileoverview Class solely responsible for drawing onto the editor canvas.
  */
-/*export*/ class EditorCanvas {
+class EditorCanvas {
     /**
      * @param domElement The element in the DOM that the editor should be associated with
      * @param sInc distance between lines on the fine grid.
