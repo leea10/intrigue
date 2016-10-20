@@ -63,7 +63,7 @@ app.directive('editor', function($window, Snapshot) {
 
             element.bind('contextmenu', (event) => {
                 event.preventDefault();
-            })
+            });
         }
-    }
+    };
 });
