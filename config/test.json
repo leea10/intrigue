@@ -1,6 +1,6 @@
 {
   "saltRounds" : 10,
-  "serverPort" : 1338,
+  "serverPort" : 1339,
   "mongo" : {
     "mongoPort" : 27017,
     "dbName" : "intriguedb_test",

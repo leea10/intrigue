@@ -152,7 +152,7 @@ exports.getStoryDetails = function (req, res) {
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveCharacter = function (req, res) {
-    let cObj = req.body.characterObj;
+    let cObj = req.body;
     if (cObj._id) {
         Character.update({_id: OIDType(cObj._id)}, {$set: pojoify(cObj)}, (err, rObj) => {
             if (err) {
@@ -209,7 +209,7 @@ exports.removeCharacter = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveSnapshot = (req, res) => {
-    let sObj = req.body.snapshotObj;
+    let sObj = req.body;
     if (sObj._id) {
         Snapshot.update({_id: OIDType(sObj._id)},{$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
@@ -268,7 +268,7 @@ exports.removeSnapshot = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.saveNode = (req, res) => {
-    let sObj = req.body.nodeObj;
+    let sObj = req.body;
     if (sObj._id) {
         Node.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {

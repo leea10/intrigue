@@ -10,14 +10,27 @@
 // Padding & Margins
 @padding: 10px;
 
+// mixins
+.border-box {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+@base-url: "/assets";
+
 body {
   background-color: @grey-dk;
+  background-image: url("@{base-url}/background_00-01.png");
+	background-position: center top;
+  background-size: 100% auto;
   color: @grey-lt;
-  font-family: Arial;
+  font-family: Open Sans, serif;
   margin: 0;
 }
 
 .navbar {
+  .border-box;
   .logo {
     height: 100%;
   }
@@ -34,6 +47,12 @@ body {
 
 .body-content {
   padding-top: @navbar-height;
+}
+
+.canvas-container {
+  .border-box;
+  height: 100vh;
+  overflow: hidden;
 }
 .modal {
   display: none; /* Hidden by default */
