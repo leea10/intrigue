@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const util = require('gulp-util');
 const rename = require('gulp-rename');
 
-const jslint = require('gulp-jslint');
+const jshint = require('gulp-jshint');
 const babel = require('gulp-babel');
 const less = require('gulp-less');
 
@@ -46,10 +46,10 @@ gulp.task('build-client-js', ['js-lint-client'], function() {
 
 gulp.task('js-lint-client', function() {
     return gulp.src(clientJsGlob)
-        .pipe(jslint({
-            es6: true
+        .pipe(jshint({
+            esversion: 6
         }))
-        .pipe(jslint.reporter('stylish'));
+        .pipe(jshint.reporter('default'));
 });
 
 // Javascript compilation - server side tasks
@@ -61,9 +61,8 @@ gulp.task('build-server-js', ['js-lint-server']);
 
 gulp.task('js-lint-server', function() {
     return gulp.src(serverJsGlob)
-        .pipe(jslint({
-            es6: true,
-            node: true
+        .pipe(jshint({
+            esversion: 6
         }))
-        .pipe(jslint.reporter('stylish'));
+        .pipe(jshint.reporter('default'));
 });
