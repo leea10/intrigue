@@ -3,6 +3,7 @@ const util = require('gulp-util');
 const rename = require('gulp-rename');
 
 const jshint = require('gulp-jshint');
+const jscs = require('gulp-jscs');
 const babel = require('gulp-babel');
 const less = require('gulp-less');
 
@@ -35,7 +36,7 @@ gulp.task('watch-client-js', function() {
     gulp.watch(clientJsGlob, ['build-client-js']);
 });
 
-gulp.task('build-client-js', ['js-lint-client'], function() {
+gulp.task('build-client-js', ['js-style-client' ,'js-lint-client'], function() {
     return gulp.src(clientJsGlob)
         .pipe(babel())
         .pipe(rename({
@@ -52,12 +53,21 @@ gulp.task('js-lint-client', function() {
         .pipe(jshint.reporter('default'));
 });
 
+gulp.task('js-style-client', function() {
+    return gulp.src(clientJsGlob, {base: './'})
+        .pipe(jscs({
+            configPath: './config.jscs',
+            fix: true
+        }))
+        .pipe(jscs.reporter());
+});
+
 // Javascript compilation - server side tasks
 gulp.task('watch-server-js', function() {
     return gulp.watch(serverJsGlob, ['js-lint-server']);
 });
 
-gulp.task('build-server-js', ['js-lint-server']);
+gulp.task('build-server-js', ['js-style-server', 'js-lint-server']);
 
 gulp.task('js-lint-server', function() {
     return gulp.src(serverJsGlob)
@@ -65,4 +75,14 @@ gulp.task('js-lint-server', function() {
             esversion: 6
         }))
         .pipe(jshint.reporter('default'));
+});
+
+gulp.task('js-style-server', function() {
+    return gulp.src(serverJsGlob, {base: './'})
+        .pipe(jscs({
+            configPath: './config.jscs',
+            fix: true
+        }))
+        .pipe(jshint.reporter())
+        .pipe(gulp.dest('./'));
 });
