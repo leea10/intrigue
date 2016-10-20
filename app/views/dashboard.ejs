@@ -11,19 +11,66 @@
             <input type="submit">
         </form>
 
-        <div ng-controller='AddStoryCrtl'>
-            <h1>Add New Story</h1>
-            <form role='form'>
-                Title: <input type="text" name="title" ng-model="title"> <br/>
-                Description: <input type="text" name="description" ng-model="description"> <br/>
-                Image: <input type="text" name="image" ng-model="image"> <br/>
-                <button ng-click="addStory()" class="btn btn-default"> Add Story </button>
-            </form>
+        <div ng-controller='StoryCrtl'>
+            <h1>Library</h1>
+            Make a list of stories show up
+            <button id="myBtn">Add New Story</button>
+
+            <div id="addStoryModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Create New Story <span class="close">×</span>
+                    </div>
+
+                    <div class="modal-body">
+                        <form role='form'>
+                            Image: <input type="file" accept="image/*" name="image" ng-model="image"> <br/>
+                            <input type="text" name="title" ng-model="title" placeholder="Title"> <br/>
+                            <input type="text" name="description" ng-model="description" placeholder="Blurb"> <br/>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button ng-click="addStory()" class="create-story-btn"> Create </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+
         </div>
 
     </div>
     <script>
-        app.controller('AddStoryCrtl', function($scope, $http){
+        // Get the modal
+        var modal = document.getElementById('addStoryModal');
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        app.controller('StoryCrtl', function($scope, $http){
             $http.get('/getStories').success(function (container) {
                 $scope.container = container;
             });
