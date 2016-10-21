@@ -13,7 +13,10 @@
 
         <div ng-controller='StoryCrtl'>
             <h1>Library</h1>
-            Make a list of stories show up
+            <div ng-repeat="story in container.data" class="img">
+                <div class="desc">{{story.title}}<br>{{story.description}}</div>
+            </div>
+
             <button id="myBtn">Add New Story</button>
 
             <div id="addStoryModal" class="modal">
@@ -73,6 +76,8 @@
         app.controller('StoryCrtl', function($scope, $http){
             $http.get('/getStories').success(function (container) {
                 $scope.container = container;
+            }).error(function (obj){
+                console.log(obj)
             });
 
             $scope.addStory = function() {
@@ -88,7 +93,6 @@
 
             }
         });
-
     </script>
 </body>
 </html>
