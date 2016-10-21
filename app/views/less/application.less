@@ -20,10 +20,13 @@
 @base-url: "/assets";
   
 body {
-  background-color: @grey-dk;
-  background-image: url("@{base-url}/background_00-01.png");
-	background-position: center top;
-  background-size: 100% auto;
+  @media screen and (min-aspect-ratio: 16/9) {
+    background-size: 100vw auto;
+  }
+  @media screen and (max-aspect-ratio: 16/9) {
+    background-size: auto 100vh;
+  }
+  background: @grey-dk url("@{base-url}/background_00-01.png") no-repeat center top;
   color: @grey-lt;
   font-family: Open Sans, serif;
   margin: 0;
