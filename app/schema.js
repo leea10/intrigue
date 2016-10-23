@@ -54,6 +54,7 @@ const Story = mongoose.model('Story', StorySchema);
 
 const CharacterSchema = new mongoose.Schema({
     story : {type : objId, required : true, ref : 'Story'},
+    owner : {type : objId, required : true, ref : 'User'},
     name : String,
     age : Number,
     description : String,
@@ -77,6 +78,7 @@ CharacterSchema.post('save', function(doc, next){
 const Character = mongoose.model('Character', CharacterSchema);
 
 const SnapshotSchema = new mongoose.Schema({
+    owner : {type : objId, required : true, ref : 'User'},
     story : {type : objId, required : true, ref : 'Story'},
     label : String,
     nodes : [{ type : objId, ref : 'Node' }],
@@ -104,6 +106,7 @@ SnapshotSchema.post('save', function(doc, next){
 const Snapshot = mongoose.model('Snapshot', SnapshotSchema);
 
 const RelationshipSchema = new mongoose.Schema({
+    owner : {type : objId, required : true, ref : 'User'},
     snapshot : {type : objId, required : true, ref : 'Snapshot' },
     characters : [{ type : mongoose.Schema.ObjectId, ref : 'Character' }],
     nodes : [{ type : objId, ref : 'Node' }],
@@ -124,6 +127,7 @@ RelationshipSchema.post('save', function(doc, next){
 const Relationship = mongoose.model('Relationship', RelationshipSchema);
 
 const TagSchema = new mongoose.Schema({
+    owner : {type : objId, required : true, ref : 'User'},
     parent : {type : objId, required : true},
     name : {type : String, required : true}
 });
@@ -136,6 +140,7 @@ TagSchema.post('save', function(doc, next){
 const Tag = mongoose.model('Tag', TagSchema);
 
 const NodeSchema = new mongoose.Schema({
+    owner : {type : objId, required : true, ref : 'User'},
     snapshot : {type : objId, required : true, ref : 'Snapshot' },
     character : {type : objId, required : true, ref : 'Character' },
     x : {type : Number, required : true},
