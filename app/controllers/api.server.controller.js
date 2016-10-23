@@ -16,7 +16,7 @@ let pojoify = (obj) => {
             pojo[trait] = obj[trait];
         }
     }
-    return pojo
+    return pojo;
 };
 
 
