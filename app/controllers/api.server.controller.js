@@ -30,7 +30,7 @@ let pojoify = (obj) => {
 exports.saveStory = (req, res) => {
     let sObj = req.body;
     if (sObj._id) {
-        Story.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
+        Story.update({_id: OIDType(sObj._id), author : req.session.uid}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the story'});
@@ -71,7 +71,7 @@ exports.saveStory = (req, res) => {
  */
 exports.removeStory = function (req, res) {
     let id = OIDType(req.body.id);
-    Story.findByIdAndRemove(id, (err, num) => {
+    Story.remove({ _id : id, author : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the story'});
