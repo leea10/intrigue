@@ -6,10 +6,12 @@ module.exports = (app) => {
     const api = require('../controllers/api.server.controller');
     const editor = require('../controllers/editor.server.controller');
 
+
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
     app.get('/dashboard', auth.isLoggedIn, dashboard.render);
     app.get('/editor', auth.isLoggedIn, editor.render);
+
 
     //Auth
     app.post('/register', auth.register);
