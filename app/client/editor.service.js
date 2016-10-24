@@ -1,4 +1,4 @@
-app.service('Snapshot', function($http) {
+app.service('EditorService', function($http) {
     this.nodes = [
         { x: 100, y: 100, radius: 30 },
         { x: 200, y: 300, radius: 60 },
