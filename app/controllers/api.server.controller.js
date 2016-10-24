@@ -35,7 +35,10 @@ exports.saveStory = (req, res) => {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the story'});
             } else {
-                res.json({message: 'Successfully saved the story', data: rObj});
+                if(rObj.nModified === 0)
+                    res.status(500).json({message: 'You are not authorized to make this change', data: rObj});
+                else
+                    res.json({message: 'Successfully saved the story', data: rObj});
             }
         });
     } else {
