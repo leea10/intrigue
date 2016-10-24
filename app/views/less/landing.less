@@ -1,0 +1,28 @@
+// Colors
+@grey-dk: #171717;
+@grey-md: #2c2c2c;
+@grey-lt: #fefefe;
+@shadow-color: #111;
+
+// Sizing
+@navbar-height: 60px;
+
+// Padding & Margins
+@padding: 10px;
+
+
+@base-url: "/assets";
+  
+body {
+  @media screen and (min-aspect-ratio: 16/9) {
+    background-size: 100vw auto;
+  }
+  @media screen and (max-aspect-ratio: 16/9) {
+    background-size: auto 100vh;
+  }
+  background: @grey-dk url("@{base-url}/background_00-01.png") no-repeat center top;
+  color: @grey-lt;
+  font-family: Open Sans, serif;
+  margin: 0;
+}
+
