@@ -1,4 +1,14 @@
-app.service('Snapshot', function($http) {
+app.service('EditorService', function($http, $location) {
+    this.storyId_ = $location.search().id;
+    this.storyDetails_ = null;
+    // Get story details from the server
+    $http.get('/getStoryDetails?storyID=' + this.storyId_).success((response) => {
+        console.log(response.message);
+        this.storyDetails_ = response.data;
+        console.log(this.storyDetails_);
+    });
+    // TODO(Ariel): Add error checks.
+
     this.nodes = [
         { x: 100, y: 100, radius: 30 },
         { x: 200, y: 300, radius: 60 },

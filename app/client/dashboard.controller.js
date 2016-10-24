@@ -23,7 +23,7 @@ app.controller('DashboardController', function($scope, $http){
     $http.get('/getStories').then((res) => {
         $scope.stories = res.data.data;
     }, (res) => {
-        console.log(res)
+        console.log(res);
     });
 });
 
