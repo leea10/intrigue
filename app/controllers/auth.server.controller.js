@@ -11,11 +11,11 @@ const saltRounds = config.get('saltRounds');
  *   The express HTTP request containing the information required for the function
  */
 let validateInputs = (req) =>{
-    if(!req.body.name || req.body.name == ''){
+    if(!req.body.name || req.body.name === ''){
         req.session.message = 'Please enter a valid name';
         return false;
     }
-    if(!req.body.password || req.body.password == ''){
+    if(!req.body.password || req.body.password === ''){
         req.session.message = 'Please enter a valid password';
         return false;
     }
@@ -85,7 +85,7 @@ exports.login = (req, res) => {
             req.session.loggedin = false;
             req.session.message = 'An error occurred logging you in';
             res.redirect('/');
-        } else if(person != null){
+        } else if(person !== null){
             bcrypt.compare(password, person.password, (err, valid) => {
                 if(valid){
                     req.session.loggedin = true;
@@ -152,7 +152,7 @@ exports.isLoggedIn = (req, res, next) => {
  */
 exports.indexRedirect = (req,res,next) => {
     if(req.session.loggedin){
-        if(req.session.loggedin == true)
+        if(req.session.loggedin === true)
             res.redirect('/dashboard');
     } else {
         next();
