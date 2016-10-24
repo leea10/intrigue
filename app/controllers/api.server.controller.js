@@ -16,7 +16,7 @@ let pojoify = (obj) => {
             pojo[trait] = obj[trait];
         }
     }
-    return pojo
+    return pojo;
 };
 
 
@@ -30,12 +30,15 @@ let pojoify = (obj) => {
 exports.saveStory = (req, res) => {
     let sObj = req.body;
     if (sObj._id) {
-        Story.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
+        Story.update({_id: OIDType(sObj._id), author : req.session.uid}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the story'});
             } else {
-                res.json({message: 'Successfully saved the story', data: rObj});
+                if(rObj.nModified === 0)
+                    res.status(500).json({message: 'You are not authorized to make this change', data: rObj});
+                else
+                    res.json({message: 'Successfully saved the story', data: rObj});
             }
         });
     } else {
@@ -71,7 +74,7 @@ exports.saveStory = (req, res) => {
  */
 exports.removeStory = function (req, res) {
     let id = OIDType(req.body.id);
-    Story.findByIdAndRemove(id, (err, num) => {
+    Story.remove({ _id : id, author : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the story'});
@@ -154,7 +157,7 @@ exports.getStoryDetails = function (req, res) {
 exports.saveCharacter = function (req, res) {
     let cObj = req.body;
     if (cObj._id) {
-        Character.update({_id: OIDType(cObj._id)}, {$set: pojoify(cObj)}, (err, rObj) => {
+        Character.update({_id: OIDType(cObj._id), owner : req.session.uid}, {$set: pojoify(cObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the character'});
@@ -164,6 +167,7 @@ exports.saveCharacter = function (req, res) {
         });
     } else {
         Character.create({
+            owner : req.session.uid,
             name: cObj.name,
             age: cObj.age,
             description: cObj.description,
@@ -191,7 +195,7 @@ exports.saveCharacter = function (req, res) {
  */
 exports.removeCharacter = (req, res) => {
     let id = OIDType(req.body.id);
-    Character.remove({_id: id}, (err, num) => {
+    Character.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the character'});
@@ -211,7 +215,7 @@ exports.removeCharacter = (req, res) => {
 exports.saveSnapshot = (req, res) => {
     let sObj = req.body;
     if (sObj._id) {
-        Snapshot.update({_id: OIDType(sObj._id)},{$set: pojoify(sObj)}, (err, rObj) => {
+        Snapshot.update({_id: OIDType(sObj._id), owner : req.session.uid},{$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the snapshot'});
@@ -221,6 +225,7 @@ exports.saveSnapshot = (req, res) => {
         });
     } else {
         Snapshot.create({
+            owner : req.session.uid,
             story: OIDType(sObj.story),
             label: sObj.label,
             nodes: [],
@@ -250,7 +255,7 @@ exports.saveSnapshot = (req, res) => {
  */
 exports.removeSnapshot = (req, res) => {
     let id = OIDType(req.body.id);
-    Snapshot.remove({_id: id}, (err, num) => {
+    Snapshot.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the snapshot'});
@@ -270,7 +275,7 @@ exports.removeSnapshot = (req, res) => {
 exports.saveNode = (req, res) => {
     let sObj = req.body;
     if (sObj._id) {
-        Node.update({_id: OIDType(sObj._id)}, {$set: pojoify(sObj)}, (err, rObj) => {
+        Node.update({_id: OIDType(sObj._id), owner : req.session.uid}, {$set: pojoify(sObj)}, (err, rObj) => {
             if (err) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the node'});
@@ -280,6 +285,7 @@ exports.saveNode = (req, res) => {
         });
     } else {
         Node.create({
+            owner : req.session.uid,
             snapshot: OIDType(sObj.snapshot),
             character: OIDType(sObj.character),
             x: sObj.x,
@@ -309,7 +315,7 @@ exports.saveNode = (req, res) => {
  */
 exports.removeNode = (req, res) => {
     let id = OIDType(req.body.id);
-    Node.remove({_id: id}, (err, num) => {
+    Node.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the node'});
