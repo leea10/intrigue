@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('templates/head', {title: 'Welcome!'}) %>
-<body>
+<%- contentFor('title') %>
+    Welcome!
+<%- contentFor('stylesheets') %>
+<%- contentFor('scripts') %>
+<%- contentFor('body') %>
     <h1>Hi m8 welcome to Intrigue</h1>
     <h3><%=message%></h3>
     <ul>
@@ -24,6 +25,3 @@
             <input type="submit">
         </form>
     </ul>
-</body>
-
-</html>

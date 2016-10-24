@@ -4,6 +4,7 @@ module.exports = () => {
 
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
+    app.use(require('express-ejs-layouts'));
 
     const session = require('express-session');
     const MongoStore = require('connect-mongo')(session);

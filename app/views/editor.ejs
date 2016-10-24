@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-<%- include('templates/head', {title: 'Edit - [TODO: STORY NAME HERE]'}) %>
-<body ng-app="app">
+<%- contentFor('title') %>
+    <%=storyTitle%>
+<%- contentFor('stylesheets') %>
+<%- contentFor('scripts') %>
+    <script type="text/javascript" src="/js/editor_canvas-compiled.js"></script>
+    <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
+    <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
+<%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content canvas-container">
         <canvas editor id="canvas" width="800" height="600">
             Your browser doesn't support HTML5 canvas!
         </canvas>
     </div>
-</body>
-</html>
