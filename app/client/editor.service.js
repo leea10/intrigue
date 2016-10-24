@@ -1,6 +1,16 @@
 app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
-    // TODO(Ariel): Use this story id to get the correct story details
+    this.storyDetails_ = null;
+
+    // Get story details from the server
+    $http.get('/getStoryDetails', {
+        storyID: this.storyId_
+    }).success((storyDetails) => {
+        this.storyDetails_ = storyDetails.data;
+        console.log(this.storyDetails_);
+    });
+    // TODO(Ariel): Add error checks.
+
     this.nodes = [
         { x: 100, y: 100, radius: 30 },
         { x: 200, y: 300, radius: 60 },
