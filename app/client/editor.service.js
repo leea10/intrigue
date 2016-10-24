@@ -3,7 +3,7 @@ app.service('EditorService', function($http, $location) {
     this.storyDetails_ = null;
     // Get story details from the server
     $http.get('/getStoryDetails?storyID=' + this.storyId_).success((response) => {
-        console.log(response.message)
+        console.log(response.message);
         this.storyDetails_ = response.data;
         console.log(this.storyDetails_);
     });
