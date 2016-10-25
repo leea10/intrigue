@@ -253,6 +253,36 @@ describe('Endpoint Testing', function () {
             });
         });
 
+        it('should fail to update a non-owned story', function (done) {
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
+            };
+            schema.Story.create({
+                author: '11111373e894ad11111efe01',
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
+                characters: [],
+                snapshots: []
+            }, function (err, rObj) {
+                storyObj.description = 'New Test Description';
+                storyObj._id = rObj._id;
+                request(server)
+                    .post('/saveStory')
+                    .send(storyObj)
+                    .set('Cookie', [sessionCookie])
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        res.should.have.status(500);
+                        res.should.be.json;
+                        done();
+                    });
+            });
+        });
+
         it('should successfully add a character to an existing story', function (done) {
             let storyObj = {
                 title: 'Test Title',
@@ -310,6 +340,7 @@ describe('Endpoint Testing', function () {
             }, function (err, rObj) {
                 storyObj._id = rObj._id;
                 let characterObj = {
+                    owner : user_id,
                     name: 'Test Character',
                     age: 1,
                     description: 'Test Character Description',
@@ -357,6 +388,7 @@ describe('Endpoint Testing', function () {
             }, function (err, rObj) {
                 storyObj._id = rObj._id;
                 let snapshotObj = {
+                    owner : user_id,
                     story: rObj._id,
                     label: 'Test Snapshot Label'
                 };
@@ -392,6 +424,7 @@ describe('Endpoint Testing', function () {
                 snapshots: []
             }, function (err, rObj) {
                 let snapshotObj = {
+                    owner : user_id,
                     story: rObj._id,
                     label: 'Test Snapshot Label'
                 };
@@ -432,10 +465,12 @@ describe('Endpoint Testing', function () {
                 snapshots: []
             }, function (err, rObj) {
                 let snapshotObj = {
+                    owner : user_id,
                     story: rObj._id,
                     label: 'Test Snapshot Label'
                 };
                 let characterObj = {
+                    owner : user_id,
                     name: 'Test Character',
                     age: 1,
                     description: 'Test Character Description',
@@ -451,6 +486,7 @@ describe('Endpoint Testing', function () {
                     schema.Snapshot.create(snapshotObj, function (err, sObj) {
                         snapshotObj._id = sObj._id;
                         let nodeObj = {
+                            owner : user_id,
                             snapshot: snapshotObj._id,
                             character: characterObj._id,
                             x: 15,
@@ -492,10 +528,12 @@ describe('Endpoint Testing', function () {
                 snapshots: []
             }, function (err, rObj) {
                 let snapshotObj = {
+                    owner : user_id,
                     story: rObj._id,
                     label: 'Test Snapshot Label'
                 };
                 let characterObj = {
+                    owner : user_id,
                     name: 'Test Character',
                     age: 1,
                     description: 'Test Character Description',
@@ -513,6 +551,7 @@ describe('Endpoint Testing', function () {
                             throw err;
                         snapshotObj._id = sObj._id;
                         let nodeObj = {
+                            owner : user_id,
                             snapshot: snapshotObj._id,
                             character: characterObj._id,
                             x: 15,

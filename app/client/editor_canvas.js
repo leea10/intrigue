@@ -1,7 +1,7 @@
 /**
  * @fileoverview Class solely responsible for drawing onto the editor canvas.
  */
-/*export*/ class EditorCanvas {
+class EditorCanvas {
     /**
      * @param domElement The element in the DOM that the editor should be associated with
      * @param sInc distance between lines on the fine grid.
@@ -14,6 +14,7 @@
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
         this.nodes_ = []; // Nodes to draw (in order)
+        this.nodeIndex_ = {};
     }
 
     // public methods

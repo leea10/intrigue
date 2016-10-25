@@ -1,11 +1,11 @@
-app.directive('editor', function($window, Snapshot) {
+app.directive('editor', function($window, EditorService) {
     return {
         restrict: 'A',
         link: function(scope, element) {
             // Initialization
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
-            for(let i = 0; i < Snapshot.nodes.length; i++) {
-                let node = Snapshot.nodes[i];
+            for(let i = 0; i < EditorService.nodes.length; i++) {
+                let node = EditorService.nodes[i];
                 editorCanvas.addNode(node.x, node.y, node.radius);
             }
 
@@ -23,7 +23,7 @@ app.directive('editor', function($window, Snapshot) {
 
             element.bind('dblclick', (event) => {
                 editorCanvas.addNode(event.offsetX, event.offsetY, 40);
-                Snapshot.addNode(event.offsetX, event.offsetY, 40);
+                EditorService.addNode(event.offsetX, event.offsetY, 40);
                 editorCanvas.draw();
             });
 
@@ -63,7 +63,7 @@ app.directive('editor', function($window, Snapshot) {
 
             element.bind('contextmenu', (event) => {
                 event.preventDefault();
-            })
+            });
         }
-    }
+    };
 });
