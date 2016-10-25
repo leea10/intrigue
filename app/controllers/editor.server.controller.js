@@ -1,4 +1,12 @@
-// TODO(Ariel): Take in a story ID as a parameter so we load in correct data.
+const Story = require('../schema').Story;
+const OIDType = require('mongoose').Types.ObjectId;
+
 exports.render = function(req, res) {
-    res.render("editor");
+    Story.findOne({
+        _id: OIDType(req.query.id)
+    }, (err, doc) => {
+        res.render("editor", {
+            storyTitle: doc.title
+        });
+    });
 };

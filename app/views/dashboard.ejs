@@ -1,7 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<%- include('templates/head', {title: 'Dashboard - ' + name}) %>
-<body ng-app="app">
+<%- contentFor('title') %>
+    <%=name%>'s stories
+
+<%- contentFor('stylesheets') %>
+<%- contentFor('scripts') %>
+    <script type="text/javascript" src="/js/dashboard.controller-compiled.js"></script>
+
+<%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content">
         Yo you're all logged in <%=name%><br/>
@@ -41,5 +45,3 @@
             </div>
         </div>
     </div>
-</body>
-</html>
