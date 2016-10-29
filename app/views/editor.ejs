@@ -9,8 +9,8 @@
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content">
-        <div class="toolbar">
-            toolz man
+        <div class="toolbar" ng-controller="ToolbarController">
+            <button ng-click="showAddCharacterForm()">Add Character</button>
         </div>
         <div class="canvas-container">
             <canvas editor id="canvas" width="800" height="600">
