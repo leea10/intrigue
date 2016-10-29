@@ -6,14 +6,15 @@
     <script type="text/javascript" src="/js/editor_canvas-compiled.js"></script>
     <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
+    <script type="text/javascript" src="/js/editor.controller-compiled.js"></script>
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
-    <div class="body-content">
-        <div class="toolbar">
-            <div class="button">
+    <div class="body-content" ng-controller="EditorController">
+        <div class="toolbar" >
+            <div class="button" ng-click="toggleCreateCharacterForm()">
                 +C
             </div>
-            <div class="button">
+            <div class="button" ng-click="toggleCharacterLibrary()">
                 Lib
             </div>
         </div>
@@ -21,5 +22,38 @@
             <canvas editor id="canvas" width="800" height="600">
                 Your browser doesn't support HTML5 canvas!
             </canvas>
+        </div>
+        <div class="modal" ng-hide="hideAddCharacterForm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Create New Character <span class="close" ng-click="toggleCreateCharacterForm()">×</span>
+                </div>
+
+                <div class="modal-body">
+                    <form role="form">
+                        <input type="text" name="name" ng-model="character.name" placeholder="Name"> <br/>
+                        <input type="text" name="age" ng-model="character.age" placeholder="Age"> <br/>
+                        <input type="text" name="description" ng-model="character.description" placeholder="Blurb"> <br/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button ng-click="saveCharacter()" class="create-btn"> Create </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal" ng-hide="hideCharacterLibrary">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Character Library<span class="close" ng-click="toggleCharacterLibrary()">×</span>
+                </div>
+
+                <div class="modal-body" ng-repeat="char in characters">
+                    <form role="form">
+                        <input type="text" name="name" ng-model="char.name" placeholder="Name"> <br/>
+                        <input type="text" name="age" ng-model="char.age" placeholder="Age"> <br/>
+                        <input type="text" name="description" ng-model="char.description" placeholder="Blurb"> <br/>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
