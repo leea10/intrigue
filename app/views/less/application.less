@@ -1,8 +1,5 @@
 @import 'defines.less';
 
-// Sizing
-@navbar-height: 60px;
-
 // Padding & Margins
 @padding: 10px;
 
@@ -26,9 +23,10 @@ body {
   height: @navbar-height;
   padding: @padding;
   position: fixed;
+  top: 0;
   width: 100%;
 }
 
 .body-content {
-  padding-top: @navbar-height;
+  margin-top: @navbar-height;
 }
