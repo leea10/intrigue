@@ -17,8 +17,9 @@
         <div ng-controller="DashboardController">
             <h1>Library</h1>
             <a ng-repeat="story in stories" ng-href="/editor?id={{story._id}}">
-                <div class="profiles">
-                    <div class="details">{{story.title}}<br>{{story.description}}</div>
+                <div class="profile">
+                    <div class="title"> {{story.title}} </div>
+                    <div class="description"> {{story.description}}</div>
                 </div>
             </a>
 

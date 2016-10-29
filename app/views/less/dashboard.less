@@ -80,21 +80,25 @@
   cursor: pointer;
 }
 
-.profiles{
-  margin: 5px;
+.tile{
   border: 1px solid #ccc;
   float: left;
-  width: 180px;
-  .details {
-    padding: 15px;
-    text-align: center;
-  }
-  img {
-    width: 100%;
-    height: auto;
-  }
-
+  margin: 21px;
+  height: 178px;
+  width: 183px;
 }
-.profiles:hover {
-  border: 1px solid #777;
+
+.profile {
+  .tile;
+  text-align: left;
+  .title{
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .description{
+    font-size: 14px;
+  }
+  &:hover {
+    border: 1px solid #777;
+  }
 }
