@@ -33,4 +33,8 @@ app.service('EditorService', function($http, $location) {
             this.storyDetails_.characters.push(response.data.data);
         });
     };
+
+    this.getCharacters = function(){
+        return this.storyDetails_.characters;
+    };
 });
