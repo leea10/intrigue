@@ -5,8 +5,16 @@ exports.render = function(req, res) {
     Story.findOne({
         _id: OIDType(req.query.id)
     }, (err, doc) => {
-        res.render("editor", {
-            storyTitle: doc.title
-        });
+        if(err){
+            res.send(err);
+        } else {
+            if(doc){
+                res.render('editor', {
+                    storyTitle: doc.title
+                });
+            } else {
+                res.send('Invalid story ID');
+            }
+        }
     });
 };
