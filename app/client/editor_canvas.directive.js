@@ -4,6 +4,8 @@ app.directive('editor', function($window, EditorService) {
         link: function(scope, element) {
             // Initialization
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
+            let canvasContainer = element.parent()[0];
+            console.log(canvasContainer.clientWidth + ' ' + canvasContainer.clientHeight);
             for(let i = 0; i < EditorService.nodes.length; i++) {
                 let node = EditorService.nodes[i];
                 editorCanvas.addNode(node.x, node.y, node.radius);
@@ -15,7 +17,7 @@ app.directive('editor', function($window, EditorService) {
 
             // Drawing
             scope.onResize = function() {
-                editorCanvas.changeSize($window.innerWidth, $window.innerHeight);
+                editorCanvas.changeSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
                 editorCanvas.draw();
             };
             angular.element($window).on('resize', scope.onResize);
