@@ -1,7 +1,24 @@
 @import 'defines.less';
 
+@toolbar-width: 60px;
+
+.body-content {
+  .border-box;
+  display: flex;
+  flex-direction: row;
+  height: calc(~"100vh - " @navbar-height);
+}
+
+.toolbar {
+  .border-box;
+  background-color: #111;
+  display: inline-block;
+  height: 100%;
+  width: @toolbar-width;
+}
+
 .canvas-container {
   .border-box;
-  height: 100vh;
+  flex: 0 1 100vw;
   overflow: hidden;
 }
