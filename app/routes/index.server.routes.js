@@ -10,7 +10,6 @@ module.exports = (app) => {
     //Pages
     app.get('/', auth.indexRedirect, landing.render);
     app.get('/dashboard', auth.isLoggedIn, dashboard.render);
-    // TODO(Ariel): Make sure the current user has access to the given story.
     app.get('/editor', auth.isLoggedIn, editor.render);
 
 
