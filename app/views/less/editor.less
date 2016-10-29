@@ -1,6 +1,10 @@
 @import 'defines.less';
 
 @toolbar-width: 60px;
+@button-size: 40px;
+@button-margin: 10px;
+@button-padding: 7px;
+@grey-md-lt: #aaa;
 
 .body-content {
   .border-box;
@@ -9,11 +13,23 @@
   height: calc(~"100vh - " @navbar-height);
 }
 
+.button {
+  .border-box;
+  border: 2px solid @grey-md-lt;
+  border-radius: 10px;
+  color: @grey-md-lt;
+  height: @button-size;
+  margin: @button-margin;
+  padding: @button-padding;
+  width: @button-size;
+}
+
 .toolbar {
   .border-box;
   background-color: #111;
   display: inline-block;
   height: 100%;
+  padding-top: 10px;
   width: @toolbar-width;
 }
 

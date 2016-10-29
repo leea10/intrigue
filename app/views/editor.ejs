@@ -10,7 +10,12 @@
     <%- include('templates/navbar') %>
     <div class="body-content">
         <div class="toolbar" ng-controller="ToolbarController">
-            <button ng-click="showAddCharacterForm()">Add Character</button>
+            <div class="button" ng-click="showAddCharacterForm()">
+                +C
+            </div>
+            <div class="button">
+                Lib
+            </div>
         </div>
         <div class="canvas-container">
             <canvas editor id="canvas" width="800" height="600">
