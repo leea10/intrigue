@@ -4,25 +4,22 @@
     <link rel="stylesheet" href="/css/landing.css"/>
 <%- contentFor('scripts') %>
 <%- contentFor('body') %>
-    <h1>Hi m8 welcome to Intrigue</h1>
-    <h3><%=message%></h3>
-    <ul>
-        Login
+    <div class="logo">
+        <img class="logo" src="/assets/logo_white.png"/>
+    </div>
+    <div class="form">
+        <h3><%=message%></h3>
         <form action="/login" method="post">
-            <label for="email">Email: </label>
-            <input type="text" name="email" placeholder="Enter your email">
-            <label for="password">Password: </label>
-            <input type="password" name="password" placeholder="Enter your password">
-            <input type="submit">
+            <input type="text" name="email" placeholder="Email"> <br>
+            <input type="password" name="password" placeholder="Password"> <br>
+            <input type="submit" value="Log In"> <br>
         </form>
-        Register
+
         <form action="/register" method="post">
-            <label for="name">Name: </label>
-            <input type="text" name="name" placeholder="Enter your name">
-            <label for="email">Email: </label>
-            <input type="text" name="email" placeholder="Enter your email">
-            <label for="password">Password: </label>
-            <input type="password" name="password" placeholder="Enter your password">
-            <input type="submit">
+            <input type="text" name="name" placeholder="Pen Name"> <br>
+            <input type="text" name="email" placeholder="Email"> <br>
+            <input type="password" name="password" placeholder="Password"> <br>
+            <input type="submit" value="Register">
         </form>
-    </ul>
+        <p> Already have an account? Login here. </p>
+    </div>
