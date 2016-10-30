@@ -31,3 +31,5 @@ config/default.json
 public/css/
 public/js/
 /build/
+public/images/characters
+public/images/stories
