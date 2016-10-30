@@ -9,17 +9,37 @@
     </div>
     <div class="form">
         <h3><%=message%></h3>
-        <form action="/login" method="post">
-            <input type="text" name="email" placeholder="Email"> <br>
-            <input type="password" name="password" placeholder="Password"> <br>
-            <input type="submit" value="Log In"> <br>
-        </form>
+        <div id="login-form">
+            <form action="/login" method="post">
+                <input type="text" name="email" placeholder="Email"> <br>
+                <input type="password" name="password" placeholder="Password"> <br>
+                <input type="submit" value="Log In"> <br>
+            </form>
+            Don't have an account? <a href="" onclick="switchForm('toSignUp')"> Sign up here </a>
+        </div>
 
-        <form action="/register" method="post">
-            <input type="text" name="name" placeholder="Pen Name"> <br>
-            <input type="text" name="email" placeholder="Email"> <br>
-            <input type="password" name="password" placeholder="Password"> <br>
-            <input type="submit" value="Register">
-        </form>
-        <p> Already have an account? Login here. </p>
+        <div id="register-form">
+            <form action="/register" method="post">
+                <input type="text" name="name" placeholder="Pen Name"> <br>
+                <input type="text" name="email" placeholder="Email"> <br>
+                <input type="password" name="password" placeholder="Password"> <br>
+                <input type="submit" value="Register">
+            </form>
+            Already have an account? <a href="" onclick="switchForm('toLogIn')"> Login here </a>
+        </div>
+
     </div>
+    <script>
+        function switchForm(req) {
+            var eReg = document.getElementById("register-form")
+            var eLog = document.getElementById("login-form")
+            if (req == 'toSignUp'){
+                eReg.style.display = 'inline-block'
+                eLog.style.display = 'none'
+            }
+            else{
+                eReg.style.display = 'none'
+                eLog.style.display = 'inline-block'
+            }
+        }
+    </script>
