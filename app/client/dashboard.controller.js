@@ -3,13 +3,22 @@ app.controller('DashboardController', function($scope, $http){
     $scope.hideForm = true;
 
     $scope.addStory = () => {
-        $http.post('/saveStory',{
-            title : $scope.title,
-            description : $scope.description,
-            image: $scope.image
+        let fData = new FormData();
+        if($scope.image){
+            fData.append('image', $scope.image[0]);
+            fData.append('img_extension', $scope.image[0].name.split('.')[1]);
+        } else {
+            fData.append('img_extension', 'jpg');
+        }
+        fData.append('title', $scope.title);
+        fData.append('description', $scope.description);
+        $http.post('/saveStory', fData, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
         }).success(function (obj){
-            $scope.stories.push(obj);
+            $scope.stories.push(obj.data);
             console.log(obj);
+            $scope.showForm();
         }).error(function (err){
             console.log(err);
         });
@@ -25,5 +34,16 @@ app.controller('DashboardController', function($scope, $http){
     }, (res) => {
         console.log(res);
     });
+});
+
+app.directive('filelistBind', function() {
+    return function( scope, elm, attrs ) {
+        elm.bind('change', function( evt ) {
+            scope.$apply(function() {
+                scope[ attrs.name ] = evt.target.files;
+                console.log( scope[ attrs.name ] );
+            });
+        });
+    };
 });
 

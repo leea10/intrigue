@@ -12,7 +12,7 @@
             <h1>Library</h1>
             <a ng-repeat="story in stories" ng-href="/editor?id={{story._id}}">
                 <div class="profile">
-                    <img src="/assets/coverphoto_00.png"/>
+                    <img ng-src="/images/stories/{{story._id}}.{{story.img_extension}}"/>
                     <div class="info">
                         <div class="title"> {{story.title}} </div>
                         <div class="description"> {{story.description}}</div>
@@ -29,7 +29,7 @@
 
                     <div class="modal-body">
                         <form role="form">
-                            Image: <input type="file" accept="image/*" name="image" ng-model="image"> <br/>
+                            Image: <input type="file" accept="image/*" name="image" filelist-bind> <br/>
                             <input type="text" name="title" ng-model="title" placeholder="Title"> <br/>
                             <input type="text" name="description" ng-model="description" placeholder="Blurb"> <br/>
                         </form>

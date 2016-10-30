@@ -8,6 +8,8 @@ const Relationship = schema.Relationship;
 const Node = schema.Node;
 const Tag = schema.Tag;
 const OIDType = mongoose.Types.ObjectId;
+const path = require('path');
+const appDir = path.dirname(require.main.filename);
 
 let pojoify = (obj) => {
     let pojo = {};
@@ -37,16 +39,27 @@ exports.saveStory = (req, res) => {
             } else {
                 if(rObj.nModified === 0)
                     res.status(500).json({message: 'You are not authorized to make this change', data: rObj});
-                else
-                    res.json({message: 'Successfully saved the story', data: rObj});
+                else {
+                    if(req.files){
+                        let storyImg = req.files.image;
+                        storyImg.mv(appDir + '/public/images/stories/' + sObj._id + '.' + storyImg.name.split('.')[1], (err) => {
+                            if(err){
+                                console.error(err);
+                            }
+                            res.json({message: 'Successfully saved the story', data: rObj});
+                        });
+                    } else {
+                        res.json({message: 'Successfully saved the story', data: rObj});
+                    }
+                }
             }
         });
     } else {
         Story.create({
             author : req.session.uid,
             title: sObj.title,
+            img_extension : sObj.img_extension,
             description: sObj.description,
-            image: sObj.image,
             characters: [],
             snapshots: []
         }, (err, rObj) => {
@@ -58,7 +71,17 @@ exports.saveStory = (req, res) => {
                     console.error(err);
                     res.status(500).json({message: 'An error occurred saving the story'});
                 } else {
-                    res.json({message: 'Successfully saved the story', data: rObj});
+                    if(req.files){
+                        let storyImg = req.files.image;
+                        storyImg.mv(appDir + '/public/images/stories/' + rObj._id + '.' + storyImg.name.split('.')[1], (err) => {
+                            if(err){
+                                console.error(err);
+                            }
+                            res.json({message: 'Successfully saved the story', data: rObj});
+                        });
+                    } else {
+                        res.json({message: 'Successfully saved the story', data: rObj});
+                    }
                 }
             }
         });
@@ -93,7 +116,7 @@ exports.removeStory = function (req, res) {
  */
 exports.getStories = (req, res) => {
     let userID = req.session.uid;
-    Story.find({author: userID}, '_id title description', (err, docs) => {
+    Story.find({author: userID}, '_id title description img_extension', (err, docs) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred retrieving the stories'});
@@ -162,7 +185,17 @@ exports.saveCharacter = function (req, res) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the character'});
             } else {
-                res.json({message: 'Successfully saved the character', data: rObj});
+                if(req.files){
+                    let characterImg = req.files.image;
+                    characterImg.mv(appDir + '/public/images/characters/' + cObj._id + '.' + characterImg.name.split('.')[1], (err) => {
+                        if(err){
+                            console.error(err);
+                        }
+                        res.json({message: 'Successfully saved the character', data: rObj});
+                    });
+                } else {
+                    res.json({message: 'Successfully saved the character', data: rObj});
+                }
             }
         });
     } else {
@@ -173,6 +206,7 @@ exports.saveCharacter = function (req, res) {
             description: cObj.description,
             history : cObj.history,
             personality : cObj.personality,
+            img_extension : cObj.img_extension,
             story : OIDType(cObj.story),
             tags: []
         }, (err, rObj) => {
@@ -180,7 +214,17 @@ exports.saveCharacter = function (req, res) {
                 console.error(err);
                 res.status(500).json({message: 'An error occurred saving the character'});
             } else {
-                res.json({message: 'Successfully saved the character', data: rObj});
+                if(req.files){
+                    let characterImg = req.files.image;
+                    characterImg.mv(appDir + '/public/images/characters/' + rObj._id + '.' + characterImg.name.split('.')[1], (err) => {
+                        if(err){
+                            console.error(err);
+                        }
+                        res.json({message: 'Successfully saved the character', data: rObj});
+                    });
+                } else {
+                    res.json({message: 'Successfully saved the character', data: rObj});
+                }
             }
         });
     }
