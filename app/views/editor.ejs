@@ -6,10 +6,10 @@
     <script type="text/javascript" src="/js/editor_canvas-compiled.js"></script>
     <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
-    <script type="text/javascript" src="/js/editor.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
-    <div class="body-content" ng-controller="EditorController">
+    <div class="body-content" ng-controller="ToolbarController">
         <div class="toolbar" >
             <div class="button" ng-click="toggleCreateCharacterForm()">
                 +C

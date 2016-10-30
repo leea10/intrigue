@@ -1,4 +1,4 @@
-app.controller('EditorController', ($scope, $http, EditorService) => {
+app.controller('ToolbarController', ($scope, $http, EditorService) => {
     $scope.hideAddCharacterForm = true;
     $scope.hideCharacterLibrary = true;
 
