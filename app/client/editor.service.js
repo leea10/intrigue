@@ -1,6 +1,6 @@
 app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
-    this.storyDetails_ = null;
+    this.storyDetails_ = {};
     // Get story details from the server
     $http.get('/getStoryDetails?storyID=' + this.storyId_).success((response) => {
         console.log(response.message);
@@ -30,7 +30,7 @@ app.service('EditorService', function($http, $location) {
         characterObj.story = this.storyDetails_._id;
         $http.post('/saveCharacter', characterObj).success((response) => {
             console.log(response);
-            this.storyDetails_.characters.push(response.data.data);
+            this.storyDetails_.characters.push(response.data);
         });
     };
 

@@ -8,6 +8,7 @@ app.controller('EditorController', ($scope, $http, EditorService) => {
 
     $scope.toggleCharacterLibrary = () => {
         $scope.characters = EditorService.getCharacters();
+        console.log($scope.characters);
         $scope.hideCharacterLibrary = !$scope.hideCharacterLibrary;
     };
 
@@ -16,6 +17,7 @@ app.controller('EditorController', ($scope, $http, EditorService) => {
         if(!$scope.character.name)
             $scope.errorMsg = 'Please enter a character name';
         if(!$scope.errorMsg){
+            console.log($scope.character);
             EditorService.addCharacter($scope.character);
             $scope.toggleCreateCharacterForm();
         }
