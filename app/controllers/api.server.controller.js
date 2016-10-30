@@ -42,7 +42,7 @@ exports.saveStory = (req, res) => {
                 else {
                     if(req.files){
                         let storyImg = req.files.image;
-                        storyImg.mv(appDir + '/public/images/stories/' + sObj._id + '.jpg', (err) => {
+                        storyImg.mv(appDir + '/public/images/stories/' + sObj._id + '.png', (err) => {
                             if(err){
                                 console.error(err);
                             }
@@ -73,7 +73,7 @@ exports.saveStory = (req, res) => {
                 } else {
                     if(req.files){
                         let storyImg = req.files.image;
-                        storyImg.mv(appDir + '/public/images/stories/' + rObj._id + '.jpg', (err) => {
+                        storyImg.mv(appDir + '/public/images/stories/' + rObj._id + '.png', (err) => {
                             if(err){
                                 console.error(err);
                             }
@@ -187,7 +187,7 @@ exports.saveCharacter = function (req, res) {
             } else {
                 if(req.files){
                     let characterImg = req.files.image;
-                    characterImg.mv(appDir + '/public/images/characters/' + cObj._id + '.jpg', (err) => {
+                    characterImg.mv(appDir + '/public/images/characters/' + cObj._id + '.png', (err) => {
                         if(err){
                             console.error(err);
                         }
@@ -215,7 +215,7 @@ exports.saveCharacter = function (req, res) {
             } else {
                 if(req.files){
                     let characterImg = req.files.image;
-                    characterImg.mv(appDir + '/public/images/characters/' + rObj._id + '.jpg', (err) => {
+                    characterImg.mv(appDir + '/public/images/characters/' + rObj._id + '.png', (err) => {
                         if(err){
                             console.error(err);
                         }
