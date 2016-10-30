@@ -24,4 +24,17 @@ app.service('EditorService', function($http, $location) {
         };
         this.nodes.push(newNode);
     };
+
+    this.addCharacter = function(characterObj){
+        characterObj.owner = this.storyDetails_.author;
+        characterObj.story = this.storyDetails_._id;
+        $http.post('/saveCharacter', characterObj).success((response) => {
+            console.log(response);
+            this.storyDetails_.characters.push(response.data.data);
+        });
+    };
+
+    this.getCharacters = function(){
+        return this.storyDetails_.characters;
+    };
 });
