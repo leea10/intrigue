@@ -7,23 +7,20 @@
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content">
-        Yo you're all logged in <%=name%><br/>
         <!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
-        For now, click this button to log out
-        <form action="/logout" method="post">
-            <input type="submit">
-        </form>
-
         <div ng-controller="DashboardController">
             <h1>Library</h1>
             <a ng-repeat="story in stories" ng-href="/editor?id={{story._id}}">
                 <div class="profile">
-                    <div class="title"> {{story.title}} </div>
-                    <div class="description"> {{story.description}}</div>
+                    <img src="/assets/coverphoto_00.png"/>
+                    <div class="info">
+                        <div class="title"> {{story.title}} </div>
+                        <div class="description"> {{story.description}}</div>
+                    </div>
                 </div>
             </a>
 
-            <button ng-click="showForm()">Add New Story</button>
+            <button class="add-button" ng-click="showForm()">Add New Story</button>
             <div id="addStoryModal" class="modal" ng-hide="hideForm">
                 <div class="modal-content">
                     <div class="modal-header">

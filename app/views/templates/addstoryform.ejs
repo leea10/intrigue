@@ -1,22 +1,3 @@
-<div id="addStoryModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            Create New Story <span class="close">×</span>
-        </div>
-
-        <div class="modal-body">
-            <form role='form'>
-                Image: <input type="file" accept="image/*" name="image" ng-model="image"> <br/>
-                <input type="text" name="title" ng-model="title" placeholder="Title"> <br/>
-                <input type="text" name="description" ng-model="description" placeholder="Blurb"> <br/>
-            </form>
-        </div>
-
-        <div class="modal-footer">
-            <button ng-click="addStory()" class="create-btn"> Create </button>
-        </div>
-    </div>
-</div>
 <script>
     var modal = document.getElementById('addStoryModal');
     var btn = document.getElementById("myBtn");
