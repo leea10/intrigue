@@ -22,7 +22,7 @@ const StorySchema = new mongoose.Schema({
     author :  {type : objId, required : true, ref : 'User'},
     title : {type : String, required : true},
     description : String,
-    image : String,
+    img_extension : String,
     characters : [{ type : objId, ref : 'Character' }],
     snapshots : [{ type : objId, ref : 'Snapshot'} ],
     tags : [{ type : objId, ref : 'Tag' }]
@@ -60,6 +60,7 @@ const CharacterSchema = new mongoose.Schema({
     description : String,
     history : String,
     personality : String,
+    img_extension : String,
     tags : [{ type : objId, ref : 'Tag'}]
 });
 
