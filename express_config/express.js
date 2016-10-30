@@ -36,6 +36,7 @@ module.exports = () => {
     require('../app/db');
     require('../app/routes/index.server.routes')(app);
 
+    //error handling for non-existent pictures
     app.get('/images/stories/*', function(req, res) {
         res.sendfile('./public/assets/coverphoto_00.png');
     });
