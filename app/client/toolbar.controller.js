@@ -1,14 +1,13 @@
 app.controller('ToolbarController', ($scope, $http, EditorService) => {
-    $scope.hideAddCharacterForm = true;
-    $scope.hideCharacterLibrary = true;
+    $scope.activeTool = null;
+    $scope.characters = [];
 
-    $scope.toggleCreateCharacterForm = () => {
-        $scope.hideAddCharacterForm = !$scope.hideAddCharacterForm;
+    let loadData = () => {
+        $scope.characters = EditorService.getCharacters();
     };
 
-    $scope.toggleCharacterLibrary = () => {
-        $scope.characters = EditorService.getCharacters();
-        $scope.hideCharacterLibrary = !$scope.hideCharacterLibrary;
+    $scope.setActiveTool = (toolName) => {
+        $scope.activeTool = toolName;
     };
 
     $scope.saveCharacter = () => {
@@ -16,9 +15,13 @@ app.controller('ToolbarController', ($scope, $http, EditorService) => {
         if(!$scope.character.name)
             $scope.errorMsg = 'Please enter a character name';
         if(!$scope.errorMsg){
-            EditorService.addCharacter($scope.character);
-            $scope.toggleCreateCharacterForm();
+            EditorService.addCharacter($scope.character, () => {
+                $scope.setActiveTool(null);
+                $scope.characters = EditorService.getCharacters();
+            });
         }
     };
+
+    setTimeout(loadData, 5000);
 });
 

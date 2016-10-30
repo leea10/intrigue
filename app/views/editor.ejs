@@ -11,16 +11,16 @@
     <%- include('templates/navbar') %>
     <div class="body-content" ng-controller="ToolbarController">
         <div class="toolbar" >
-            <div class="button" ng-click="toggleCreateCharacterForm()">
+            <div class="button" ng-click="setActiveTool('addChar')">
                 +C
             </div>
-            <div class="button" ng-click="toggleCharacterLibrary()">
+            <div class="button" ng-click="setActiveTool('library')">
                 Lib
             </div>
-            <div class="popup-panel" ng-hide="hideAddCharacterForm">
+            <div class="popup-panel" ng-hide="activeTool !== 'addChar'">
                 <div class="modal-content">
                     <div class="modal-header">
-                        Create New Character <span class="close" ng-click="toggleCreateCharacterForm()">×</span>
+                        Create New Character <span class="close" ng-click="setActiveTool(null)">×</span>
                     </div>
 
                     <div class="modal-body">
@@ -35,10 +35,10 @@
                     </div>
                 </div>
             </div>
-            <div class="popup-panel" ng-hide="hideCharacterLibrary">
+            <div class="popup-panel" ng-hide="activeTool != 'library'">
                 <div class="modal-content">
                     <div class="modal-header">
-                        Character Library<span class="close" ng-click="toggleCharacterLibrary()">×</span>
+                        Character Library<span class="close" ng-click="setActiveTool(null)">×</span>
                     </div>
 
                     <div class="modal-body" ng-repeat="char in characters">
