@@ -3,9 +3,7 @@ app.service('EditorService', function($http, $location) {
     this.storyDetails_ = {};
     // Get story details from the server
     $http.get('/getStoryDetails?storyID=' + this.storyId_).success((response) => {
-        console.log(response.message);
         this.storyDetails_ = response.data;
-        console.log(this.storyDetails_);
     });
     // TODO(Ariel): Add error checks.
 
@@ -29,7 +27,6 @@ app.service('EditorService', function($http, $location) {
         characterObj.owner = this.storyDetails_.author;
         characterObj.story = this.storyDetails_._id;
         $http.post('/saveCharacter', characterObj).success((response) => {
-            console.log(response);
             this.storyDetails_.characters.push(response.data);
         });
     };
