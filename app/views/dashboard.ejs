@@ -7,11 +7,10 @@
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content">
-        <!-- TODO(Ariel): Dear god when angular is hooked up get rid of this -->
         <div ng-controller="DashboardController">
             <h1>Library</h1>
             <a ng-repeat="story in stories" ng-href="/editor?id={{story._id}}">
-                <div class="profile">
+                <div class="profile" ng-right-click="dummyfunction()">
                     <img ng-src="/images/stories/{{story._id}}.{{story.img_extension}}"/>
                     <div class="info">
                         <div class="title"> {{story.title}} </div>
@@ -40,5 +39,17 @@
                     </div>
                 </div>
             </div>
+
+            <nav class="option-menu">
+                <ul class="items">
+                    <li class="item">
+                        <a href="#" class="link"> Edit </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" class="link"> Delete </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
+

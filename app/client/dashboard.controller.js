@@ -34,6 +34,11 @@ app.controller('DashboardController', function($scope, $http){
     }, (res) => {
         console.log(res);
     });
+    //
+    // $scope.toggleMenuOn(){
+    //
+    // };
+
 });
 
 app.directive('filelistBind', function() {
@@ -42,6 +47,18 @@ app.directive('filelistBind', function() {
             scope.$apply(function() {
                 scope[ attrs.name ] = evt.target.files;
                 console.log( scope[ attrs.name ] );
+            });
+        });
+    };
+});
+
+app.directive('ngRightClick', function($parse) {
+    return function(scope, element, attrs) {
+        var fn = $parse(attrs.ngRightClick);
+        element.bind('contextmenu', function(event) {
+            scope.$apply(function() {
+                event.preventDefault();
+                fn(scope, {$event:event});
             });
         });
     };
