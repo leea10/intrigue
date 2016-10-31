@@ -1,10 +1,14 @@
 @import 'defines.less';
 
+@button-color: #aaa;
+
 @toolbar-width: 60px;
 @button-size: 40px;
 @button-margin: 10px;
 @button-padding: 7px;
-@grey-md-lt: #aaa;
+
+@panel-padding: 20px;
+@panel-width: 400px;
 
 .body-content {
   .border-box;
@@ -15,9 +19,9 @@
 
 .button {
   .border-box;
-  border: 2px solid @grey-md-lt;
+  border: 2px solid @button-color;
   border-radius: 10px;
-  color: @grey-md-lt;
+  color: @button-color;
   height: @button-size;
   margin: @button-margin;
   padding: @button-padding;
@@ -26,15 +30,29 @@
 
 .toolbar {
   .border-box;
-  background-color: #111;
+  background-color: @grey-v-dk;
   display: inline-block;
   height: 100%;
   padding-top: 10px;
+  position: relative;
   width: @toolbar-width;
+  z-index: 1;
 }
 
 .canvas-container {
   .border-box;
   flex: 0 1 100vw;
   overflow: hidden;
+}
+
+.popup-panel {
+  .border-box;
+  background-color: @grey-md-dk;
+  box-shadow: 1px 1px 5px @grey-dk;
+  height: 100%;
+  left: @toolbar-width;
+  padding: @panel-padding;
+  position: absolute;
+  top: 0;
+  width: @panel-width;
 }
