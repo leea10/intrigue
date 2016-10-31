@@ -17,7 +17,7 @@ let pojoify = (obj) => {
 
 
 /**
- *
+ * @function Endpoint for saving a new snapshot
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -46,6 +46,13 @@ exports.saveSnapshot = (req, res) => {
     });
 };
 
+/**
+ * @function Endpoint for updating an existing snapshot
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
 exports.updateSnapshot = (req, res) => {
     let sObj = req.body;
     Snapshot.update({_id: OIDType(sObj._id), owner : req.session.uid},{$set: pojoify(sObj)}, (err, rObj) => {
@@ -59,7 +66,7 @@ exports.updateSnapshot = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for removing an existing snapshot
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -78,7 +85,7 @@ exports.removeSnapshot = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for saving a new relationship
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -108,6 +115,13 @@ exports.saveRelationship = (req, res) => {
     });
 };
 
+/**
+ * @function Endpoint for updating an existing relationship
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
 exports.updateRelationship = (req, res) => {
     let sObj = req.body;
     Relationship.update({_id: OIDType(sObj._id), owner : req.session.uid}, {$set: pojoify(sObj)}, (err, rObj) => {
@@ -121,7 +135,7 @@ exports.updateRelationship = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for removing an existing relationship
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -140,7 +154,7 @@ exports.removeRelationship = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for saving a new node
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -169,6 +183,13 @@ exports.saveNode = (req, res) => {
     });
 };
 
+/**
+ * @function Endpoint for updating an existing node
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
 exports.updateNode = (req, res) => {
     let sObj = req.body;
     Node.update({_id: OIDType(sObj._id), owner : req.session.uid}, {$set: pojoify(sObj)}, (err, rObj) => {
@@ -182,7 +203,7 @@ exports.updateNode = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for removing an existing node
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
