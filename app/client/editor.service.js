@@ -1,11 +1,6 @@
 app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
-    this.storyDetails_ = {};
-    // Get story details from the server
-    $http.get('/getStoryDetails?storyID=' + this.storyId_).success((response) => {
-        this.storyDetails_ = response.data;
-    });
-    // TODO(Ariel): Add error checks.
+    this.storyDetails_ = null;
 
     this.nodes = [
         { x: 100, y: 100, radius: 30 },
@@ -26,13 +21,22 @@ app.service('EditorService', function($http, $location) {
     this.addCharacter = function(characterObj, callback){
         characterObj.owner = this.storyDetails_.author;
         characterObj.story = this.storyDetails_._id;
-        $http.post('/saveCharacter', characterObj).success((response) => {
-            this.storyDetails_.characters.push(response.data);
+        $http.post('/saveCharacter', characterObj).then((response) => {
+            this.storyDetails_.characters.push(response.data.data);
             callback();
         });
     };
 
     this.getCharacters = function(){
-        return this.storyDetails_.characters;
+        if(this.storyDetails_ === null) {
+            return $http.get('/getStoryDetails?storyID=' + this.storyId_).then((response) => {
+                this.storyDetails_ = response.data.data;
+                return this.storyDetails_.characters;
+            });
+        } else {
+            return Promise.resolve(this.storyDetails_.characters);
+        }
     };
+
+    this.getCharacters();
 });

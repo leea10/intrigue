@@ -1,10 +1,9 @@
 app.controller('ToolbarController', ($scope, $http, EditorService) => {
     $scope.activeTool = null;
     $scope.characters = [];
-
-    let loadData = () => {
-        $scope.characters = EditorService.getCharacters();
-    };
+    EditorService.getCharacters().then((characters) => {
+        $scope.characters = characters;
+    });
 
     $scope.setActiveTool = (toolName) => {
         $scope.activeTool = toolName;
@@ -17,11 +16,9 @@ app.controller('ToolbarController', ($scope, $http, EditorService) => {
         if(!$scope.errorMsg){
             EditorService.addCharacter($scope.character, () => {
                 $scope.setActiveTool(null);
-                $scope.characters = EditorService.getCharacters();
+                console.log($scope.characters);
             });
         }
     };
-
-    setTimeout(loadData, 5000);
 });
 
