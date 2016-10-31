@@ -19,7 +19,7 @@ let pojoify = (obj) => {
 };
 
 /**
- *
+ * @function Endpoint for saving a new story
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -59,6 +59,13 @@ exports.saveStory = (req, res) => {
     });
 };
 
+/**
+ * @function Endpoint updating an existing story
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
 exports.updateStory = (req, res) => {
     let sObj = req.body;
     Story.update({_id: OIDType(sObj._id), author : req.session.uid}, {$set: pojoify(sObj)}, (err, rObj) => {
@@ -86,7 +93,7 @@ exports.updateStory = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint removing an existing story
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -105,7 +112,7 @@ exports.removeStory = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for getting all stories owned by the currently logged in user
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -124,7 +131,7 @@ exports.getStories = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for getting details for a supplied story id
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -168,7 +175,7 @@ exports.getStoryDetails = function (req, res) {
 };
 
 /**
- *
+ * @function Endpoint for saving a new character
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -206,6 +213,13 @@ exports.saveCharacter = function (req, res) {
     });
 };
 
+/**
+ * @function Endpoint for updating an existing character
+ * @param {object} req
+ *   The express HTTP request containing the information required for the function
+ * @param {object} res
+ *   The express HTTP response to be sent back to the requester
+ */
 exports.updateCharacter = (req, res) => {
     let cObj = req.body;
     Character.update({_id: OIDType(cObj._id), owner : req.session.uid}, {$set: pojoify(cObj)}, (err, rObj) => {
@@ -229,7 +243,7 @@ exports.updateCharacter = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for removing an existing character
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
@@ -248,7 +262,7 @@ exports.removeCharacter = (req, res) => {
 };
 
 /**
- *
+ * @function Endpoint for adding a tag to an existing story
  * @param {object} req
  *   The express HTTP request containing the information required for the function
  * @param {object} res
