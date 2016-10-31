@@ -5,10 +5,12 @@ const graphAPI = require('../controllers/api.graph.server.controller.js');
 const storyAPI = require('../controllers/api.story.server.controller.js');
 
 router.use((req, res, next) => {
-    if(req.session && req.session.uid)
+    if(req.session && req.session.uid) {
         next();
-    else
+    }
+    else {
         res.send(401, 'Unauthorized');
+    }
 });
 
 //API
