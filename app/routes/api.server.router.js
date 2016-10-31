@@ -8,7 +8,7 @@ router.use((req, res, next) => {
     if(req.session && req.session.uid)
         next();
     else
-        res.status(401, 'Unauthorized');
+        res.send(401, 'Unauthorized');
 });
 
 //API
