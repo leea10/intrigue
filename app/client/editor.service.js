@@ -18,12 +18,11 @@ app.service('EditorService', function($http, $location) {
         this.nodes.push(newNode);
     };
 
-    this.addCharacter = function(characterObj, callback){
+    this.addCharacter = function(characterObj){
         characterObj.owner = this.storyDetails_.author;
         characterObj.story = this.storyDetails_._id;
-        $http.post('/saveCharacter', characterObj).then((response) => {
+        return $http.post('/saveCharacter', characterObj).then((response) => {
             this.storyDetails_.characters.push(response.data.data);
-            callback();
         });
     };
 

@@ -14,9 +14,8 @@ app.controller('ToolbarController', ($scope, $http, EditorService) => {
         if(!$scope.character.name)
             $scope.errorMsg = 'Please enter a character name';
         if(!$scope.errorMsg){
-            EditorService.addCharacter($scope.character, () => {
+            EditorService.addCharacter($scope.character).then(() => {
                 $scope.setActiveTool(null);
-                console.log($scope.characters);
             });
         }
     };
