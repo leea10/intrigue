@@ -204,7 +204,7 @@ describe('Endpoint Testing', function () {
                 image: 'Test Image'
             };
             request(server)
-                .post('/saveStory')
+                .post('/api/story')
                 .send(storyObj)
                 .set('Cookie', [sessionCookie])
                 .end(function (err, res) {
@@ -237,7 +237,7 @@ describe('Endpoint Testing', function () {
                 storyObj.description = 'New Test Description';
                 storyObj._id = rObj._id;
                 request(server)
-                    .post('/saveStory')
+                    .put('/api/story')
                     .send(storyObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
@@ -270,7 +270,7 @@ describe('Endpoint Testing', function () {
                 storyObj.description = 'New Test Description';
                 storyObj._id = rObj._id;
                 request(server)
-                    .post('/saveStory')
+                    .put('/api/story')
                     .send(storyObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
@@ -307,7 +307,7 @@ describe('Endpoint Testing', function () {
                     tags: []
                 };
                 request(server)
-                    .post('/saveCharacter')
+                    .post('/api/character')
                     .send(characterObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
@@ -355,7 +355,7 @@ describe('Endpoint Testing', function () {
                     characterObj._id = cObj._id;
                     characterObj.description = 'New Test Character Description';
                     request(server)
-                        .post('/saveCharacter')
+                        .put('/api/character')
                         .send(characterObj)
                         .set('Cookie', [sessionCookie])
                         .end(function (err, res) {
@@ -393,7 +393,7 @@ describe('Endpoint Testing', function () {
                     label: 'Test Snapshot Label'
                 };
                 request(server)
-                    .post('/saveSnapshot')
+                    .post('/api/snapshot')
                     .send(snapshotObj)
                     .set('Cookie', [sessionCookie])
                     .end(function (err, res) {
@@ -432,7 +432,7 @@ describe('Endpoint Testing', function () {
                     snapshotObj._id = sObj._id;
                     snapshotObj.label = 'New Snapshot Label';
                     request(server)
-                        .post('/saveSnapshot')
+                        .put('/api/snapshot')
                         .send(snapshotObj)
                         .set('Cookie', [sessionCookie])
                         .end(function (err, res) {
@@ -493,7 +493,7 @@ describe('Endpoint Testing', function () {
                             y: 15
                         };
                         request(server)
-                            .post('/saveNode')
+                            .post('/api/node')
                             .send(nodeObj)
                             .set('Cookie', [sessionCookie])
                             .end(function (err, res) {
@@ -563,7 +563,7 @@ describe('Endpoint Testing', function () {
                             nodeObj._id = nObj._id;
                             nodeObj.x = 14;
                             request(server)
-                                .post('/saveNode')
+                                .put('/api/node')
                                 .send(nodeObj)
                                 .set('Cookie', [sessionCookie])
                                 .end(function (err, res) {
@@ -584,7 +584,7 @@ describe('Endpoint Testing', function () {
 
         it('should get all stories for logged in user', function (done) {
             request(server)
-                .get('/getStories')
+                .get('/api/story/owned')
                 .set('Cookie', [sessionCookie])
                 .end(function (err, res) {
                     if (err)
@@ -602,7 +602,7 @@ describe('Endpoint Testing', function () {
                 storyID: 1
             };
             request(server)
-                .get('/getStoryDetails')
+                .get('/api/story/detail')
                 .set('Cookie', [sessionCookie])
                 .send(getStoryDetailsQuery)
                 .end(function (err, res) {

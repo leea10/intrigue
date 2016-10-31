@@ -21,14 +21,14 @@ app.service('EditorService', function($http, $location) {
     this.addCharacter = function(characterObj){
         characterObj.owner = this.storyDetails_.author;
         characterObj.story = this.storyDetails_._id;
-        return $http.post('/saveCharacter', characterObj).then((response) => {
+        return $http.post('/api/character', characterObj).then((response) => {
             this.storyDetails_.characters.push(response.data.data);
         });
     };
 
     this.getCharacters = function(){
         if(this.storyDetails_ === null) {
-            return $http.get('/getStoryDetails?storyID=' + this.storyId_).then((response) => {
+            return $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
                 this.storyDetails_ = response.data.data;
                 return this.storyDetails_.characters;
             });
