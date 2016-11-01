@@ -34,7 +34,12 @@ module.exports = () => {
     app.use(fileUpload());
 
     require('../app/db');
-    require('../app/routes/index.server.routes')(app);
+
+    const pageRouter = require('../app/routes/pages.server.router.js');
+    const apiRouter = require('../app/routes/api.server.router.js');
+
+    app.use('/', pageRouter);
+    app.use('/api', apiRouter);
 
     //error handling for non-existent pictures
     app.get('/images/stories/*', function(req, res) {

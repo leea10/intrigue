@@ -12,7 +12,7 @@ app.controller('DashboardController', function($scope, $http){
         }
         fData.append('title', $scope.title);
         fData.append('description', $scope.description);
-        $http.post('/saveStory', fData, {
+        $http.post('/api/story', fData, {
             headers: {'Content-Type': undefined },
             transformRequest: angular.identity
         }).success(function (obj){
@@ -29,7 +29,7 @@ app.controller('DashboardController', function($scope, $http){
         $scope.hideForm = !$scope.hideForm;
     };
 
-    $http.get('/getStories').then((res) => {
+    $http.get('/api/story/owned').then((res) => {
         $scope.stories = res.data.data;
     }, (res) => {
         console.log(res);
