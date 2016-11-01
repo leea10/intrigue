@@ -8,6 +8,9 @@
 @panel-padding: 20px;
 @panel-width: 400px;
 
+@character-width: 100px;
+@character-margin: 20px;
+
 .body-content {
   .border-box;
   display: flex;
@@ -48,8 +51,28 @@
   box-shadow: 1px 1px 5px @grey-dk;
   height: 100%;
   left: @toolbar-width;
-  padding: @panel-padding;
   position: absolute;
   top: 0;
   width: @panel-width;
+}
+
+.character-library {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.characters {
+  .character {
+    display: inline-block;
+    margin: @character-margin;
+    width: @character-width;
+  }
+  img {
+    width: @character-width;
+  }
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  justify-content: center;
+  overflow: auto;
 }

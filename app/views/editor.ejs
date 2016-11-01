@@ -27,10 +27,15 @@
                 </form>
                 <button ng-click="saveCharacter()" class="create-btn"> Create </button>
             </div>
-            <div class="popup-panel" ng-hide="activeTool != 'library'">
-                Your Characters<span class="close" ng-click="setActiveTool(null)">×</span>
-                <div ng-repeat="character in characters" ng-controller="CharacterController" class="character">
-                    {{ character.name }}
+            <div class="popup-panel character-library" ng-hide="activeTool != 'library'">
+                <div class="">
+                    Your Characters<span class="close" ng-click="setActiveTool(null)">×</span>
+                </div>
+                <div class="characters">
+                    <div ng-repeat="character in characters" ng-controller="CharacterController" class="character">
+                        <img src="/assets/characters_00.png"/>
+                        {{ character.name }}
+                    </div>
                 </div>
             </div>
         </div>
