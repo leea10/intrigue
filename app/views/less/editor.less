@@ -4,8 +4,6 @@
 
 @toolbar-width: 60px;
 @button-size: 40px;
-@button-margin: 10px;
-@button-padding: 7px;
 
 @panel-padding: 20px;
 @panel-width: 400px;
@@ -19,12 +17,11 @@
 
 .button {
   .border-box;
-  border: 2px solid @button-color;
-  border-radius: 10px;
-  color: @button-color;
+  .icon {
+    height: 100%;
+  }
   height: @button-size;
-  margin: @button-margin;
-  padding: @button-padding;
+  margin: 15px 10px;
   width: @button-size;
 }
 

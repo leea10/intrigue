@@ -7,15 +7,16 @@
     <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
     <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/character.controller-compiled.js"></script>
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content" ng-controller="ToolbarController">
         <div class="toolbar" >
             <div class="button" ng-click="setActiveTool('addChar')">
-                +C
+                <img class="icon" src="/assets/action_addCharacter.png"/>
             </div>
             <div class="button" ng-click="setActiveTool('library')">
-                Lib
+                <img class="icon" src="/assets/action_library.png"/>
             </div>
             <div class="popup-panel" ng-hide="activeTool !== 'addChar'">
                 Create New Character <span class="close" ng-click="setActiveTool(null)">×</span>
@@ -28,7 +29,7 @@
             </div>
             <div class="popup-panel" ng-hide="activeTool != 'library'">
                 Your Characters<span class="close" ng-click="setActiveTool(null)">×</span>
-                <div class="character" ng-repeat="character in characters">
+                <div ng-repeat="character in characters" ng-controller="CharacterController" class="character">
                     {{ character.name }}
                 </div>
             </div>
