@@ -37,6 +37,9 @@
                         <img src="/assets/characters_00.png"/>
                         {{ character.name }}
                     </div>
+                    <span class="message" ng-show="characters.length === 0">
+                        You have no characters in your library!
+                    </span>
                 </div>
             </div>
         </div>
