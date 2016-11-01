@@ -19,7 +19,9 @@ app.controller('ToolbarController', ($scope, $http, EditorService) => {
                 $scope.character.image = $scope.image[0];
             }
             EditorService.addCharacter($scope.character).then(() => {
+                $scope.character = null;
                 $scope.setActiveTool(null);
+                $scope.$broadcast('formSubmit');
             });
         }
     };

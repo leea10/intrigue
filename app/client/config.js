@@ -6,12 +6,19 @@ app.config(function($locationProvider) {
 });
 
 app.directive('filelistBind', () => {
-    return function( scope, elm, attrs ) {
-        elm.bind('change', function( evt ) {
+    return function( scope, element, attributes ) {
+        element.bind('change', function( event ) {
             scope.$apply(function() {
-                scope[ attrs.name ] = evt.target.files;
-                console.log( scope[ attrs.name ] );
+                scope[ attributes.name ] = event.target.files;
+                console.log( scope[ attributes.name ] );
             });
+        });
+
+        scope.$on('formSubmit', () => {
+            console.log('event detected');
+            for(let i = 0; i < element.length; i++) {
+                element[i].value = '';
+            }
         });
     };
 });
