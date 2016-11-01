@@ -19,7 +19,10 @@
                 <img class="icon" src="/assets/action_library.png"/>
             </div>
             <div class="popup-panel" ng-hide="activeTool !== 'addChar'">
-                Create New Character <span class="close-icon" ng-click="setActiveTool(null)">×</span>
+                <div class="header">
+                    Create New Character
+                    <span class="close-icon" ng-click="setActiveTool(null)">×</span>
+                </div>
                 <form role="form">
                     <input type="text" name="name" ng-model="character.name" placeholder="Name"> <br/>
                     <input type="text" name="age" ng-model="character.age" placeholder="Age"> <br/>
