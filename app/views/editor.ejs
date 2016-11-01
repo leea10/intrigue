@@ -24,6 +24,7 @@
                     <span class="close-icon" ng-click="setActiveTool(null)">×</span>
                 </div>
                 <form role="form">
+                    Image: <input type="file" accept="image/*" name="image" filelist-bind> <br/>
                     <input type="text" name="name" ng-model="character.name" placeholder="Name"> <br/>
                     <input type="text" name="age" ng-model="character.age" placeholder="Age"> <br/>
                     <input type="text" name="description" ng-model="character.description" placeholder="Blurb"> <br/>
@@ -37,7 +38,7 @@
                 </div>
                 <div class="characters">
                     <div ng-repeat="character in characters" ng-controller="CharacterController" class="character">
-                        <img src="/assets/characters_00.png"/>
+                        <img ng-src="/images/characters/{{character._id}}.{{character.img_extension}}"/>
                         {{ character.name }}
                     </div>
                     <span class="message" ng-show="characters.length === 0">

@@ -4,3 +4,14 @@ app.config(function($locationProvider) {
        requireBase: false
    });
 });
+
+app.directive('filelistBind', () => {
+    return function( scope, elm, attrs ) {
+        elm.bind('change', function( evt ) {
+            scope.$apply(function() {
+                scope[ attrs.name ] = evt.target.files;
+                console.log( scope[ attrs.name ] );
+            });
+        });
+    };
+});
