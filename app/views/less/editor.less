@@ -11,6 +11,9 @@
 @character-width: 100px;
 @character-margin: 20px;
 
+@header-font-size: 18pt;
+@header-padding: 15px;
+
 .body-content {
   .border-box;
   display: flex;
@@ -22,6 +25,9 @@
   .border-box;
   .icon {
     height: 100%;
+  }
+  &:hover {
+    cursor: pointer;
   }
   height: @button-size;
   margin: 15px 10px;
@@ -47,8 +53,23 @@
 
 .popup-panel {
   .border-box;
+  .small-shadow;
+  .header {
+    .small-shadow;
+    font-size: @header-font-size;
+    font-weight: bold;
+    padding: @header-padding;
+    .close-icon {
+      &:hover {
+        color: inherit;
+        cursor: pointer;
+      }
+      color: @grey-md-lt;
+      float: right;
+      font-size: @header-font-size;
+    }
+  }
   background-color: @grey-md-dk;
-  box-shadow: 1px 1px 5px @grey-dk;
   height: 100%;
   left: @toolbar-width;
   position: absolute;
