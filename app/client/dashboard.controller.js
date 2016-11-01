@@ -34,10 +34,38 @@ app.controller('DashboardController', function($scope, $http){
     }, (res) => {
         console.log(res);
     });
-    //
-    // $scope.toggleMenuOn(){
-    //
-    // };
+
+    $scope.deleteStory = (fData) => {
+        $http.post('/removeStory', fData, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
+        }).success(function (obj){
+
+            for (let i = 0; i < $scope.stories.length; i++){
+                if ($scope.stories[i]._id == fData._id ){
+                    if (i > -1) {
+                        $scope.stories.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            console.log(obj);
+        }).error(function (err){
+            console.log(err);
+        });
+    };
+
+    //Dummy function to test deleteStory function
+    $scope.activeMenu = (story) => {
+        if (confirm("Would you like to delete story?") === true){
+            console.log("User selects to delete story");
+            $scope.deleteStory(story);
+        }
+        else {
+            console.log("user does not wish to delete story");
+        }
+    };
 
 });
 

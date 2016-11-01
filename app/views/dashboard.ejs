@@ -10,7 +10,7 @@
         <div ng-controller="DashboardController">
             <h1>Library</h1>
             <a ng-repeat="story in stories" ng-href="/editor?id={{story._id}}">
-                <div class="profile" ng-right-click="dummyfunction()">
+                <div class="profile" ng-right-click="activeMenu({{story}})">
                     <img ng-src="/images/stories/{{story._id}}.{{story.img_extension}}"/>
                     <div class="info">
                         <div class="title"> {{story.title}} </div>
