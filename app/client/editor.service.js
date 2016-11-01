@@ -26,7 +26,6 @@ app.service('EditorService', function($http, $location) {
             }
         }
         let imgExtension = characterObj.image ? characterObj.image.name.split('.')[1] : '';
-        console.log(imgExtension);
         fData.append('img_extension', imgExtension);
         fData.append('owner', this.storyDetails_.author);
         fData.append('story', this.storyDetails_._id);

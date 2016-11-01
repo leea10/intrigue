@@ -10,12 +10,10 @@ app.directive('filelistBind', () => {
         element.bind('change', function( event ) {
             scope.$apply(function() {
                 scope[ attributes.name ] = event.target.files;
-                console.log( scope[ attributes.name ] );
             });
         });
 
         scope.$on('formSubmit', () => {
-            console.log('event detected');
             for(let i = 0; i < element.length; i++) {
                 element[i].value = '';
             }
