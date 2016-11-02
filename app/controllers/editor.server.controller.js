@@ -10,7 +10,8 @@ exports.render = function(req, res) {
         } else {
             if(doc){
                 res.render('editor', {
-                    storyTitle: doc.title
+                    storyTitle: doc.title,
+                    name : req.session.name
                 });
             } else {
                 res.send('Invalid story ID');

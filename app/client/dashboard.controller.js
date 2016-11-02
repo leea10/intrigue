@@ -73,17 +73,6 @@ app.controller('DashboardController', function($scope, $http){
 
 });
 
-app.directive('filelistBind', function() {
-    return function( scope, elm, attrs ) {
-        elm.bind('change', function( evt ) {
-            scope.$apply(function() {
-                scope[ attrs.name ] = evt.target.files;
-                console.log( scope[ attrs.name ] );
-            });
-        });
-    };
-});
-
 app.directive('ngRightClick', function($parse) {
     return function(scope, element, attrs) {
         var fn = $parse(attrs.ngRightClick);
@@ -95,4 +84,3 @@ app.directive('ngRightClick', function($parse) {
         });
     };
 });
-
