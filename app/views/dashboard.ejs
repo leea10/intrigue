@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/css/dashboard.css"/>
 <%- contentFor('scripts') %>
     <script type="text/javascript" src="/js/dashboard.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content">
@@ -28,7 +29,10 @@
 
                     <div class="modal-body">
                         <form role="form">
-                            Image: <input type="file" accept="image/*" name="image" filelist-bind> <br/>
+                            <image-input>
+                                <img class="preview-img" src="/images/stories/"/>
+                                <input type="file" accept="image/*" name="image">
+                            </image-input>
                             <input type="text" name="title" ng-model="title" placeholder="Title"> <br/>
                             <input type="text" name="description" ng-model="description" placeholder="Blurb"> <br/>
                         </form>
