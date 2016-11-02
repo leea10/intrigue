@@ -8,6 +8,7 @@
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
     <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
     <script type="text/javascript" src="/js/character.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content" ng-controller="ToolbarController">
@@ -24,10 +25,13 @@
                     <span class="close-icon" ng-click="setActiveTool(null)">×</span>
                 </div>
                 <form role="form">
-                    Image: <input type="file" accept="image/*" name="image" filelist-bind> <br/>
-                    <input type="text" name="name" ng-model="character.name" placeholder="Name"> <br/>
-                    <input type="text" name="age" ng-model="character.age" placeholder="Age"> <br/>
-                    <input type="text" name="description" ng-model="character.description" placeholder="Blurb"> <br/>
+                    <image-input>
+                        <img class="preview-img" src="/assets/characterIcons/character04.png"/>
+                        <input type="file" accept="image/*" name="image">
+                    </image-input>
+                    <input type="text" name="name" ng-model="character.name" placeholder="Name">
+                    <input type="text" name="age" ng-model="character.age" placeholder="Age">
+                    <input type="text" name="description" ng-model="character.description" placeholder="Blurb">
                 </form>
                 <button ng-click="saveCharacter()" class="create-btn"> Create </button>
             </div>
