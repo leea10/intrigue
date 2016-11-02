@@ -19,6 +19,9 @@ app.controller('DashboardController', function($scope, $http){
             $scope.stories.push(obj.data);
             console.log(obj);
             $scope.showForm();
+            $scope.title = null;
+            $scope.description = null;
+            $scope.$broadcast('formSubmit');
         }).error(function (err){
             console.log(err);
         });
