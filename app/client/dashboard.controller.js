@@ -35,32 +35,36 @@ app.controller('DashboardController', function($scope, $http){
         console.log(res);
     });
 
-    $scope.deleteStory = (fData) => {
-        $http.post('/removeStory', fData, {
-            headers: {'Content-Type': undefined },
-            transformRequest: angular.identity
-        }).success(function (obj){
-
+    $scope.deleteStory = (delStory) => {
+        $http({
+            url: '/api/story',
+            method: 'DELETE',
+            data : {
+                _id : delStory._id
+            },
+            headers : {
+                "Content-Type" : "application/json;charset=utf8"
+            }
+        }).then(function (obj){
             for (let i = 0; i < $scope.stories.length; i++){
-                if ($scope.stories[i]._id == fData._id ){
+                if ($scope.stories[i]._id == delStory._id ){
                     if (i > -1) {
                         $scope.stories.splice(i, 1);
                         break;
                     }
                 }
             }
-
             console.log(obj);
-        }).error(function (err){
-            console.log(err);
+        }, (obj) => {
+            console.log(obj);
         });
     };
 
     //Dummy function to test deleteStory function
-    $scope.activeMenu = (story) => {
+    $scope.activeMenu = (selStory) => {
         if (confirm("Would you like to delete story?") === true){
-            console.log("User selects to delete story");
-            $scope.deleteStory(story);
+            console.log("User selects to delete story!");
+            $scope.deleteStory(selStory);
         }
         else {
             console.log("user does not wish to delete story");
