@@ -3,7 +3,7 @@ app.directive('imageInput', () => {
         let preview = element[0].children[0];
         let input = element[0].children[1];
 
-        element.bind('change', function( event ) {
+        element.on('change', function( event ) {
             scope.$apply(function() {
                 scope[ input.name ] = event.target.files;
             });

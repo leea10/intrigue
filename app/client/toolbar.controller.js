@@ -1,4 +1,4 @@
-app.controller('ToolbarController', ($scope, $http, EditorService) => {
+app.controller('ToolbarController', ($scope, EditorService) => {
     $scope.activeTool = null;
     $scope.characters = [];
     EditorService.getCharacters().then((characters) => {

@@ -10,7 +10,7 @@ app.directive('editor', function($window, EditorService) {
                 editorCanvas.addNode(node.x, node.y, node.radius);
             }
 
-            let dragging = false;
+            this.dragging_ = false;
             this.draggedNode_ = null;
             this.selectedNode_ = null;
 
@@ -22,17 +22,17 @@ app.directive('editor', function($window, EditorService) {
             angular.element($window).on('resize', scope.onResize);
             scope.onResize();
 
-            element.bind('dblclick', (event) => {
+            element.on('dblclick', (event) => {
                 editorCanvas.addNode(event.offsetX, event.offsetY, 40);
                 EditorService.addNode(event.offsetX, event.offsetY, 40);
                 editorCanvas.draw();
             });
 
-            element.bind('mousedown', (event) => {
+            element.on('mousedown', (event) => {
                 event.preventDefault();
                 let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                 if(event.button === 0) {
-                    dragging = true;
+                    this.dragging_ = true;
                     this.draggedNode_ = selectedNode;
                 }
                 if(this.selectedNode_ === selectedNode) {
@@ -48,21 +48,25 @@ app.directive('editor', function($window, EditorService) {
             });
 
             // TODO(Ariel): Give the user x pixels of drag inertia
-            element.bind('mousemove', (event) => {
-               if(dragging === true && this.draggedNode_ !== null) {
+            element.on('mousemove', (event) => {
+               if(this.dragging_ === true && this.draggedNode_ !== null) {
                    this.draggedNode_.move(event.movementX, event.movementY);
                    editorCanvas.draw();
                }
             });
 
-            element.bind('mouseup', (event) => {
+            element.on('mouseleave', () => {
+                this.dragging_ = false;
+            });
+
+            element.on('mouseup', (event) => {
                 if(event.button === 0) {
-                    dragging = false;
+                    this.dragging_ = false;
                     this.draggedNode_ = null;
                 }
             });
 
-            element.bind('contextmenu', (event) => {
+            element.on('contextmenu', (event) => {
                 event.preventDefault();
             });
         }
