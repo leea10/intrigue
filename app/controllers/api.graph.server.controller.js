@@ -73,7 +73,7 @@ exports.updateSnapshot = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeSnapshot = (req, res) => {
-    let id = OIDType(req.body.id);
+    let id = OIDType(req.body._id);
     Snapshot.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
@@ -142,7 +142,7 @@ exports.updateRelationship = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeRelationship = (req, res) => {
-    let id = OIDType(req.body.id);
+    let id = OIDType(req.body._id);
     Relationship.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
@@ -210,7 +210,7 @@ exports.updateNode = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeNode = (req, res) => {
-    let id = OIDType(req.body.id);
+    let id = OIDType(req.body._id);
     Node.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);

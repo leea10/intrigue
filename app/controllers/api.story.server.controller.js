@@ -100,7 +100,7 @@ exports.updateStory = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeStory = (req, res) => {
-    let id = OIDType(req.body.id);
+    let id = OIDType(req.body._id);
     Story.remove({ _id : id, author : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);
@@ -250,7 +250,7 @@ exports.updateCharacter = (req, res) => {
  *   The express HTTP response to be sent back to the requester
  */
 exports.removeCharacter = (req, res) => {
-    let id = OIDType(req.body.id);
+    let id = OIDType(req.body._id);
     Character.remove({_id: id, owner : req.session.uid}, (err, num) => {
         if (err) {
             console.error(err);

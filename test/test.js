@@ -253,6 +253,42 @@ describe('Endpoint Testing', function () {
             });
         });
 
+        it('should successfully remove a saved story', function (done) {
+            let storyObj = {
+                title: 'Test Title',
+                description: 'Test Description',
+                image: 'Test Image'
+            };
+            schema.Story.create({
+                author: user_id,
+                title: storyObj.title,
+                description: storyObj.description,
+                image: storyObj.image,
+                characters: [],
+                snapshots: []
+            }, function (err, rObj) {
+                storyObj.description = 'New Test Description';
+                storyObj._id = rObj._id;
+                let storyDelObj = {
+                    _id : rObj._id
+                };
+                request(server)
+                    .delete('/api/story')
+                    .send(storyDelObj)
+                    .set('Cookie', [sessionCookie])
+                    .end(function (err, res) {
+                        if (err)
+                            throw err;
+                        res.should.have.status(200);
+                        res.should.be.json;
+                        res.body.should.have.property('data');
+                        res.body.data.should.have.property('n');
+                        res.body.data.n.should.equal(1);
+                        done();
+                    });
+            });
+        });
+
         it('should fail to update a non-owned story', function (done) {
             let storyObj = {
                 title: 'Test Title',
