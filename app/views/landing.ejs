@@ -3,11 +3,12 @@
 <%- contentFor('stylesheets') %>
     <link rel="stylesheet" href="/css/landing.css"/>
 <%- contentFor('scripts') %>
+    <script type="text/javascript" src="/js/landing.controller-compiled.js"></script>
 <%- contentFor('body') %>
     <div class="logo">
         <img class="logo" src="/assets/logo_white.png"/>
     </div>
-    <div class="form">
+    <div class="form" ng-controller="LandingController">
         <h3><%=message%></h3>
         <div id="login-form">
             <form action="/login" method="post">
@@ -15,7 +16,7 @@
                 <input type="password" name="password" placeholder="Password"> <br>
                 <input type="submit" value="Log In"> <br>
             </form>
-            Don't have an account? <a href="" onclick="switchForm('toSignUp')"> Sign up here </a>
+            Don't have an account? <a href="" ng-click="switchForm('toSignUp')"> Sign up here </a>
         </div>
 
         <div id="register-form">
@@ -25,21 +26,7 @@
                 <input type="password" name="password" placeholder="Password"> <br>
                 <input type="submit" value="Register">
             </form>
-            Already have an account? <a href="" onclick="switchForm('toLogIn')"> Login here </a>
+            Already have an account? <a href="" ng-click="switchForm('toLogIn')"> Login here </a>
         </div>
 
     </div>
-    <script>
-        function switchForm(req) {
-            var eReg = document.getElementById("register-form")
-            var eLog = document.getElementById("login-form")
-            if (req == 'toSignUp'){
-                eReg.style.display = 'inline-block'
-                eLog.style.display = 'none'
-            }
-            else{
-                eReg.style.display = 'none'
-                eLog.style.display = 'inline-block'
-            }
-        }
-    </script>
