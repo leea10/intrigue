@@ -21,13 +21,13 @@
             </a>
 
             <button class="add-button" ng-click="showForm()">Add New Story</button>
-            <div id="addStoryModal" class="modal" ng-hide="hideForm">
-                <div class="modal-content">
-                    <div class="modal-header">
+            <div id="addStoryModal" class="form-popup" ng-hide="hideForm">
+                <div class="content">
+                    <div class="header">
                         Create New Story <span class="close" ng-click="showForm()">×</span>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="body">
                         <form role="form">
                             <image-input>
                                 <img class="preview-img" src="/images/stories/"/>
@@ -38,7 +38,7 @@
                         </form>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="footer">
                         <button ng-click="addStory()" class="create-btn"> Create </button>
                     </div>
                 </div>
