@@ -35,20 +35,18 @@ app.directive('editor', function($window, EditorService) {
                     // Optimistically render the node
                     editorCanvas.addNode(this.placingChar_._id, event.offsetX, event.offsetY);
                     this.placingChar_ = null;
-                    editorCanvas.draw();
-                    return;
-                }
+                } else {
+                    // Find the newly selected node.
+                    this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                    if (this.selectedNode_ !== null) {
+                        this.selectedNode_.select();
+                    }
 
-                // Find the newly selected node.
-                this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                if(this.selectedNode_ !== null) {
-                    this.selectedNode_.select();
-                }
-
-                // Start dragging the node if LMB was pressed.
-                if(event.button === 0) {
-                    this.dragging_ = true;
-                    this.draggedNode_ = this.selectedNode_;
+                    // Start dragging the node if LMB was pressed.
+                    if (event.button === 0) {
+                        this.dragging_ = true;
+                        this.draggedNode_ = this.selectedNode_;
+                    }
                 }
                 editorCanvas.draw();
             });
