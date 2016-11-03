@@ -29,7 +29,8 @@ app.service('EditorService', function($http, $location) {
             x: x,
             y: y
         }).then((response) => {
-            console.log(response);
+            console.log(response.data.message);
+            return response.data.data;
         });
     };
 

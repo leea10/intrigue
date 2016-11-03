@@ -12,17 +12,20 @@ app.directive('editor', function($window, EditorService) {
             };
             angular.element($window).on('resize', scope.onResize);
 
+            this.selectedChar_ = null; // Selected character from the library.
             this.dragging_ = false;
             this.draggedNode_ = null;
             this.selectedNode_ = null;
 
-            // Drawing
-
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
-                EditorService.addNode(400, 400, data.character._id);
+                let character = data.character;
+                EditorService.addNode(400, 400, character._id);
+                // Optimistically render the node
+                editorCanvas.addNode(character._id, 400, 400);
+                editorCanvas.draw();
             });
-            
+
             element.on('mousedown', (event) => {
                 event.preventDefault();
                 let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
