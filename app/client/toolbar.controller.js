@@ -25,4 +25,11 @@ app.controller('ToolbarController', ($scope, EditorService) => {
             });
         }
     };
+
+    $scope.selectCharacter = (character) => {
+        $scope.setActiveTool(null);
+        $scope.$broadcast('library.characterSelected', {
+            character: character
+        });
+    };
 });

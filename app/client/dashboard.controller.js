@@ -15,14 +15,25 @@ app.controller('DashboardController', function($scope, $http){
         $http.post('/api/story', fData, {
             headers: {'Content-Type': undefined },
             transformRequest: angular.identity
-        }).success(function (obj){
-            $scope.stories.push(obj.data);
-            console.log(obj);
+        }).then((obj) => {
+            console.log(obj.data.message);
+            // TODO(Ariel): Figure out how to move this back into EditorService.
+            // Create the first snapshot for the story.
+            $http.post('/api/snapshot', {
+                story: obj.data.data._id,
+                label: 'Snapshot 1'
+            }).then((response) => {
+                console.log(response.data.message);
+                $scope.stories.push(obj.data.data);
+            });
+            // Close and clear the form.
             $scope.showForm();
+            // TODO(Ariel): In the ng-model, make the form fields part of a "story" object
+            // so we set $scope.story = null instead of the individual fields.
             $scope.title = null;
             $scope.description = null;
             $scope.$broadcast('formSubmit');
-        }).error(function (err){
+        }).catch((err) => {
             console.log(err);
         });
 
