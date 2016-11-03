@@ -22,8 +22,7 @@ app.directive('editor', function($window, EditorService) {
             scope.$on('library.characterSelected', (_, data) => {
                 EditorService.addNode(400, 400, data.character._id);
             });
-
-            /*
+            
             element.on('mousedown', (event) => {
                 event.preventDefault();
                 let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
@@ -61,7 +60,6 @@ app.directive('editor', function($window, EditorService) {
                     this.draggedNode_ = null;
                 }
             });
-            */
 
             element.on('contextmenu', (event) => {
                 event.preventDefault();
