@@ -1,6 +1,7 @@
 @import 'defines.less';
 
-@button-color: #aaa;
+@button-color: #8E7CC3;;
+@button-hover-color: #695793;
 
 @toolbar-width: 60px;
 @button-size: 40px;
@@ -16,9 +17,9 @@
 @header-font-size: 18pt;
 @header-padding: 15px;
 
-@input-height: 30px;
-@input-font-size: 15px;
-@input-gutter: 10px;
+@input-height: 40px;
+@input-font-size: 25px;
+@input-gutter: 13px;
 
 .body-content {
   .border-box;
@@ -62,6 +63,8 @@
   .small-shadow;
   form {
     .preview-img {
+      display:block;
+      margin:auto;
       width: 200px;
     }
     padding: @form-padding;
@@ -98,6 +101,7 @@
 .characters {
   .character {
     display: inline-block;
+    text-align: center;
     margin: @character-margin;
     width: @character-width;
   }
@@ -120,10 +124,42 @@ input[type=text] {
   background-color: @input-background-color;
   border: 1px solid @input-border-color;
   border-radius: @input-border-radius;
-  box-sizing: border-box;
   font-size: @input-font-size;
   height: @input-height;
   margin: calc(@input-gutter/2) 0;
   padding: 10px;
   width: 100%;
+}
+
+textarea {
+  .border-box;
+  background-color: @input-background-color;
+  border: 1px solid @input-border-color;
+  border-radius: @input-border-radius;
+  font-size: @input-font-size;
+  margin: calc(@input-gutter/2) 0;
+  padding: 10px;
+  font-family: @main-font;
+  width: 100%;
+  resize: none;
+}
+
+.footer {
+  padding-right: @form-padding;
+}
+.create-btn{
+  background-color: @button-color;
+  border: none;
+  border-radius: 10px;
+  color: @grey-v-dk;
+  cursor: pointer;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  &:hover {
+    background-color: @button-hover-color;
+  }
 }
