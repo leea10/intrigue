@@ -109,8 +109,6 @@ class EditorCanvas {
         this.x_ = x;
         this.y_ = y;
         this.radius_ = 60;
-        this.cornerX_ = this.x_ - this.radius_ * Math.sqrt(2);
-        this.cornerY_ = this.y_ - this.radius_;
         this.strokeColor_ = '#8fd3d2';
         this.strokeWeight_ = 4;
         this.img_ = new Image();
@@ -118,29 +116,28 @@ class EditorCanvas {
     }
 
     draw(ctx) {
-        // Set properties
+        // Set properties.
         ctx.fillStyle = '#fefefe';
         ctx.strokeStyle = this.strokeColor_;
         ctx.lineWidth = this.strokeWeight_;
-
-        // Draw the circle
-        ctx.beginPath();
-        ctx.arc(this.x_, this.y_, this.radius_, 0, 2*Math.PI, false);
-        ctx.fill();
-        ctx.stroke();
-
-        // Draw the image inside the circle
-        /*
-        ctx.save();
+        // Draw the circle.
         ctx.beginPath();
         ctx.arc(this.x_, this.y_, this.radius_, 0, 2*Math.PI, false);
         ctx.closePath();
+        ctx.fill();
+        // Draw the image inside the circle.
+        ctx.save();
         ctx.clip();
-        */
-        ctx.drawImage(this.img_, 0, 0);
-        //ctx.drawImage(this.img_, 0, 0, this.radius_, this.radius_, this.cornerX_, this.cornerY_, this.radius, this.radius);
-
-        //ctx.restore();
+        ctx.drawImage(
+            this.img_,
+            this.x_ - this.radius_,
+            this.y_ - this.radius_,
+            this.radius_ * 2,
+            this.radius_ * 2
+        );
+        ctx.restore();
+        // Draw the outline on top of the image.
+        ctx.stroke();
     }
 
     /**
