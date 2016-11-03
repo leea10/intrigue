@@ -13,7 +13,7 @@ body {
 }
 
 .box-properties{
-  box-sizing: border-box;
+  .border-box;
   border-radius: 6px;
   font-size: 20px;
   height: 40px;
@@ -48,9 +48,8 @@ body {
 
 input[type=text], input[type=password], select {
   .box-properties;
-  background-color: #EEEEEE;
-  border: 1px solid #CAD9F2;
-  box-sizing: border-box;
+  background-color: @input-background-color;
+  border: 1px solid @input-border-color;
   padding-left: 10px;
 }
 
@@ -58,7 +57,7 @@ input[type=submit] {
   .box-properties;
   background-color: #8E7CC3;
   border: none;
-  color: black;
+  color: @grey-v-dk;
   cursor: pointer;
   font-weight: bold;
   padding: auto;
