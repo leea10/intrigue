@@ -25,4 +25,8 @@ app.controller('ToolbarController', ($scope, EditorService) => {
             });
         }
     };
+
+    $scope.selectCharacter = (character) => {
+        console.log(character);
+    };
 });
