@@ -64,7 +64,7 @@ class EditorCanvas {
      * @return Node the node that was just created
      */
     addNode(x, y, img, id) {
-        let newNode = new Node(x, y, img);
+        let newNode = new Node(x, y, img, id);
         this.nodes_.push(newNode);
         newNode.imageLoaded().then(() => {
             this.draw();

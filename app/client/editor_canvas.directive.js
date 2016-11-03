@@ -64,13 +64,12 @@ app.directive('editor', function($window, EditorService) {
             });
 
             element.on('mouseleave', () => {
-                this.dragging_ = false;
+                this.releaseNode_();
             });
 
             element.on('mouseup', (event) => {
                 if(event.button === 0) {
-                    this.dragging_ = false;
-                    this.draggedNode_ = null;
+                    this.releaseNode_();
                 }
             });
 
@@ -89,6 +88,15 @@ app.directive('editor', function($window, EditorService) {
                 }
                 scope.onResize();
             });
+
+            this.releaseNode_ = () => {
+                this.dragging_ = false;
+                if(this.draggedNode_ !== null) {
+                    let node = this.draggedNode_;
+                    EditorService.updateNode(node.id_, node.x_, node.y_);
+                }
+                this.draggedNode_ = null;
+            };
         }
     };
 });

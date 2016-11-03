@@ -69,4 +69,15 @@ app.service('EditorService', function($http, $location) {
             return response.data.data;
         });
     };
+
+    this.updateNode = (nodeID, x, y) => {
+        $http.put('/api/node', {
+            _id: nodeID,
+            x: x,
+            y: y
+        }).then((response) => {
+            console.log(response.data.message);
+            return response.data.data;
+        });
+    };
 });
