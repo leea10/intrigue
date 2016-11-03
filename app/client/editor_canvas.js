@@ -66,6 +66,9 @@ class EditorCanvas {
     addNode(x, y, img, id) {
         let newNode = new Node(x, y, img);
         this.nodes_.push(newNode);
+        newNode.imageLoaded().then(() => {
+            this.draw();
+        });
         return newNode;
     }
 
@@ -113,6 +116,12 @@ class EditorCanvas {
         this.strokeWeight_ = 4;
         this.img_ = new Image();
         this.img_.src = imgUrl;
+    }
+
+    imageLoaded() {
+        return new Promise((resolve) => {
+            this.img_.onload = resolve;
+        });
     }
 
     draw(ctx) {
