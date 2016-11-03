@@ -33,7 +33,11 @@ app.directive('editor', function($window, EditorService) {
                 if(this.placingChar_ !== null) {
                     EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
                     // Optimistically render the node
-                    this.selectedNode_ = editorCanvas.addNode(this.placingChar_._id, event.offsetX, event.offsetY);
+                    this.selectedNode_ = editorCanvas.addNode(
+                        event.offsetX,
+                        event.offsetY,
+                        '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
+                    );
                     this.placingChar_ = null;
                     this.selectedNode_.select();
                 } else {
@@ -79,7 +83,8 @@ app.directive('editor', function($window, EditorService) {
                 this.nodes_ = nodes;
                 for(let i = 0; i < this.nodes_.length; i++) {
                     let node = this.nodes_[i];
-                    editorCanvas.addNode(node._id, node.x, node.y);
+                    // TODO(Ariel): make this the real image for the given character. Involves hashtable in service.
+                    editorCanvas.addNode(node.x, node.y, '/images/characters/', node._id);
                 }
                 scope.onResize();
             });

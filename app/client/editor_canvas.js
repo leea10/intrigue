@@ -14,7 +14,6 @@ class EditorCanvas {
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
         this.nodes_ = [];
-        this.nodeIndex_ = {};
     }
 
     // public methods
@@ -61,12 +60,12 @@ class EditorCanvas {
      * @param id
      * @param x
      * @param y
-     * @return the node that was just created
+     * @param img
+     * @return Node the node that was just created
      */
-    addNode(id, x, y) {
-        let newNode = new Node(x, y);
+    addNode(x, y, img, id) {
+        let newNode = new Node(x, y, img);
         this.nodes_.push(newNode);
-        this.nodeIndex_[id] = newNode;
         return newNode;
     }
 
@@ -105,12 +104,17 @@ class EditorCanvas {
 }
 
 /* export */ class Node {
-    constructor(x, y) {
+    constructor(x, y, imgUrl, id) {
+        this.id_ = id;
         this.x_ = x;
         this.y_ = y;
         this.radius_ = 60;
+        this.cornerX_ = this.x_ - this.radius_ * Math.sqrt(2);
+        this.cornerY_ = this.y_ - this.radius_;
         this.strokeColor_ = '#8fd3d2';
         this.strokeWeight_ = 4;
+        this.img_ = new Image();
+        this.img_.src = imgUrl;
     }
 
     draw(ctx) {
@@ -124,6 +128,19 @@ class EditorCanvas {
         ctx.arc(this.x_, this.y_, this.radius_, 0, 2*Math.PI, false);
         ctx.fill();
         ctx.stroke();
+
+        // Draw the image inside the circle
+        /*
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x_, this.y_, this.radius_, 0, 2*Math.PI, false);
+        ctx.closePath();
+        ctx.clip();
+        */
+        ctx.drawImage(this.img_, 0, 0);
+        //ctx.drawImage(this.img_, 0, 0, this.radius_, this.radius_, this.cornerX_, this.cornerY_, this.radius, this.radius);
+
+        //ctx.restore();
     }
 
     /**
