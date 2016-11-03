@@ -7,6 +7,14 @@ app.controller('ToolbarController', ($scope, EditorService) => {
         $scope.characters = EditorService.getCharacters();
     });
 
+    $scope.onToolClick = (toolName) => {
+        if($scope.activeTool === toolName) {
+            $scope.setActiveTool(null);
+        } else {
+            $scope.setActiveTool(toolName);
+        }
+    };
+
     $scope.setActiveTool = (toolName) => {
         $scope.activeTool = toolName;
     };
