@@ -61,11 +61,13 @@ class EditorCanvas {
      * @param id
      * @param x
      * @param y
+     * @return the node that was just created
      */
     addNode(id, x, y) {
         let newNode = new Node(x, y);
         this.nodes_.push(newNode);
         this.nodeIndex_[id] = newNode;
+        return newNode;
     }
 
     /**

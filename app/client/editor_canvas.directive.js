@@ -33,15 +33,15 @@ app.directive('editor', function($window, EditorService) {
                 if(this.placingChar_ !== null) {
                     EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
                     // Optimistically render the node
-                    editorCanvas.addNode(this.placingChar_._id, event.offsetX, event.offsetY);
+                    this.selectedNode_ = editorCanvas.addNode(this.placingChar_._id, event.offsetX, event.offsetY);
                     this.placingChar_ = null;
+                    this.selectedNode_.select();
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                     if (this.selectedNode_ !== null) {
                         this.selectedNode_.select();
                     }
-
                     // Start dragging the node if LMB was pressed.
                     if (event.button === 0) {
                         this.dragging_ = true;
