@@ -13,10 +13,10 @@
     <%- include('templates/navbar') %>
     <div class="body-content" ng-controller="ToolbarController">
         <div class="toolbar" >
-            <div class="button" ng-click="setActiveTool('addChar')">
+            <div class="button" ng-click="onToolClick('addChar')">
                 <img class="icon" src="/assets/action_addCharacter.png"/>
             </div>
-            <div class="button" ng-click="setActiveTool('library')">
+            <div class="button" ng-click="onToolClick('library')">
                 <img class="icon" src="/assets/action_library.png"/>
             </div>
             <div class="popup-panel" ng-hide="activeTool !== 'addChar'">
