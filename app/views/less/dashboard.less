@@ -1,5 +1,7 @@
 @import 'defines.less';
 
+@button-color: #4DD59F;
+
 @-webkit-keyframes animatetop {
   from {top:-300px; opacity:0}
   to {top:0; opacity:1}
@@ -14,7 +16,7 @@ h1 {
   margin: 0px;
 }
 
-.modal {
+.form-popup {
   display: block;
   position: fixed;
   z-index: 1;
@@ -26,22 +28,22 @@ h1 {
   overflow: auto;
   background-color: rgba(0,0,0,0.4);
   .create-btn{
-    background-color: #4DD59F;
+    background-color: @button-color;
     border: none;
-    color: black;
-    padding: 10px 25px;
-    text-align: center;
-    font-weight: bold;
-    text-decoration: none;
+    border-radius: 10px;
+    color: @grey-v-dk;
+    cursor: pointer;
     display: inline-block;
     font-size: 16px;
+    font-weight: bold;
     margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 10px;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
   }
-  .modal-content {
+  .content {
     position: relative;
-    background-color: #2C2C2C;
+    background-color: @grey-md;
     margin: auto;
     padding: 10px 10px;
     border: 1px solid #888;
@@ -51,13 +53,14 @@ h1 {
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s
+
   }
-  .modal-header {
-    color: white;
+  .header {
+    color: @grey-lt;
     font-size: 28px;
     font-weight: bold;
   }
-  .modal-body, .modal-footer {
+  .body, .footer {
     padding: 2px 16px;
   }
   input[type=text] {
@@ -66,14 +69,18 @@ h1 {
     margin: 8px 0;
     box-sizing: border-box;
     border: none;
-    background-color: #2C2C2C;
+    background-color: @grey-md;
     font-size: 40px;
     color: #999999;
   }
+  img {
+    width: 100%;
+  }
+
 }
 
 .close {
-  color: white;
+  color: @grey-lt;
   float: right;
   font-size: 28px;
   font-weight: bold;
