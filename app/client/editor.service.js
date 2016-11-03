@@ -22,16 +22,14 @@ app.service('EditorService', function($http, $location) {
         }
     });
 
-    this.addNode = function(x, y, characterID) {
-        $http.post('/api/node', {
-            snapshot: this.currentSnapshot_._id,
-            character: characterID,
-            x: x,
-            y: y
-        }).then((response) => {
-            console.log(response.data.message);
-            return response.data.data;
-        });
+    this.getCharacters = function(){
+        if(this.storyDetails_ === null) {
+            return this.initPromise_.then(() => {
+                return this.storyDetails_.characters;
+            });
+        } else {
+            return Promise.resolve(this.storyDetails_.characters);
+        }
     };
 
     this.addCharacter = function(characterObj){
@@ -54,16 +52,6 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
-    this.getCharacters = function(){
-        if(this.storyDetails_ === null) {
-            return this.initPromise_.then(() => {
-                return this.storyDetails_.characters;
-            });
-        } else {
-            return Promise.resolve(this.storyDetails_.characters);
-        }
-    };
-
     this.getNodes = function(){
         if(this.currentSnapshot_ === null) {
             return this.initPromise_.then(() => {
@@ -74,5 +62,15 @@ app.service('EditorService', function($http, $location) {
         }
     };
 
-    this.getCharacters();
+    this.addNode = function(x, y, characterID) {
+        $http.post('/api/node', {
+            snapshot: this.currentSnapshot_._id,
+            character: characterID,
+            x: x,
+            y: y
+        }).then((response) => {
+            console.log(response.data.message);
+            return response.data.data;
+        });
+    };
 });
