@@ -27,6 +27,9 @@ app.controller('ToolbarController', ($scope, EditorService) => {
     };
 
     $scope.selectCharacter = (character) => {
-        console.log(character);
+        $scope.setActiveTool(null);
+        $scope.$broadcast('library.characterSelected', {
+            character: character
+        });
     };
 });

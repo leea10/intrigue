@@ -22,6 +22,12 @@ app.directive('editor', function($window, EditorService) {
             angular.element($window).on('resize', scope.onResize);
             scope.onResize();
 
+            // Event listeners
+            scope.$on('library.characterSelected', (event, data) => {
+                console.log(event);
+                console.log(data);
+            });
+
             element.on('dblclick', (event) => {
                 editorCanvas.addNode(event.offsetX, event.offsetY, 40);
                 EditorService.addNode(event.offsetX, event.offsetY, 40);
