@@ -26,14 +26,16 @@
                 </div>
                 <form role="form">
                     <image-input>
-                        <img class="preview-img" src="/assets/characterIcons/character04.png"/>
+                        <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
                         <input type="file" accept="image/*" name="image">
                     </image-input>
                     <input type="text" name="name" ng-model="character.name" placeholder="Name">
                     <input type="text" name="age" ng-model="character.age" placeholder="Age">
-                    <input type="text" name="description" ng-model="character.description" placeholder="Blurb">
+                    <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
                 </form>
-                <button ng-click="saveCharacter()" class="create-btn"> Create </button>
+                <div class="footer">
+                    <button ng-click="saveCharacter()" class="create-btn"> Create </button>
+                </div>
             </div>
             <div class="popup-panel character-library" ng-hide="activeTool != 'library'">
                 <div class="header">

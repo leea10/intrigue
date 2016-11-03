@@ -14,13 +14,13 @@ app.directive('imageInput', () => {
             if(event.target.files[0]) {
                 fileReader.readAsDataURL(event.target.files[0]);
             } else {
-                preview.src = '/images/characters/';
+                preview.src = preview.attributes.default_img.nodeValue;
             }
         });
 
         scope.$on('formSubmit', () => {
             input.value = '';
-            preview.src = '/images/characters/';
+            preview.src = preview.attributes.default_img.nodeValue;
         });
-    };
+    }
 });
