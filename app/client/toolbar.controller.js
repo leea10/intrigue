@@ -1,8 +1,10 @@
 app.controller('ToolbarController', ($scope, EditorService) => {
     $scope.activeTool = null;
     $scope.characters = [];
-    EditorService.getCharacters().then((characters) => {
-        $scope.characters = characters;
+
+    // Initialization
+    EditorService.init().then(() => {
+        $scope.characters = EditorService.getCharacters();
     });
 
     $scope.setActiveTool = (toolName) => {

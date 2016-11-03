@@ -79,15 +79,13 @@ app.directive('editor', function($window, EditorService) {
             });
 
             // Initialization
-            EditorService.getNodes().then((nodes) => {
-                this.nodes_ = nodes;
-                for(let i = 0; i < this.nodes_.length; i++) {
-                    let node = this.nodes_[i];
-                    // TODO(Ariel): make this the real image for the given character. Involves hashtable in service.
-                    EditorService.getCharacter(node.character).then((character) =>{
-                        let image = '/images/characters/' + node.character + '.' + character.img_extension;
-                        editorCanvas.addNode(node.x, node.y, image, node._id);
-                    });
+            EditorService.init().then(() => {
+                let nodes = EditorService.getNodes();
+                for(let i = 0; i < nodes.length; i++) {
+                    let node = nodes[i];
+                    let character = EditorService.getCharacter(node.character);
+                    let imageUrl = '/images/characters/' + node.character + '.' + character.img_extension;
+                    editorCanvas.addNode(node.x, node.y, imageUrl, node._id);
                 }
                 scope.onResize();
             });
