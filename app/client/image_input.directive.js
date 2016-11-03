@@ -22,5 +22,5 @@ app.directive('imageInput', () => {
             input.value = '';
             preview.src = preview.attributes.default_img.nodeValue;
         });
-    }
+    };
 });

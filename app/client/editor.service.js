@@ -23,7 +23,6 @@ app.service('EditorService', function($http, $location) {
         } else {
             this.currentSnapshot_ = this.storyDetails_.snapshots[0];
             console.log('Loading snapshot ' + this.currentSnapshot_._id);
-            console.log(this.currentSnapshot_);
         }
     });
 
