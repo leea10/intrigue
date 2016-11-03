@@ -12,35 +12,37 @@ app.directive('editor', function($window, EditorService) {
             };
             angular.element($window).on('resize', scope.onResize);
 
-            this.selectedChar_ = null; // Selected character from the library.
+            this.placingChar_ = null; // Selected character from the library.
             this.dragging_ = false;
             this.draggedNode_ = null;
             this.selectedNode_ = null;
 
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
-                let character = data.character;
-                EditorService.addNode(400, 400, character._id);
+                this.placingChar_ = data.character;
+                EditorService.addNode(400, 400, this.placingChar_._id);
                 // Optimistically render the node
-                editorCanvas.addNode(character._id, 400, 400);
+                editorCanvas.addNode(this.placingChar_._id, 400, 400);
                 editorCanvas.draw();
             });
 
             element.on('mousedown', (event) => {
                 event.preventDefault();
-                let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                if(event.button === 0) {
-                    this.dragging_ = true;
-                    this.draggedNode_ = selectedNode;
-                }
-                if(this.selectedNode_ === selectedNode) {
-                    return;
-                } else if(this.selectedNode_ !== null) {
+                // Deselect the currently selected node.
+                if(this.selectedNode_ !== null) {
                     this.selectedNode_.deselect();
                 }
-                this.selectedNode_ = selectedNode;
+
+                // Find the newly selected node.
+                this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                 if(this.selectedNode_ !== null) {
                     this.selectedNode_.select();
+                }
+
+                // Start dragging the node if LMB was pressed.
+                if(event.button === 0) {
+                    this.dragging_ = true;
+                    this.draggedNode_ = this.selectedNode_;
                 }
                 editorCanvas.draw();
             });

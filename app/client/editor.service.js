@@ -2,8 +2,13 @@ app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
     this.storyDetails_ = null;
     this.currentSnapshot_ = null;
+
+    // Initialization code
     this.initPromise_ = $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
+        // Populate story details
         this.storyDetails_ = response.data.data;
+
+        // If there are no snapshots, this is a newly created story and we should create one.
         if(this.storyDetails_.snapshots.length === 0) {
             console.log('Creating the first snapshot...');
             $http.post('/api/snapshot', {
