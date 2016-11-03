@@ -19,9 +19,20 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.addCharacter = function(characterObj){
-        characterObj.owner = this.storyDetails_.author;
-        characterObj.story = this.storyDetails_._id;
-        return $http.post('/api/character', characterObj).then((response) => {
+        let fData = new FormData();
+        for(let property in characterObj) {
+            if(characterObj.hasOwnProperty(property)) {
+                fData.append(property, characterObj[property]);
+            }
+        }
+        let imgExtension = characterObj.image ? characterObj.image.name.split('.')[1] : '';
+        fData.append('img_extension', imgExtension);
+        fData.append('owner', this.storyDetails_.author);
+        fData.append('story', this.storyDetails_._id);
+        return $http.post('/api/character', fData, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
+        }).then((response) => {
             this.storyDetails_.characters.push(response.data.data);
         });
     };

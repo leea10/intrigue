@@ -45,6 +45,9 @@ module.exports = () => {
     app.get('/images/stories/*', function(req, res) {
         res.sendfile('./public/assets/coverphoto_00.png');
     });
+    app.get('/images/characters/*', function(req, res) {
+        res.sendfile('./public/assets/characterIcons/character04.png');
+    });
 
     return app;
 };

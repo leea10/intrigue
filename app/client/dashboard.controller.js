@@ -19,6 +19,9 @@ app.controller('DashboardController', function($scope, $http){
             $scope.stories.push(obj.data);
             console.log(obj);
             $scope.showForm();
+            $scope.title = null;
+            $scope.description = null;
+            $scope.$broadcast('formSubmit');
         }).error(function (err){
             console.log(err);
         });
@@ -34,16 +37,53 @@ app.controller('DashboardController', function($scope, $http){
     }, (res) => {
         console.log(res);
     });
+
+    $scope.deleteStory = (delStory) => {
+        $http({
+            url: '/api/story',
+            method: 'DELETE',
+            data : {
+                _id : delStory._id
+            },
+            headers : {
+                "Content-Type" : "application/json;charset=utf8"
+            }
+        }).then(function (obj){
+            for (let i = 0; i < $scope.stories.length; i++){
+                if ($scope.stories[i]._id == delStory._id ){
+                    if (i > -1) {
+                        $scope.stories.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            console.log(obj);
+        }, (obj) => {
+            console.log(obj);
+        });
+    };
+
+    //Dummy function to test deleteStory function
+    $scope.activeMenu = (selStory) => {
+        if (confirm("Would you like to delete story?") === true){
+            console.log("User selects to delete story!");
+            $scope.deleteStory(selStory);
+        }
+        else {
+            console.log("user does not wish to delete story");
+        }
+    };
+
 });
 
-app.directive('filelistBind', function() {
-    return function( scope, elm, attrs ) {
-        elm.bind('change', function( evt ) {
+app.directive('ngRightClick', function($parse) {
+    return function(scope, element, attrs) {
+        var fn = $parse(attrs.ngRightClick);
+        element.bind('contextmenu', function(event) {
             scope.$apply(function() {
-                scope[ attrs.name ] = evt.target.files;
-                console.log( scope[ attrs.name ] );
+                event.preventDefault();
+                fn(scope, {$event:event});
             });
         });
     };
 });
-
