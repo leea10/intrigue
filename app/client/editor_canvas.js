@@ -108,7 +108,7 @@ class EditorCanvas {
     constructor(x, y) {
         this.x_ = x;
         this.y_ = y;
-        this.radius_ = 30;
+        this.radius_ = 60;
         this.strokeColor_ = '#8fd3d2';
         this.strokeWeight_ = 4;
     }
@@ -151,7 +151,7 @@ class EditorCanvas {
      * Changes the node to draw in a selected state.
      */
     select() {
-        this.strokeColor_ = 'blue';
+        this.strokeColor_ = '#8E7CC3';
         this.strokeWeight_ = 6;
     }
 
