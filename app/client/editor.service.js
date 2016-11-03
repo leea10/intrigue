@@ -1,6 +1,10 @@
 app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
     this.storyDetails_ = null;
+    this.initPromise_ = $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
+        this.storyDetails_ = response.data.data;
+        console.log(this.storyDetails_);
+    });
 
     this.nodes = [
         { x: 100, y: 100, radius: 30 },
@@ -39,8 +43,7 @@ app.service('EditorService', function($http, $location) {
 
     this.getCharacters = function(){
         if(this.storyDetails_ === null) {
-            return $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
-                this.storyDetails_ = response.data.data;
+            return this.initPromise_.then(() => {
                 return this.storyDetails_.characters;
             });
         } else {
