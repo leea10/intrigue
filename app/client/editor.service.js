@@ -1,9 +1,24 @@
 app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
     this.storyDetails_ = null;
+    this.currentSnapshot_ = null;
     this.initPromise_ = $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
         this.storyDetails_ = response.data.data;
-        console.log(this.storyDetails_);
+        if(this.storyDetails_.snapshots.length === 0) {
+            console.log('Creating the first snapshot...');
+            $http.post('/api/snapshot', {
+                story: this.storyId_,
+                label: 'Snapshot 1'
+            }).then((response) => {
+                console.log(response.data.message);
+                this.storyDetails_.snapshots.push(response.data.data);
+                console.log(this.storyDetails_);
+            });
+        } else {
+            this.currentSnapshot_ = this.storyDetails_.snapshots[0];
+            console.log('Loading snapshot ' + this.currentSnapshot_._id);
+            console.log(this.currentSnapshot_);
+        }
     });
 
     this.nodes = [
