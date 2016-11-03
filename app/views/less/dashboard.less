@@ -1,10 +1,30 @@
 @import 'defines.less';
 
 @button-color: #4DD59F;
+@header-color: #333333;
+@content-color: #222222;
 
 @-webkit-keyframes animatetop {
   from {top:-300px; opacity:0}
   to {top:0; opacity:1}
+}
+
+.animation-form {
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s;
+}
+
+.input-properties{
+  background-color: @input-background-color;
+  border: 1px solid @input-border-color;
+  border-radius: 6px;
+  color: @grey-dk;
+  display: block;
+  font-family: @main-font;
+  padding-left: 10px;
+  margin-top: 5px;
 }
 
 .body-content {
@@ -15,68 +35,74 @@ h1 {
   padding: 0px;
   margin: 0px;
 }
-
 .form-popup {
+  .border-box;
+  .content {
+    .animation-form;
+    .border-box;
+    .body{
+      form {
+        padding: 2px 16px;
+      }
+      img {
+        width: 100%;
+      }
+      input[type=text] {
+        .border-box;
+        .input-properties;
+        font-size: 25px;
+        height: 40px;
+        width: 100%;
+      }
+      textarea {
+        .border-box;
+        .input-properties;
+        font-size: 20px;
+        resize: none;
+        width: 100%;
+      }
+    }
+    .footer {
+      padding: 2px 16px;
+      button{
+        background-color: @button-color;
+        border: none;
+        border-radius: 10px;
+        color: @grey-v-dk;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 4px 2px;
+        padding: 10px 25px;
+        text-align: center;
+        text-decoration: none;
+      }
+    }
+    .header {
+      .border-box;
+      background-color: @header-color;
+      color: @grey-lt;
+      display:block;
+      font-size: 28px;
+      font-weight: bold;
+      padding: 10px 10px;
+    }
+    background-color: @content-color;
+    border: 1px solid transparent;
+    margin: auto;
+    position: relative;
+    width: 548px;
+  }
+  background-color: rgba(0,0,0,0.4);
   display: block;
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
+  height: 100%;
   left: 0;
+  overflow: auto;
+  padding-top: 80px;
+  position: fixed;
   top: 0;
   width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-  .create-btn{
-    background-color: @button-color;
-    border: none;
-    border-radius: 10px;
-    color: @grey-v-dk;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 4px 2px;
-    padding: 10px 25px;
-    text-align: center;
-    text-decoration: none;
-  }
-  .content {
-    position: relative;
-    background-color: @grey-md;
-    margin: auto;
-    padding: 10px 10px;
-    border: 1px solid #888;
-    width: 40%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
-
-  }
-  .header {
-    color: @grey-lt;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  .body, .footer {
-    padding: 2px 16px;
-  }
-  input[type=text] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: none;
-    background-color: @grey-md;
-    font-size: 40px;
-    color: #999999;
-  }
-  img {
-    width: 100%;
-  }
-
+  z-index: 1;
 }
 
 .close {
@@ -92,7 +118,7 @@ h1 {
 }
 
 .tile{
-  box-sizing: border-box;
+  .border-box;
   float: left;
   height: 178px;
   width: 183px;
