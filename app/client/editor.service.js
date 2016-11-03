@@ -7,23 +7,8 @@ app.service('EditorService', function($http, $location) {
     this.initPromise_ = $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
         // Populate story details
         this.storyDetails_ = response.data.data;
-
-        // If there are no snapshots, this is a newly created story and we should create one.
-        if(this.storyDetails_.snapshots.length === 0) {
-            console.log('Creating the first snapshot...');
-            $http.post('/api/snapshot', {
-                story: this.storyId_,
-                label: 'Snapshot 1'
-            }).then((response) => {
-                console.log(response.data.message);
-                this.storyDetails_.snapshots.push(response.data.data);
-                this.currentSnapshot_ = this.storyDetails_.snapshots[0];
-                console.log('Loading snapshot ' + this.currentSnapshot_._id);
-            });
-        } else {
-            this.currentSnapshot_ = this.storyDetails_.snapshots[0];
-            console.log('Loading snapshot ' + this.currentSnapshot_._id);
-        }
+        this.currentSnapshot_ = this.storyDetails_.snapshots[0];
+        console.log('Loading snapshot ' + this.currentSnapshot_._id);
     });
 
     this.getCharacters = function(){
