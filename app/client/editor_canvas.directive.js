@@ -20,10 +20,6 @@ app.directive('editor', function($window, EditorService) {
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
                 this.placingChar_ = data.character;
-                EditorService.addNode(400, 400, this.placingChar_._id);
-                // Optimistically render the node
-                editorCanvas.addNode(this.placingChar_._id, 400, 400);
-                editorCanvas.draw();
             });
 
             element.on('mousedown', (event) => {
@@ -31,6 +27,16 @@ app.directive('editor', function($window, EditorService) {
                 // Deselect the currently selected node.
                 if(this.selectedNode_ !== null) {
                     this.selectedNode_.deselect();
+                }
+
+                // If there is a character selected in the library, place it
+                if(this.placingChar_ !== null) {
+                    EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
+                    // Optimistically render the node
+                    editorCanvas.addNode(this.placingChar_._id, event.offsetX, event.offsetY);
+                    this.placingChar_ = null;
+                    editorCanvas.draw();
+                    return;
                 }
 
                 // Find the newly selected node.
