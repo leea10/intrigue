@@ -5,44 +5,52 @@ app.directive('editor', function($window, EditorService) {
             // Initialization
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
             let canvasContainer = element.parent()[0];
-            for(let i = 0; i < EditorService.nodes.length; i++) {
-                let node = EditorService.nodes[i];
-                editorCanvas.addNode(node.x, node.y, node.radius);
-            }
 
-            this.dragging_ = false;
-            this.draggedNode_ = null;
-            this.selectedNode_ = null;
-
-            // Drawing
             scope.onResize = function() {
                 editorCanvas.changeSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
                 editorCanvas.draw();
             };
             angular.element($window).on('resize', scope.onResize);
-            scope.onResize();
 
-            element.on('dblclick', (event) => {
-                editorCanvas.addNode(event.offsetX, event.offsetY, 40);
-                EditorService.addNode(event.offsetX, event.offsetY, 40);
-                editorCanvas.draw();
+            this.placingChar_ = null; // Selected character from the library.
+            this.dragging_ = false;
+            this.draggedNode_ = null;
+            this.selectedNode_ = null;
+
+            // Event listeners
+            scope.$on('library.characterSelected', (_, data) => {
+                this.placingChar_ = data.character;
             });
 
             element.on('mousedown', (event) => {
                 event.preventDefault();
-                let selectedNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                if(event.button === 0) {
-                    this.dragging_ = true;
-                    this.draggedNode_ = selectedNode;
-                }
-                if(this.selectedNode_ === selectedNode) {
-                    return;
-                } else if(this.selectedNode_ !== null) {
+                // Deselect the currently selected node.
+                if(this.selectedNode_ !== null) {
                     this.selectedNode_.deselect();
                 }
-                this.selectedNode_ = selectedNode;
-                if(this.selectedNode_ !== null) {
+
+                // If there is a character selected in the library, place it
+                if(this.placingChar_ !== null) {
+                    EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
+                    // Optimistically render the node
+                    this.selectedNode_ = editorCanvas.addNode(
+                        event.offsetX,
+                        event.offsetY,
+                        '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
+                    );
+                    this.placingChar_ = null;
                     this.selectedNode_.select();
+                } else {
+                    // Find the newly selected node.
+                    this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                    if (this.selectedNode_ !== null) {
+                        this.selectedNode_.select();
+                    }
+                    // Start dragging the node if LMB was pressed.
+                    if (event.button === 0) {
+                        this.dragging_ = true;
+                        this.draggedNode_ = this.selectedNode_;
+                    }
                 }
                 editorCanvas.draw();
             });
@@ -68,6 +76,17 @@ app.directive('editor', function($window, EditorService) {
 
             element.on('contextmenu', (event) => {
                 event.preventDefault();
+            });
+
+            // Initialization
+            EditorService.getNodes().then((nodes) => {
+                this.nodes_ = nodes;
+                for(let i = 0; i < this.nodes_.length; i++) {
+                    let node = this.nodes_[i];
+                    // TODO(Ariel): make this the real image for the given character. Involves hashtable in service.
+                    editorCanvas.addNode(node.x, node.y, '/images/characters/', node._id);
+                }
+                scope.onResize();
             });
         }
     };

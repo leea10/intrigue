@@ -43,7 +43,7 @@
                     <span class="close-icon" ng-click="setActiveTool(null)">×</span>
                 </div>
                 <div class="characters">
-                    <div ng-repeat="character in characters" ng-controller="CharacterController" class="character">
+                    <div ng-repeat="character in characters" class="character" ng-click="selectCharacter(character)">
                         <img ng-src="/images/characters/{{character._id}}.{{character.img_extension}}"/>
                         {{ character.name }}
                     </div>
