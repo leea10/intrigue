@@ -16,30 +16,22 @@ app.service('EditorService', function($http, $location) {
         console.log('Loading snapshot ' + this.currentSnapshot_._id);
     });
 
+    this.init = () => {
+        return this.initPromise_;
+    };
+
     this.getCharacter = (id) => {
-        return this.getCharacters().then(() => {
-            if(this.characterLookup_[id]){
-                return this.characterLookup_[id];
-            } else {
-                for(let i = 0; i < this.storyDetails_.characters.length; i++){
-                    if(this.storyDetails_.characters[i]._id === id){
-                        this.characterLookup_[id] = this.storyDetails_.characters[i];
-                        return this.storyDetails_.characters[i];
-                    }
-                }
-                return null;
+        for(let i = 0; i < this.storyDetails_.characters.length; i++){
+            if(this.storyDetails_.characters[i]._id === id){
+                this.characterLookup_[id] = this.storyDetails_.characters[i];
+                return this.storyDetails_.characters[i];
             }
-        });
+        }
+        return null;
     };
 
     this.getCharacters = () => {
-        if(this.storyDetails_ === null) {
-            return this.initPromise_.then(() => {
-                return this.storyDetails_.characters;
-            });
-        } else {
-            return Promise.resolve(this.storyDetails_.characters);
-        }
+        return this.storyDetails_.characters;
     };
 
     this.addCharacter = (characterObj) => {
@@ -63,19 +55,24 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.getNodes = () => {
-        if(this.currentSnapshot_ === null) {
-            return this.initPromise_.then(() => {
-                return this.currentSnapshot_.nodes;
-            });
-        } else {
-            return Promise.resolve(this.currentSnapshot_.nodes);
-        }
+        return this.currentSnapshot_.nodes;
     };
 
     this.addNode = (x, y, characterID) => {
         $http.post('/api/node', {
             snapshot: this.currentSnapshot_._id,
             character: characterID,
+            x: x,
+            y: y
+        }).then((response) => {
+            console.log(response.data.message);
+            return response.data.data;
+        });
+    };
+
+    this.updateNode = (nodeID, x, y) => {
+        $http.put('/api/node', {
+            _id: nodeID,
             x: x,
             y: y
         }).then((response) => {
