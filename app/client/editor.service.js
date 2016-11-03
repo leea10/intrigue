@@ -12,7 +12,8 @@ app.service('EditorService', function($http, $location) {
             }).then((response) => {
                 console.log(response.data.message);
                 this.storyDetails_.snapshots.push(response.data.data);
-                console.log(this.storyDetails_);
+                this.currentSnapshot_ = this.storyDetails_.snapshots[0];
+                console.log('Loading snapshot ' + this.currentSnapshot_._id);
             });
         } else {
             this.currentSnapshot_ = this.storyDetails_.snapshots[0];
@@ -21,20 +22,15 @@ app.service('EditorService', function($http, $location) {
         }
     });
 
-    this.nodes = [
-        { x: 100, y: 100, radius: 30 },
-        { x: 200, y: 300, radius: 60 },
-        { x: 550, y: 400, radius: 60 },
-    ];
-
-    this.addNode = function(x, y, r) {
-        // TODO(Ariel): This should do a post request and then push the response as well as returning a promise
-        let newNode = {
+    this.addNode = function(x, y, characterID) {
+        $http.post('/api/node', {
+            snapshot: this.currentSnapshot_._id,
+            character: characterID,
             x: x,
-            y: y,
-            radius: r
-        };
-        this.nodes.push(newNode);
+            y: y
+        }).then((response) => {
+            console.log(response);
+        });
     };
 
     this.addCharacter = function(characterObj){
@@ -52,6 +48,7 @@ app.service('EditorService', function($http, $location) {
             headers: {'Content-Type': undefined },
             transformRequest: angular.identity
         }).then((response) => {
+            console.log(response.data.message);
             this.storyDetails_.characters.push(response.data.data);
         });
     };
@@ -63,6 +60,16 @@ app.service('EditorService', function($http, $location) {
             });
         } else {
             return Promise.resolve(this.storyDetails_.characters);
+        }
+    };
+
+    this.getNodes = function(){
+        if(this.currentSnapshot_ === null) {
+            return this.initPromise_.then(() => {
+                return this.currentSnapshot_.nodes;
+            });
+        } else {
+            return Promise.resolve(this.currentSnapshot_.nodes);
         }
     };
 

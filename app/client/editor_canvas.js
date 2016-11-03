@@ -13,7 +13,7 @@ class EditorCanvas {
         this.canvas_ = domElement.getContext('2d');
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
-        this.nodes_ = []; // Nodes to draw (in order)
+        this.nodes_ = [];
         this.nodeIndex_ = {};
     }
 
@@ -58,12 +58,14 @@ class EditorCanvas {
 
     /**
      * Adds a node of radius r at absolute position (x, y).
+     * @param id
      * @param x
      * @param y
-     * @param r
      */
-    addNode(x, y, r) {
-        this.nodes_.push(new Node(x, y, r));
+    addNode(id, x, y) {
+        let newNode = new Node(x, y);
+        this.nodes_.push(newNode);
+        this.nodeIndex_[id] = newNode;
     }
 
     /**
@@ -101,10 +103,10 @@ class EditorCanvas {
 }
 
 /* export */ class Node {
-    constructor(x, y, radius) {
+    constructor(x, y) {
         this.x_ = x;
         this.y_ = y;
-        this.radius_ = radius;
+        this.radius_ = 30;
         this.strokeColor_ = '#8fd3d2';
         this.strokeWeight_ = 4;
     }
