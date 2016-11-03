@@ -28,18 +28,18 @@
                     </div>
 
                     <div class="body">
-                        <form role="form">
-                            <image-input>
-                                <img class="preview-img" src="/images/stories/" default_img="/images/stories/"/>
-                                <input type="file" accept="image/*" name="image">
-                            </image-input>
-                            <input type="text" name="title" ng-model="title" placeholder="Title"> <br/>
-                            <input type="text" name="description" ng-model="description" placeholder="Blurb"> <br/>
+                        <image-input>
+                            <img class="preview-img" src="/images/stories/" default_img="/images/stories/"/>
+                            <input type="file" accept="image/*" name="image"><br>
+                        </image-input>
+                        <form>
+                            <input type="text" name="title" ng-model="title" placeholder="Title">
+                            <textarea type="text" name="description" rows="5" ng-model="description" placeholder="Blurb"></textarea>
                         </form>
                     </div>
 
                     <div class="footer">
-                        <button ng-click="addStory()" class="create-btn"> Create </button>
+                        <button ng-click="addStory()"> Create </button>
                     </div>
                 </div>
             </div>
