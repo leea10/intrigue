@@ -1,7 +1,11 @@
 <div class="navbar">
     <a href="/dashboard" target="_self"><img class="logo" src="/assets/logo_taglessWhite.png"/></a>
+
     <form action="/logout" method="post">
-        <input value="Hi, <%=name%>!" type="submit">
+        <input value="logout" type="submit">
     </form>
+
+    <div id="welcome"> Welcome back, <%=name%>! </div>
+
     <!-- TODO(Ariel): Add the user login info -->
 </div>
