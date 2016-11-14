@@ -1,0 +1,68 @@
+@import 'defines.less';
+
+body {
+  @media screen and (min-aspect-ratio: 16/9) {
+    background-size: 100vw auto;
+  }
+  @media screen and (max-aspect-ratio: 16/9) {
+    background-size: auto 100vh;
+  }
+  background: @grey-dk url("@{base-url}/background_00-01.png") no-repeat center top;
+  padding: 20px;
+  margin: auto;
+}
+
+.box-properties{
+  .border-box;
+  border-radius: 6px;
+  font-size: 20px;
+  height: 40px;
+  margin: 5px;
+  width: 315px;
+}
+
+.form{
+  a {
+    color: #8E7CC3;
+    font-weight: bold;
+  }
+  #login-form {
+    display: inline-block;
+  }
+  #register-form {
+    display: none;
+  }
+  text-align: center;
+  box-sizing: border-box;
+  margin: auto;
+  width: 23%;
+}
+
+.logo{
+  img {
+    display: block;
+    margin: auto;
+    width: 465px;
+  }
+}
+
+input[type=text], input[type=password], select {
+  .box-properties;
+  background-color: @input-background-color;
+  border: 1px solid @input-border-color;
+  padding-left: 10px;
+}
+
+input[type=submit] {
+  .box-properties;
+  background-color: #8E7CC3;
+  border: none;
+  color: @grey-v-dk;
+  cursor: pointer;
+  font-weight: bold;
+  padding: auto;
+}
+
+input[type=submit]:hover {
+  background-color: #695793;
+}

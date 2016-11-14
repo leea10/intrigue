@@ -1,0 +1,61 @@
+<%- contentFor('title') %>
+    <%=storyTitle%>
+<%- contentFor('stylesheets') %>
+    <link rel="stylesheet" href="/css/editor.css"/>
+<%- contentFor('scripts') %>
+    <script type="text/javascript" src="/js/editor_canvas-compiled.js"></script>
+    <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
+    <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
+    <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/character.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
+<%- contentFor('body') %>
+    <%- include('templates/navbar') %>
+    <div class="body-content" ng-controller="ToolbarController">
+        <div class="toolbar" >
+            <div class="button" ng-click="onToolClick('addChar')">
+                <img class="icon" src="/assets/action_addCharacter.png"/>
+            </div>
+            <div class="button" ng-click="onToolClick('library')">
+                <img class="icon" src="/assets/action_library.png"/>
+            </div>
+            <div class="popup-panel" ng-hide="activeTool !== 'addChar'">
+                <div class="header">
+                    Create New Character
+                    <span class="close-icon" ng-click="setActiveTool(null)">×</span>
+                </div>
+                <form role="form">
+                    <image-input>
+                        <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
+                        <input type="file" accept="image/*" name="image">
+                    </image-input>
+                    <input type="text" name="name" ng-model="character.name" placeholder="Name">
+                    <input type="text" name="age" ng-model="character.age" placeholder="Age">
+                    <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
+                </form>
+                <div class="footer">
+                    <button ng-click="saveCharacter()" class="create-btn"> Create </button>
+                </div>
+            </div>
+            <div class="popup-panel character-library" ng-hide="activeTool != 'library'">
+                <div class="header">
+                    Your Characters
+                    <span class="close-icon" ng-click="setActiveTool(null)">×</span>
+                </div>
+                <div class="characters">
+                    <div ng-repeat="character in characters" class="character" ng-click="selectCharacter(character)">
+                        <img ng-src="/images/characters/{{character._id}}.{{character.img_extension}}"/>
+                        {{ character.name }}
+                    </div>
+                    <span class="message" ng-show="characters.length === 0">
+                        You have no characters in your library!
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="canvas-container">
+            <canvas editor id="canvas" width="800" height="600">
+                Your browser doesn't support HTML5 canvas!
+            </canvas>
+        </div>
+    </div>

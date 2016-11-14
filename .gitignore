@@ -21,12 +21,15 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+build/config.gypi
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
 bower_components
-
 config/default.json
 public/css/
 public/js/
+/build/
+public/images/characters
+public/images/stories

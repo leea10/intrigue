@@ -1,1 +1,49 @@
-Yo you're all logged in <%=name%>
+<%- contentFor('title') %>
+    <%=name%>'s stories
+<%- contentFor('stylesheets') %>
+    <link rel="stylesheet" href="/css/dashboard.css"/>
+<%- contentFor('scripts') %>
+    <script type="text/javascript" src="/js/dashboard.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
+<%- contentFor('body') %>
+    <%- include('templates/navbar') %>
+    <div class="body-content">
+        <div ng-controller="DashboardController">
+            <h1>Library</h1>
+            <a ng-repeat="story in stories" ng-href="/editor?id={{story._id}}">
+                <div class="profile" ng-right-click="activeMenu({{story}})">
+                    <img ng-src="/images/stories/{{story._id}}.{{story.img_extension}}"/>
+                    <div class="info">
+                        <div class="title"> {{story.title}} </div>
+                        <div class="description"> {{story.description}}</div>
+                    </div>
+                </div>
+            </a>
+
+            <button class="add-button" ng-click="showForm()">Add New Story</button>
+            <div id="addStoryModal" class="form-popup" ng-hide="hideForm">
+                <div class="content">
+                    <div class="header">
+                        Create New Story <span class="close" ng-click="showForm()">×</span>
+                    </div>
+
+                    <div class="body">
+                        <image-input>
+                            <img class="preview-img" src="/images/stories/" default_img="/images/stories/"/>
+                            <input type="file" accept="image/*" name="image"><br>
+                        </image-input>
+                        <form>
+                            <input type="text" name="title" ng-model="title" placeholder="Title">
+                            <textarea type="text" name="description" rows="5" ng-model="description" placeholder="Blurb"></textarea>
+                        </form>
+                    </div>
+
+                    <div class="footer">
+                        <button ng-click="addStory()"> Create </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+

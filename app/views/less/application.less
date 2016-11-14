@@ -1,0 +1,43 @@
+@import 'defines.less';
+
+// Padding & Margins
+@padding: 10px;
+
+body {
+  background-color: @grey-dk;
+  color: @grey-lt;
+  font-family: @main-font;
+  margin: 0;
+}
+
+.navbar {
+  .border-box;
+  .logo {
+    height: 100%;
+    float:left;
+  }
+  input[type=submit] {
+    border-color: transparent;
+    background-color: transparent;
+    font-size: 30px;
+    color: whitesmoke;
+    float:right;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  background-color: @grey-md;
+  box-shadow: 3px 3px 5px @grey-dk;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: @navbar-height;
+  padding: @padding;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.body-content {
+  margin-top: @navbar-height;
+}

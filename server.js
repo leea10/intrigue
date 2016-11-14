@@ -1,10 +1,10 @@
-var config = require('config');
-var app = require('./express_config/express')();
-var server = require('http').Server(app);
-var serverPort = config.get('serverPort');
+const config = require('config');
+const app = require('./express_config/express')();
+const serverPort = config.get('serverPort');
+const httpServer = require('http').createServer(app);
 
-server.listen(serverPort, function() {
+httpServer.listen(serverPort, function() {
     console.log('[SERVER] Listening on port ' + serverPort);
 });
 
-module.exports = app;
+module.exports = httpServer;
