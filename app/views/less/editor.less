@@ -26,6 +26,7 @@
   display: flex;
   flex-direction: row;
   height: calc(~"100vh - " @navbar-height);
+  position: relative;
 }
 
 .button {
@@ -162,4 +163,20 @@ textarea {
   &:hover {
     background-color: @button-hover-color;
   }
+}
+
+.context-menu {
+  .menu-item {
+    &:hover {
+      background-color: @grey-md-dk;
+      cursor: pointer;
+    }
+    padding: 8px;
+    font-size: 10pt;
+  }
+  .menu-item:not(:first-child) {
+    /*border-top: 1px solid @grey-md;*/
+  }
+  background-color: @grey-v-dk;
+  position: absolute;
 }
