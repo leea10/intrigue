@@ -14,6 +14,7 @@ class EditorCanvas {
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
         this.nodes_ = [];
+        this.nodeIndex_ = {};
     }
 
     // public methods
@@ -69,6 +70,8 @@ class EditorCanvas {
         newNode.imageLoaded().then(() => {
             this.draw();
         });
+        this.nodeIndex_[id] = newNode;
+        console.log(this.nodeIndex_[id]);
         return newNode;
     }
 
