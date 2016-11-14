@@ -132,14 +132,23 @@ h1 {
   .tile;
   color: black;
   text-align: left;
+  
+
   img {
     width: 100%;
     height: 60%;
   }
+
   .info {
     height: 40%;
     background-color: #EFEFEF;
     padding: 5px;
+    overflow: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+
     .title {
       font-weight: bold;
       font-size: 20px;
