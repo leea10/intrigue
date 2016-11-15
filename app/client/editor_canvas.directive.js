@@ -29,17 +29,20 @@ app.directive('editor', function($window, EditorService) {
                     this.selectedNode_.deselect();
                 }
 
-                // If there is a character selected in the library, place it
+                // If there is a character selected in the library, place it on LMB click
                 if(this.placingChar_ !== null) {
-                    EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
-                    // Optimistically render the node
-                    this.selectedNode_ = editorCanvas.addNode(
-                        event.offsetX,
-                        event.offsetY,
-                        '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
-                    );
+                    if(event.button === 0) {
+                        EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
+                        // Optimistically render the node
+                        this.selectedNode_ = editorCanvas.addNode(
+                            event.offsetX,
+                            event.offsetY,
+                            '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
+                        );
+                        this.selectedNode_.select();
+                    }
+                    // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
-                    this.selectedNode_.select();
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
@@ -55,7 +58,6 @@ app.directive('editor', function($window, EditorService) {
                 editorCanvas.draw();
             });
 
-            // TODO(Ariel): Give the user x pixels of drag inertia
             element.on('mousemove', (event) => {
                if(this.dragging_ === true && this.draggedNode_ !== null) {
                    this.draggedNode_.move(event.movementX, event.movementY);
