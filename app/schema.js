@@ -109,8 +109,8 @@ const Snapshot = mongoose.model('Snapshot', SnapshotSchema);
 const RelationshipSchema = new mongoose.Schema({
     owner : {type : objId, required : true, ref : 'User'},
     snapshot : {type : objId, required : true, ref : 'Snapshot' },
-    characters : [{ type : mongoose.Schema.ObjectId, ref : 'Character' }],
-    nodes : [{ type : objId, ref : 'Node' }],
+    start_node : { type : objId, ref : 'Node' },
+    end_node : { type : objId, ref : 'Node' },
     description : String,
     tags : [{ type : objId, ref : 'Tag' }]
 });

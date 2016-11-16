@@ -96,8 +96,8 @@ exports.saveRelationship = (req, res) => {
     Relationship.create({
         owner : req.session.uid,
         snapshot: OIDType(sObj.snapshot),
-        characters: sObj.characters.map((elem) => {return OIDType(elem);}),
-        nodes : sObj.nodes.map((elem) => {return OIDType(elem);}),
+        start_node : OIDType(sObj.start_node),
+        end_node : OIDType(sObj.end_node),
         description : sObj.description,
         tags : sObj.tags.map((elem) => {return OIDType(elem);})
     }, (err, rObj) => {
