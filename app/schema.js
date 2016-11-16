@@ -157,6 +157,8 @@ NodeSchema.post('save', function(doc, next){
     next();
 });
 
+NodeSchema.index({shapshot : 1, character : 1, unique : true});
+
 const Node = mongoose.model('Node', NodeSchema);
 
 module.exports = {
