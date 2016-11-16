@@ -48,6 +48,12 @@ app.directive('editor', function($window, EditorService) {
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                     if (this.selectedNode_ !== null) {
                         this.selectedNode_.select();
+                        if (event.button === 2) {
+                            scope.$broadcast('contextmenu:open', {
+                                x: event.offsetX,
+                                y: event.offsetY
+                            });
+                        }
                     }
                     // Start dragging the node if LMB was pressed.
                     if (event.button === 0) {
