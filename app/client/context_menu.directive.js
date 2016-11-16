@@ -4,10 +4,12 @@ app.directive('contextMenu', function() {
         link: function(scope, element) {
             scope.contextMenuOpen = false;
 
+            // Get rid of text highlighting
             element.on('mousedown', (event) => {
                 event.preventDefault();
             });
 
+            // Prevent native context menu from popping up on this context menu
             element.on('contextmenu', (event) => {
                 event.preventDefault();
             });
