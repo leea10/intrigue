@@ -26,7 +26,6 @@ app.directive('contextMenu', function() {
                 scope.$broadcast('contextmenu:' + option);
                 scope.contextMenuOpen = false;
             };
-            console.log(element[0].children);
         }
     };
 });
