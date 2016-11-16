@@ -4,6 +4,10 @@ app.directive('contextMenu', function() {
         link: function(scope, element) {
             scope.contextMenuOpen = false;
 
+            element.on('mousedown', (event) => {
+                event.preventDefault();
+            });
+
             element.on('contextmenu', (event) => {
                 event.preventDefault();
             });
