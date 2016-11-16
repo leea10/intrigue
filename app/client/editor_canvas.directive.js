@@ -16,10 +16,15 @@ app.directive('editor', function($window, EditorService) {
             this.dragging_ = false;
             this.draggedNode_ = null;
             this.selectedNode_ = null;
+            this.placingRelationship_ = false;
 
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
                 this.placingChar_ = data.character;
+            });
+
+            scope.$on('contextmenu:addRelationship', () => {
+                this.placingRelationship_ = true;
             });
 
             element.on('mousedown', (event) => {
@@ -28,6 +33,7 @@ app.directive('editor', function($window, EditorService) {
                 if(this.selectedNode_ !== null) {
                     this.selectedNode_.deselect();
                 }
+                // Close any open context menu.
                 scope.$broadcast('contextmenu:close');
 
                 // If there is a character selected in the library, place it on LMB click
@@ -41,14 +47,22 @@ app.directive('editor', function($window, EditorService) {
                             '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
                         );
                         this.selectedNode_.select();
-                    }
-                    // Any other button pressed will merely cancel the action.
+                    } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
+                } else if(this.placingRelationship_ === true) {
+                    let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                    if(toNode !== null) {
+                        editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
+                    } // Clicking on not a node cancels placement of the relationship.
+                    this.selectedNode_.deselect();
+                    this.selectedNode_ = null;
+                    this.placingRelationship_ = null;
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                     if (this.selectedNode_ !== null) {
                         this.selectedNode_.select();
+                        // Open context menu if node was selected on RMB
                         if (event.button === 2) {
                             scope.$broadcast('contextmenu:open', {
                                 x: event.offsetX,
