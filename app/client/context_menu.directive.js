@@ -17,6 +17,11 @@ app.directive('contextMenu', function() {
                 scope.$digest();
             });
 
+            scope.$on('contextmenu:close', () => {
+                scope.contextMenuOpen = false;
+                scope.$digest();
+            });
+
             scope.selectOption = (option) => {
                 scope.$broadcast('contextmenu:' + option);
                 scope.contextMenuOpen = false;

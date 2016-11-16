@@ -28,6 +28,7 @@ app.directive('editor', function($window, EditorService) {
                 if(this.selectedNode_ !== null) {
                     this.selectedNode_.deselect();
                 }
+                scope.$broadcast('contextmenu:close');
 
                 // If there is a character selected in the library, place it on LMB click
                 if(this.placingChar_ !== null) {
