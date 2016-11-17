@@ -54,6 +54,9 @@ app.directive('editor', function($window, EditorService) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                         if (toNode !== null) {
                             editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
+                            EditorService.addRelationship(this.selectedNode_.id_, toNode.id_).then((data) => {
+                                console.log(data);
+                            });
                         }
                     }
                     this.selectedNode_.deselect();

@@ -70,6 +70,23 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    /**
+     * Add a relationship to the database
+     * @param from ID of the start node
+     * @param to ID for the end node
+     */
+    this.addRelationship = (from, to) => {
+        console.log(this.currentSnapshot_._id);
+        return $http.post('/api/relationship', {
+            snapshot: this.currentSnapshot_._id,
+            start_node: from,
+            end_node: to
+        }).then((response) => {
+            console.log(response.data.message);
+            return response.data.data;
+        });
+    };
+
     this.updateNode = (nodeID, x, y) => {
         $http.put('/api/node', {
             _id: nodeID,
