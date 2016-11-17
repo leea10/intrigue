@@ -58,8 +58,12 @@ app.service('EditorService', function($http, $location) {
         return this.currentSnapshot_.nodes;
     };
 
+    this.getRelationships = () => {
+        return this.currentSnapshot_.relationships;
+    };
+
     this.addNode = (x, y, characterID) => {
-        $http.post('/api/node', {
+        return $http.post('/api/node', {
             snapshot: this.currentSnapshot_._id,
             character: characterID,
             x: x,

@@ -83,8 +83,20 @@ class EditorCanvas {
         newNode.imageLoaded().then(() => {
             this.draw();
         });
-        this.nodeIndex_[id] = newNode;
+        if(id !== undefined) {
+            this.nodeIndex_[id] = newNode;
+        }
         return newNode;
+    }
+
+    /**
+     * adds node to index under a unique id
+     * @param id
+     * @param node
+     */
+    indexNode(id, node) {
+        this.nodeIndex_[id] = node;
+        node.id_ = id;
     }
 
     /**

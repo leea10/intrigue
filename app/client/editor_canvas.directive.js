@@ -39,13 +39,16 @@ app.directive('editor', function($window, EditorService) {
                 // If there is a character selected in the library, place it on LMB click
                 if(this.placingChar_ !== null) {
                     if(event.button === 0) {
-                        EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
                         // Optimistically render the node
                         this.selectedNode_ = editorCanvas.addNode(
                             event.offsetX,
                             event.offsetY,
                             '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
                         );
+                        let savingNode = this.selectedNode_;
+                        EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id).then((node) => {
+                            editorCanvas.indexNode(node._id, savingNode);
+                        });
                         this.selectedNode_.select();
                     } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
@@ -54,9 +57,7 @@ app.directive('editor', function($window, EditorService) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                         if (toNode !== null) {
                             editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
-                            EditorService.addRelationship(this.selectedNode_.id_, toNode.id_).then((data) => {
-                                console.log(data);
-                            });
+                            EditorService.addRelationship(this.selectedNode_.id_, toNode.id_);
                         }
                     }
                     this.selectedNode_.deselect();
@@ -113,6 +114,11 @@ app.directive('editor', function($window, EditorService) {
                     let character = EditorService.getCharacter(node.character);
                     let imageUrl = '/images/characters/' + node.character + '.' + character.img_extension;
                     editorCanvas.addNode(node.x, node.y, imageUrl, node._id);
+                }
+                let relationships = EditorService.getRelationships();
+                for(let i = 0; i < relationships.length; i++) {
+                    let relationship = relationships[i];
+                    editorCanvas.addRelationship(relationship.start_node, relationship.end_node);
                 }
                 scope.onResize();
             });
