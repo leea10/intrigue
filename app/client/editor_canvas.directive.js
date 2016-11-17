@@ -16,10 +16,15 @@ app.directive('editor', function($window, EditorService) {
             this.dragging_ = false;
             this.draggedNode_ = null;
             this.selectedNode_ = null;
+            this.placingRelationship_ = false;
 
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
                 this.placingChar_ = data.character;
+            });
+
+            scope.$on('contextmenu:addRelationship', () => {
+                this.placingRelationship_ = true;
             });
 
             element.on('mousedown', (event) => {
@@ -28,23 +33,48 @@ app.directive('editor', function($window, EditorService) {
                 if(this.selectedNode_ !== null) {
                     this.selectedNode_.deselect();
                 }
+                // Close any open context menu.
+                scope.$broadcast('contextmenu:close');
 
-                // If there is a character selected in the library, place it
+                // If there is a character selected in the library, place it on LMB click
                 if(this.placingChar_ !== null) {
-                    EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id);
-                    // Optimistically render the node
-                    this.selectedNode_ = editorCanvas.addNode(
-                        event.offsetX,
-                        event.offsetY,
-                        '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
-                    );
+                    if(event.button === 0) {
+                        // Optimistically render the node
+                        this.selectedNode_ = editorCanvas.addNode(
+                            event.offsetX,
+                            event.offsetY,
+                            '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
+                        );
+                        let savingNode = this.selectedNode_;
+                        EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id).then((node) => {
+                            editorCanvas.indexNode(node._id, savingNode);
+                        });
+                        this.selectedNode_.select();
+                    } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
-                    this.selectedNode_.select();
+                } else if(this.placingRelationship_ === true) {
+                    if(event.button === 0) {
+                        let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                        if (toNode !== null) {
+                            editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
+                            EditorService.addRelationship(this.selectedNode_.id_, toNode.id_);
+                        }
+                    }
+                    this.selectedNode_.deselect();
+                    this.selectedNode_ = null;
+                    this.placingRelationship_ = null;
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                     if (this.selectedNode_ !== null) {
                         this.selectedNode_.select();
+                        // Open context menu if node was selected on RMB
+                        if (event.button === 2) {
+                            scope.$broadcast('contextmenu:open', {
+                                x: event.offsetX,
+                                y: event.offsetY
+                            });
+                        }
                     }
                     // Start dragging the node if LMB was pressed.
                     if (event.button === 0) {
@@ -55,7 +85,6 @@ app.directive('editor', function($window, EditorService) {
                 editorCanvas.draw();
             });
 
-            // TODO(Ariel): Give the user x pixels of drag inertia
             element.on('mousemove', (event) => {
                if(this.dragging_ === true && this.draggedNode_ !== null) {
                    this.draggedNode_.move(event.movementX, event.movementY);
@@ -85,6 +114,11 @@ app.directive('editor', function($window, EditorService) {
                     let character = EditorService.getCharacter(node.character);
                     let imageUrl = '/images/characters/' + node.character + '.' + character.img_extension;
                     editorCanvas.addNode(node.x, node.y, imageUrl, node._id);
+                }
+                let relationships = EditorService.getRelationships();
+                for(let i = 0; i < relationships.length; i++) {
+                    let relationship = relationships[i];
+                    editorCanvas.addRelationship(relationship.start_node, relationship.end_node);
                 }
                 scope.onResize();
             });

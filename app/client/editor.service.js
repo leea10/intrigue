@@ -9,6 +9,7 @@ app.service('EditorService', function($http, $location) {
         // Populate story details
         this.storyDetails_ = response.data.data;
         this.characterLookup_ = {};
+        this.nodeLookup_ = {};
         for(let i = 0; i < this.storyDetails_.characters.length; i++){
             this.characterLookup_[this.storyDetails_.characters[i]._id] = this.storyDetails_.characters[i];
         }
@@ -21,6 +22,10 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.getCharacter = (id) => {
+        let character = this.characterLookup_[id];
+        if(character !== undefined) {
+            return character;
+        }
         for(let i = 0; i < this.storyDetails_.characters.length; i++){
             if(this.storyDetails_.characters[i]._id === id){
                 this.characterLookup_[id] = this.storyDetails_.characters[i];
@@ -54,17 +59,63 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    /**
+     * Gets the node in the current snapshot with the given id.
+     */
+    this.getNode = (id) => {
+        let node = this.nodeLookup_[id];
+        if(node !== undefined) {
+            return node;
+        }
+        let nodes = this.currentSnapshot_.nodes;
+        for(let i = 0; i < nodes.length; i++){
+            let node = nodes[i];
+            if(node._id === id){
+                this.nodeLookup_[id] = node;
+                return node;
+            }
+        }
+        return null;
+    };
+
     this.getNodes = () => {
         return this.currentSnapshot_.nodes;
     };
 
+    this.getRelationships = () => {
+        return this.currentSnapshot_.relationships;
+    };
+
     this.addNode = (x, y, characterID) => {
-        $http.post('/api/node', {
+        let currentSnapshot = this.currentSnapshot_;
+        return $http.post('/api/node', {
             snapshot: this.currentSnapshot_._id,
             character: characterID,
             x: x,
             y: y
         }).then((response) => {
+            console.log(response.data.message);
+            let newNode = response.data.data;
+            currentSnapshot.nodes.push(newNode);
+            this.nodeLookup_[newNode._id] = newNode;
+            return newNode;
+        });
+    };
+
+    /**
+     * Add a relationship to the database
+     * @param from ID of the start node
+     * @param to ID for the end node
+     */
+    this.addRelationship = (from, to) => {
+        console.log(this.currentSnapshot_._id);
+        let currentSnapshot = this.currentSnapshot_;
+        return $http.post('/api/relationship', {
+            snapshot: this.currentSnapshot_._id,
+            start_node: from,
+            end_node: to
+        }).then((response) => {
+            currentSnapshot.relationships.push(response.data.data);
             console.log(response.data.message);
             return response.data.data;
         });
@@ -77,7 +128,9 @@ app.service('EditorService', function($http, $location) {
             y: y
         }).then((response) => {
             console.log(response.data.message);
-            return response.data.data;
+            let updatedNode = this.getNode(nodeID);
+            updatedNode.x = x;
+            updatedNode.y = y;
         });
     };
 });
