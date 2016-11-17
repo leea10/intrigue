@@ -21,6 +21,10 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.getCharacter = (id) => {
+        let character = this.characterLookup_[id];
+        if(character !== undefined) {
+            return character;
+        }
         for(let i = 0; i < this.storyDetails_.characters.length; i++){
             if(this.storyDetails_.characters[i]._id === id){
                 this.characterLookup_[id] = this.storyDetails_.characters[i];
