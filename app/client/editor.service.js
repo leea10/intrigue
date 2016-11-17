@@ -63,6 +63,7 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.addNode = (x, y, characterID) => {
+        let currentSnapshot = this.currentSnapshot_;
         return $http.post('/api/node', {
             snapshot: this.currentSnapshot_._id,
             character: characterID,
@@ -70,6 +71,7 @@ app.service('EditorService', function($http, $location) {
             y: y
         }).then((response) => {
             console.log(response.data.message);
+            currentSnapshot.nodes.push(response.data.data);
             return response.data.data;
         });
     };
@@ -81,11 +83,13 @@ app.service('EditorService', function($http, $location) {
      */
     this.addRelationship = (from, to) => {
         console.log(this.currentSnapshot_._id);
+        let currentSnapshot = this.currentSnapshot_;
         return $http.post('/api/relationship', {
             snapshot: this.currentSnapshot_._id,
             start_node: from,
             end_node: to
         }).then((response) => {
+            currentSnapshot.relationships.push(response.data.data);
             console.log(response.data.message);
             return response.data.data;
         });
