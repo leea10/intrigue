@@ -9,6 +9,7 @@ app.service('EditorService', function($http, $location) {
         // Populate story details
         this.storyDetails_ = response.data.data;
         this.characterLookup_ = {};
+        this.nodeLookup_ = {};
         for(let i = 0; i < this.storyDetails_.characters.length; i++){
             this.characterLookup_[this.storyDetails_.characters[i]._id] = this.storyDetails_.characters[i];
         }
@@ -58,6 +59,25 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    /**
+     * Gets the node in the current snapshot with the given id.
+     */
+    this.getNode = (id) => {
+        let node = this.nodeLookup_[id];
+        if(node !== undefined) {
+            return node;
+        }
+        let nodes = this.currentSnapshot_.nodes;
+        for(let i = 0; i < nodes.length; i++){
+            let node = nodes[i];
+            if(node._id === id){
+                this.nodeLookup_[id] = node;
+                return node;
+            }
+        }
+        return null;
+    };
+
     this.getNodes = () => {
         return this.currentSnapshot_.nodes;
     };
@@ -75,8 +95,10 @@ app.service('EditorService', function($http, $location) {
             y: y
         }).then((response) => {
             console.log(response.data.message);
-            currentSnapshot.nodes.push(response.data.data);
-            return response.data.data;
+            let newNode = response.data.data;
+            currentSnapshot.nodes.push(newNode);
+            this.nodeLookup_[newNode._id] = newNode;
+            return newNode;
         });
     };
 
@@ -106,7 +128,9 @@ app.service('EditorService', function($http, $location) {
             y: y
         }).then((response) => {
             console.log(response.data.message);
-            return response.data.data;
+            let updatedNode = this.getNode(nodeID);
+            updatedNode.x = x;
+            updatedNode.y = y;
         });
     };
 });
