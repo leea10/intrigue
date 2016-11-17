@@ -45,7 +45,7 @@ exports.saveStory = (req, res) => {
             } else {
                 if(req.files){
                     let storyImg = req.files.image;
-                    storyImg.mv(appDir + '/public/images/stories/' + rObj._id + '.' + storyImg.name.split('.')[1], (err) => {
+                    storyImg.mv(`${appDir}/public/images/stories/${rObj._id}.${storyImg.name.split('.')[1]}`, (err) => {
                         if(err){
                             console.error(err);
                         }
@@ -78,7 +78,7 @@ exports.updateStory = (req, res) => {
             else {
                 if(req.files){
                     let storyImg = req.files.image;
-                    storyImg.mv(appDir + '/public/images/stories/' + sObj._id + '.' + storyImg.name.split('.')[1], (err) => {
+                    storyImg.mv(`${appDir}/public/images/stories/${sObj._id}.${storyImg.name.split('.')[1]}`, (err) => {
                         if(err){
                             console.error(err);
                         }
@@ -200,7 +200,7 @@ exports.saveCharacter = function (req, res) {
         } else {
             if(req.files){
                 let characterImg = req.files.image;
-                characterImg.mv(appDir + '/public/images/characters/' + rObj._id + '.' + characterImg.name.split('.')[1], (err) => {
+                characterImg.mv(`${appDir}/public/images/characters/${rObj._id}.${characterImg.name.split('.')[1]}`, (err) => {
                     if(err){
                         console.error(err);
                     }
@@ -229,7 +229,7 @@ exports.updateCharacter = (req, res) => {
         } else {
             if(req.files){
                 let characterImg = req.files.image;
-                characterImg.mv(appDir + '/public/images/characters/' + cObj._id + '.' + characterImg.name.split('.')[1], (err) => {
+                characterImg.mv(`${appDir}/public/images/characters/${cObj._id}.${characterImg.name.split('.')[1]}`, (err) => {
                     if(err){
                         console.error(err);
                     }
