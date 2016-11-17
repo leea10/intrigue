@@ -50,10 +50,12 @@ app.directive('editor', function($window, EditorService) {
                     } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
                 } else if(this.placingRelationship_ === true) {
-                    let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
-                    if(toNode !== null) {
-                        editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
-                    } // Clicking on not a node cancels placement of the relationship.
+                    if(event.button === 0) {
+                        let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
+                        if (toNode !== null) {
+                            editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
+                        }
+                    }
                     this.selectedNode_.deselect();
                     this.selectedNode_ = null;
                     this.placingRelationship_ = null;
