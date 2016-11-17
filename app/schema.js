@@ -109,8 +109,8 @@ const Snapshot = mongoose.model('Snapshot', SnapshotSchema);
 const RelationshipSchema = new mongoose.Schema({
     owner : {type : objId, required : true, ref : 'User'},
     snapshot : {type : objId, required : true, ref : 'Snapshot' },
-    characters : [{ type : mongoose.Schema.ObjectId, ref : 'Character' }],
-    nodes : [{ type : objId, ref : 'Node' }],
+    start_node : { type : objId, ref : 'Node' },
+    end_node : { type : objId, ref : 'Node' },
     description : String,
     tags : [{ type : objId, ref : 'Tag' }]
 });
@@ -156,6 +156,8 @@ NodeSchema.post('save', function(doc, next){
     Snapshot.findByIdAndUpdate(doc.snapshot, {$push : {'nodes' : doc._id}}).exec();
     next();
 });
+
+NodeSchema.index({snapshot : 1, character : 1}, {unique : true});
 
 const Node = mongoose.model('Node', NodeSchema);
 
