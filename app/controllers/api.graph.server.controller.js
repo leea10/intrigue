@@ -88,6 +88,9 @@ exports.removeSnapshot = (req, res) => {
  */
 exports.saveRelationship = (req, res) => {
     let sObj = req.body;
+    if(sObj.tags === undefined) {
+        sObj.tags = [];
+    }
     Relationship.create({
         owner : req.session.uid,
         snapshot: OIDType(sObj.snapshot),

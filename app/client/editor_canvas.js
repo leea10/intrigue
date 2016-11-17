@@ -14,6 +14,8 @@ class EditorCanvas {
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
         this.bigInc_ = bInc;   // Number of pixels between each thick grid line.
         this.nodes_ = [];
+        this.nodeIndex_ = {};
+        this.relationships_ = [];
     }
 
     // public methods
@@ -32,6 +34,18 @@ class EditorCanvas {
         this.canvas_.fillStyle = '#171717';
         this.canvas_.fillRect(0, 0, this.width(), this.height());
         this.drawGrid_();
+        // Draw the relationships
+        this.canvas_.strokeStyle = '#bbb';
+        this.canvas_.lineWidth = 4;
+        for(let i = 0; i < this.relationships_.length; i++) {
+            let relationship = this.relationships_[i];
+            let fromNode =  this.nodeIndex_[relationship.from_];
+            let toNode =  this.nodeIndex_[relationship.to_];
+            this.drawLine_(
+                {x: fromNode.x_, y: fromNode.y_},
+                {x: toNode.x_, y: toNode.y_}
+            );
+        }
         // Draw the nodes
         for(let i = 0; i < this.nodes_.length; i++) {
             this.nodes_[i].draw(this.canvas_);
@@ -69,7 +83,29 @@ class EditorCanvas {
         newNode.imageLoaded().then(() => {
             this.draw();
         });
+        if(id !== undefined) {
+            this.nodeIndex_[id] = newNode;
+        }
         return newNode;
+    }
+
+    /**
+     * adds node to index under a unique id
+     * @param id
+     * @param node
+     */
+    indexNode(id, node) {
+        this.nodeIndex_[id] = node;
+        node.id_ = id;
+    }
+
+    /**
+     * Adds a relationship between node1 and node2
+     * @param node1 id of first node
+     * @param node2 id of second node
+     */
+    addRelationship(node1, node2) {
+        this.relationships_.push(new Edge(node1, node2));
     }
 
     /**
@@ -184,5 +220,12 @@ class EditorCanvas {
     deselect() {
         this.strokeColor_ = '#8fd3d2';
         this.strokeWeight_ = 4;
+    }
+}
+
+class Edge {
+    constructor(from, to) {
+        this.from_ = from;
+        this.to_ = to;
     }
 }

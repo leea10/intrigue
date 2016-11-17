@@ -8,11 +8,12 @@
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
     <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
     <script type="text/javascript" src="/js/character.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/context_menu.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
 <%- contentFor('body') %>
     <%- include('templates/navbar') %>
     <div class="body-content" ng-controller="ToolbarController">
-        <div class="toolbar" >
+        <div class="toolbar">
             <div class="button" ng-click="onToolClick('addChar')">
                 <img class="icon" src="/assets/action_addCharacter.png"/>
             </div>
@@ -54,6 +55,11 @@
             </div>
         </div>
         <div class="canvas-container">
+            <div class="context-menu" context-menu ng-show="contextMenuOpen === true">
+                <div class="menu-item" ng-click="selectOption('addRelationship')">Add Relationship</div>
+                <div class="menu-item" ng-click="selectOption('edit')">Edit</div>
+                <div class="menu-item" ng-click="selectOption('remove')">Remove</div>
+            </div>
             <canvas editor id="canvas" width="800" height="600">
                 Your browser doesn't support HTML5 canvas!
             </canvas>
