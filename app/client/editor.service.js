@@ -161,18 +161,24 @@ app.service('EditorService', function($http, $location) {
         return null;
     };
 
-    this.addNode = (x, y, characterID) => {
-        let currentSnapshot = this.currentSnapshot_;
+    /**
+     * Adds a new node for the given character to the given snapshot.
+     * @param snapshotID Snapshot this node should be added to.
+     * @param characterID Character that this node represents.
+     * @param x Coordinate of the node on the canvas editor.
+     * @param y Coordinate of the node of the canvas editor.
+     * @returns {Promise}
+     */
+    this.addNode = (snapshotID, characterID, x, y) => {
         return $http.post('/api/node', {
-            snapshot: this.currentSnapshot_._id,
+            snapshot: snapshotID,
             character: characterID,
             x: x,
             y: y
         }).then((response) => {
             console.log(response.data.message);
             let newNode = response.data.data;
-            currentSnapshot.nodes.push(newNode);
-            this.nodeLookup_[newNode._id] = newNode;
+            this.getSnapshot(snapshotID).nodes.push(newNode);
             return newNode;
         });
     };
