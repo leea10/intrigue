@@ -197,18 +197,17 @@ app.service('EditorService', function($http, $location) {
 
     /**
      * Add a relationship to the database
+     * @param snapshotID ID of the snapshot to add the relationship to.
      * @param from ID of the start node
      * @param to ID for the end node
      */
-    this.addRelationship = (from, to) => {
-        console.log(this.currentSnapshot_._id);
-        let currentSnapshot = this.currentSnapshot_;
+    this.addRelationship = (snapshotID, from, to) => {
         return $http.post('/api/relationship', {
-            snapshot: this.currentSnapshot_._id,
+            snapshot: snapshotID,
             start_node: from,
             end_node: to
         }).then((response) => {
-            currentSnapshot.relationships.push(response.data.data);
+            this.getSnapshot(snapshotID).relationships.push(response.data.data);
             console.log(response.data.message);
             return response.data.data;
         });
