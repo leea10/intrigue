@@ -114,6 +114,10 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    /**
+     * @param snapshotID
+     * @returns {Array|*} array of nodes in the given snapshot.
+     */
     this.getNodes = (snapshotID) => {
         return this.getSnapshot(snapshotID).nodes;
     };
@@ -183,6 +187,10 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    /**
+     * @param snapshotID
+     * @returns {Array|*} array of relationships in the given snapshot.
+     */
     this.getRelationships = (snapshotID) => {
         return this.getSnapshot(snapshotID).relationships;
     };

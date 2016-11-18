@@ -70,7 +70,7 @@ app.directive('editor', function($window, EditorService) {
                             '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
                         );
                         let savingNode = this.selectedNode_;
-                        EditorService.addNode(this.currentSnapshot_, this.placingChar_._id, event.offsetX, event.offsetY,).then((node) => {
+                        EditorService.addNode(this.currentSnapshot_, this.placingChar_._id, event.offsetX, event.offsetY).then((node) => {
                             editorCanvas.indexNode(node._id, savingNode);
                         });
                         this.selectedNode_.select();
