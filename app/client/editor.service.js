@@ -23,19 +23,16 @@ app.service('EditorService', function($http, $location) {
         }
     });
 
+    // THIS IS A TEMPORARY HACK
+    this.getFirstSnapshotID = () => {
+        return this.storyDetails_.snapshots[0]._id;
+    };
+
     /**
      * @returns {Promise} A promise that this editor service will initialize.
      */
     this.init = () => {
         return this.initPromise_;
-    };
-
-    /**
-     * @param index
-     * @returns {*} Snapshot object at given index.
-     */
-    this.getSnapshotAt = (index) => {
-        return this.storyDetails_.snapshots[index];
     };
 
     /**
@@ -118,7 +115,7 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.getNodes = (snapshotID) => {
-        return this.getSnapshot[snapshotID].nodes;
+        return this.getSnapshot(snapshotID).nodes;
     };
 
     /**
@@ -134,7 +131,7 @@ app.service('EditorService', function($http, $location) {
         }
         // If a snapshotID was provided, restrict the search to the provided snapshot.
         if (snapshotID !== undefined) {
-            let nodes = this.getSnapshot[snapshotID].nodes;
+            let nodes = this.getSnapshot(snapshotID).nodes;
             for (let i = 0; i < nodes.length; i++) {
                 let node = nodes[i];
                 if (node._id === nodeID) {
@@ -181,7 +178,7 @@ app.service('EditorService', function($http, $location) {
     };
 
     this.getRelationships = (snapshotID) => {
-        return this.getSnapshot[snapshotID].relationships_;
+        return this.getSnapshot(snapshotID).relationships;
     };
 
     /**
