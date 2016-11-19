@@ -9,7 +9,7 @@ class EditorCanvas {
      * @param defaultImgURL image URL for ghost node
      * @constructor
      */
-    constructor(domElement, sInc, bInc, defaultImgURL) {
+    constructor(domElement, sInc, bInc) {
         this.domElement_ = domElement;
         this.canvas_ = domElement.getContext('2d');
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
@@ -17,7 +17,7 @@ class EditorCanvas {
         this.nodes_ = [];
         this.nodeIndex_ = {};
         this.relationships_ = [];
-        this.ghostNode = new Node(0, 0, defaultImgURL);
+        this.ghostNode_ = null;
     }
 
     // public methods
@@ -52,6 +52,13 @@ class EditorCanvas {
         for(let i = 0; i < this.nodes_.length; i++) {
             this.nodes_[i].draw(this.canvas_);
         }
+        // Draw the ghost node
+        if(this.ghostNode_ !== null) {
+            this.canvas_.save();
+            this.canvas_.globalAlpha = 0.2;
+            this.ghostNode_.draw(this.canvas_);
+            this.canvas_.restore();
+        }
     }
 
     width() {   return this.canvas_.canvas.width;   }
@@ -69,6 +76,16 @@ class EditorCanvas {
             }
         }
         return null;
+    }
+
+    /**
+     * Sets the ghost node
+     * @param isVisible
+     * @param imageURL The image the ghost node should have.
+     */
+    toggleGhostNode(isVisible, imageURL) {
+        imageURL = imageURL === undefined ? '/images/characters/' : imageURL;
+        this.ghostNode_ = isVisible ? new Node(100, 100, imageURL) : null;
     }
 
     /**

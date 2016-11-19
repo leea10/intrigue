@@ -3,7 +3,7 @@ app.directive('editor', function($window, EditorService) {
         restrict: 'A',
         link: function(scope, element) {
             // Initialization
-            let editorCanvas = new EditorCanvas(element[0], 10, 100, '/images/characters/');
+            let editorCanvas = new EditorCanvas(element[0], 10, 100);
             let canvasContainer = element.parent()[0];
 
             scope.onResize = function() {
@@ -44,6 +44,8 @@ app.directive('editor', function($window, EditorService) {
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
                 this.placingChar_ = data.character;
+                editorCanvas.toggleGhostNode(true);
+                editorCanvas.draw();
             });
 
             scope.$on('contextmenu:addRelationship', () => {
@@ -81,6 +83,7 @@ app.directive('editor', function($window, EditorService) {
                         this.selectedNode_.select();
                     } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
+                    editorCanvas.toggleGhostNode(false);
                 } else if(this.placingRelationship_ === true) {
                     if(event.button === 0) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
