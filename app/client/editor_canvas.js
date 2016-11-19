@@ -20,7 +20,6 @@ class EditorCanvas {
         this.ghostNode_ = null;
     }
 
-    // public methods
     /**
      * Changes the editor canvas's dimensions to (width, height).
      * @param width in pixels.

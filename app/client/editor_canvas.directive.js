@@ -121,6 +121,10 @@ app.directive('editor', function($window, EditorService) {
                if(this.dragging_ === true && this.draggedNode_ !== null) {
                    this.draggedNode_.move(event.movementX, event.movementY);
                    editorCanvas.draw();
+               } else if (this.placingChar_ !== null) {
+                   editorCanvas.ghostNode_.x_ = event.offsetX;
+                   editorCanvas.ghostNode_.y_ = event.offsetY;
+                   editorCanvas.draw();
                }
             });
 
