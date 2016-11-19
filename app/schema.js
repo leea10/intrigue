@@ -67,6 +67,7 @@ const CharacterSchema = new mongoose.Schema({
 //Before a character is removed, delete it's relationships
 CharacterSchema.pre('remove', function(next){
     Relationship.remove({characters : this._id}).exec();
+    Node.remove({character : this._id}).exec();
     next();
 });
 
@@ -150,6 +151,7 @@ const NodeSchema = new mongoose.Schema({
 
 NodeSchema.pre('remove', function(next){
     Snapshot.findByIdAndUpdate(this.snapshot, {$pull : {'nodes' : this._id}}).exec();
+    Relationship.remove({ $or:[ {'start_node':this._id}, {'end_node':this._id} ] }).exec();
 });
 
 NodeSchema.post('save', function(doc, next){
