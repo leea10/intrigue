@@ -6,9 +6,10 @@ class EditorCanvas {
      * @param domElement The element in the DOM that the editor should be associated with
      * @param sInc distance between lines on the fine grid.
      * @param bInc distance between lines on the main grid.
+     * @param defaultImgURL image URL for ghost node
      * @constructor
      */
-    constructor(domElement, sInc, bInc) {
+    constructor(domElement, sInc, bInc, defaultImgURL) {
         this.domElement_ = domElement;
         this.canvas_ = domElement.getContext('2d');
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
@@ -16,6 +17,7 @@ class EditorCanvas {
         this.nodes_ = [];
         this.nodeIndex_ = {};
         this.relationships_ = [];
+        this.ghostNode = new Node(0, 0, defaultImgURL);
     }
 
     // public methods
