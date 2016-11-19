@@ -67,6 +67,7 @@ const CharacterSchema = new mongoose.Schema({
 //Before a character is removed, delete it's relationships
 CharacterSchema.pre('remove', function(next){
     Relationship.remove({characters : this._id}).exec();
+    Node.remove({character : this._id}).exec();
     next();
 });
 
