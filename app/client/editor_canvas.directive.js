@@ -80,7 +80,7 @@ app.directive('editor', function($window, EditorService) {
                     if(event.button === 0) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                         if (toNode !== null) {
-                            editorCanvas.addRelationship(this.currentSnapshot_, this.selectedNode_.id_, toNode.id_);
+                            editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
                             EditorService.addRelationship(this.currentSnapshot_, this.selectedNode_.id_, toNode.id_);
                         }
                     }

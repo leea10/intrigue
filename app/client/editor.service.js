@@ -154,7 +154,7 @@ app.service('EditorService', function($http, $location) {
             }
             let nodes = snapshot.nodes;
             for (let j = 0; j < nodes.length; j++) {
-                let node = nodes[i];
+                let node = nodes[j];
                 if (node._id === nodeID) {
                     this.nodeLookup_[nodeID] = node;
                     return node;
