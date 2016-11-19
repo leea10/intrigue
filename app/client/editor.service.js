@@ -9,18 +9,6 @@ app.service('EditorService', function($http, $location) {
     this.initPromise_ = $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
         // Populate story details.
         this.storyDetails_ = response.data.data;
-        // Populate character lookup.
-        let characters = this.storyDetails_.characters;
-        for (let i = 0; i < characters.length; i++) {
-            let character = characters[i];
-            this.characterLookup_[character._id] = character;
-        }
-        // Populate snapshot lookup.
-        let snapshots = this.storyDetails_.snapshots;
-        for (let i = 0; i < snapshots.length; i++) {
-            let snapshot = snapshots[i];
-            this.snapshotLookup_[snapshot._id] = snapshot;
-        }
     });
 
     // THIS IS A TEMPORARY HACK
