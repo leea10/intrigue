@@ -3,7 +3,7 @@ app.directive('editor', function($window, EditorService) {
         restrict: 'A',
         link: function(scope, element) {
             // Initialization
-            let editorCanvas = new EditorCanvas(element[0], 10, 100);
+            let editorCanvas = new EditorCanvas(element[0], 10, 100, '/images/characters/');
             let canvasContainer = element.parent()[0];
 
             scope.onResize = function() {
