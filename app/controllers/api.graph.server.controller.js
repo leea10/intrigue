@@ -19,9 +19,13 @@ let pojoify = (obj) => {
 /**
  * @function Endpoint for saving a new snapshot
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - story : ObjectId
+ *   - label : String
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.saveSnapshot = (req, res) => {
     let sObj = req.body;
@@ -44,9 +48,14 @@ exports.saveSnapshot = (req, res) => {
 /**
  * @function Endpoint for updating an existing snapshot
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - possible fields:
+ *   - label : String
+ *   - nodes : [ObjectId]
+ *   - relationships : [ObjectId]
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.updateSnapshot = (req, res) => {
     let sObj = req.body;
@@ -63,9 +72,12 @@ exports.updateSnapshot = (req, res) => {
 /**
  * @function Endpoint for removing an existing snapshot
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - _id : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.removeSnapshot = (req, res) => {
     let id = OIDType(req.body._id);
@@ -93,9 +105,16 @@ exports.removeSnapshot = (req, res) => {
 /**
  * @function Endpoint for saving a new relationship
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - snapshot : ObjectId
+ *   - start_node : ObjectId
+ *   - end_node : ObjectId
+ *   - description : String
+ *   - tags : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.saveRelationship = (req, res) => {
     let sObj = req.body;
@@ -122,9 +141,16 @@ exports.saveRelationship = (req, res) => {
 /**
  * @function Endpoint for updating an existing relationship
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - possible fields:
+ *   - snapshot : ObjectId
+ *   - start_node : ObjectId
+ *   - end_node : ObjectId
+ *   - description : String
+ *   - tags : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.updateRelationship = (req, res) => {
     let sObj = req.body;
@@ -141,9 +167,12 @@ exports.updateRelationship = (req, res) => {
 /**
  * @function Endpoint for removing an existing relationship
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - _id : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.removeRelationship = (req, res) => {
     let id = OIDType(req.body._id);
@@ -171,9 +200,15 @@ exports.removeRelationship = (req, res) => {
 /**
  * @function Endpoint for saving a new node
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - snapshot : ObjectId
+ *   - character : ObjectId
+ *   - x : Number
+ *   - y : Number
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.saveNode = (req, res) => {
     let sObj = req.body;
@@ -196,9 +231,15 @@ exports.saveNode = (req, res) => {
 /**
  * @function Endpoint for updating an existing node
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - possible fields:
+ *   - snapshot : ObjectId
+ *   - character : ObjectId
+ *   - x : Number
+ *   - y : Number
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.updateNode = (req, res) => {
     let sObj = req.body;
@@ -215,9 +256,12 @@ exports.updateNode = (req, res) => {
 /**
  * @function Endpoint for removing an existing node
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - _id : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.removeNode = (req, res) => {
     let id = OIDType(req.body._id);
