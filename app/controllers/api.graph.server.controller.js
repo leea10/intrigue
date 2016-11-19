@@ -36,12 +36,7 @@ exports.saveSnapshot = (req, res) => {
             console.error(err);
             res.status(500).json({message: 'An error occurred saving the snapshot'});
         } else {
-            if (err) {
-                console.error(err);
-                res.status(500).json({message: 'An error occurred saving the snapshot'});
-            } else {
-                res.json({message: 'Successfully saved the snapshot', data: rObj});
-            }
+            res.json({message: 'Successfully saved the snapshot', data: rObj});
         }
     });
 };
@@ -106,14 +101,9 @@ exports.saveRelationship = (req, res) => {
     }, (err, rObj) => {
         if (err) {
             console.error(err);
-            res.status(500).json({message: 'An error occurred saving the node'});
+            res.status(500).json({message: 'An error occurred saving the relationship'});
         } else {
-            if (err) {
-                console.error(err);
-                res.status(500).json({message: 'An error occurred saving the node'});
-            } else {
-                res.json({message: 'Successfully saved the node', data: rObj});
-            }
+            res.json({message: 'Successfully saved the relationship', data: rObj});
         }
     });
 };
@@ -176,12 +166,7 @@ exports.saveNode = (req, res) => {
             console.error(err);
             res.status(500).json({message: 'An error occurred saving the node'});
         } else {
-            if (err) {
-                console.error(err);
-                res.status(500).json({message: 'An error occurred saving the node'});
-            } else {
-                res.json({message: 'Successfully saved the node', data: rObj});
-            }
+            res.json({message: 'Successfully saved the node', data: rObj});
         }
     });
 };
