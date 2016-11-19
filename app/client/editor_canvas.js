@@ -6,9 +6,10 @@ class EditorCanvas {
      * @param domElement The element in the DOM that the editor should be associated with
      * @param sInc distance between lines on the fine grid.
      * @param bInc distance between lines on the main grid.
+     * @param defaultImgURL image URL for ghost node
      * @constructor
      */
-    constructor(domElement, sInc, bInc) {
+    constructor(domElement, sInc, bInc, defaultImgURL) {
         this.domElement_ = domElement;
         this.canvas_ = domElement.getContext('2d');
         this.smallInc_ = sInc; // Number of pixels between each thin grid line.
@@ -16,6 +17,7 @@ class EditorCanvas {
         this.nodes_ = [];
         this.nodeIndex_ = {};
         this.relationships_ = [];
+        this.ghostNode = new Node(0, 0, defaultImgURL);
     }
 
     // public methods
@@ -87,6 +89,30 @@ class EditorCanvas {
             this.nodeIndex_[id] = newNode;
         }
         return newNode;
+    }
+
+    /**
+     * Removes a node and its attached relationships from the editor canvas.
+     * @param node The node to remove.
+     */
+    removeNode(node) {
+        // Remove the node from the lookup.
+        delete this.nodeIndex_[node.id];
+        // Remove the node from the nodes array.
+        for(let i = 0; i < this.nodes_.length; i++) {
+            if(this.nodes_[i].id_ === node.id_) {
+                this.nodes_.splice(i, 1);
+                i--;
+            }
+        }
+        // Remove any relationships that involved this node.
+        for(let i = 0; i < this.relationships_.length; i++) {
+            let relationship = this.relationships_[i];
+            if(relationship.from_ === node.id_ || relationship.to_ === node.id_) {
+                this.relationships_.splice(i, 1);
+                i--;
+            }
+        }
     }
 
     /**

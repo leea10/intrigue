@@ -167,6 +167,34 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    this.updateNode = (nodeID, x, y) => {
+        $http.put('/api/node', {
+            _id: nodeID,
+            x: x,
+            y: y
+        }).then((response) => {
+            console.log(response.data.message);
+            let updatedNode = this.getNode(nodeID);
+            updatedNode.x = x;
+            updatedNode.y = y;
+        });
+    };
+
+    this.deleteNode = (nodeID) => {
+        $http({
+            url: '/api/node',
+            method: 'DELETE',
+            data : {
+                _id : nodeID
+            },
+            headers : {
+                "Content-Type" : "application/json;charset=utf8"
+            }
+        }).then((response) => {
+            console.log(response.data.message);
+        });
+    };
+
     /**
      * @param snapshotID
      * @returns {Array|*} array of relationships in the given snapshot.
@@ -190,19 +218,6 @@ app.service('EditorService', function($http, $location) {
             this.getSnapshot(snapshotID).relationships.push(response.data.data);
             console.log(response.data.message);
             return response.data.data;
-        });
-    };
-
-    this.updateNode = (nodeID, x, y) => {
-        $http.put('/api/node', {
-            _id: nodeID,
-            x: x,
-            y: y
-        }).then((response) => {
-            console.log(response.data.message);
-            let updatedNode = this.getNode(nodeID);
-            updatedNode.x = x;
-            updatedNode.y = y;
         });
     };
 
