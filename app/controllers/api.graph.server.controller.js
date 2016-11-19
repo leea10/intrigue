@@ -69,12 +69,23 @@ exports.updateSnapshot = (req, res) => {
  */
 exports.removeSnapshot = (req, res) => {
     let id = OIDType(req.body._id);
-    Snapshot.remove({_id: id, owner : req.session.uid}, (err, num) => {
+    Snapshot.findOne({_id: id, owner : req.session.uid}, (err, snapshot) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the snapshot'});
         } else {
-            res.json({message: 'Successfully removed the snapshot', data: num});
+            if(snapshot) {
+                snapshot.remove((err, num) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).json({message: 'An error occurred removing the snapshot'});
+                    } else {
+                        res.json({message: 'Successfully removed the snapshot', data: num});
+                    }
+                });
+            } else {
+                res.status(500).json({message: 'Snapshot not found'});
+            }
         }
     });
 };
@@ -136,12 +147,23 @@ exports.updateRelationship = (req, res) => {
  */
 exports.removeRelationship = (req, res) => {
     let id = OIDType(req.body._id);
-    Relationship.remove({_id: id, owner : req.session.uid}, (err, num) => {
+    Relationship.findOne({_id: id, owner : req.session.uid}, (err, relationship) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the relationship'});
         } else {
-            res.json({message: 'Successfully removed the relationship', data: num});
+            if(relationship) {
+                relationship.remove((err, num) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).json({message: 'An error occurred removing the relationship'});
+                    } else {
+                        res.json({message: 'Successfully removed the relationship', data: num});
+                    }
+                });
+            } else {
+                res.status(500).json({message: 'Relationship not found'});
+            }
         }
     });
 };
@@ -199,12 +221,23 @@ exports.updateNode = (req, res) => {
  */
 exports.removeNode = (req, res) => {
     let id = OIDType(req.body._id);
-    Node.remove({_id: id, owner : req.session.uid}, (err, num) => {
+    Node.findOne({_id: id, owner : req.session.uid}, (err, node) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the node'});
         } else {
-            res.json({message: 'Successfully removed the node', data: num});
+            if(node){
+                node.remove((err) => {
+                    if (err) {
+                        console.error(err);
+                        res.status(500).json({message: 'An error occurred removing the node'});
+                    } else {
+                        res.json({message: 'Successfully removed the node', data: num});
+                    }
+                });
+            } else {
+                res.status(500).json({message: 'Node not found'});
+            }
         }
     });
 };
