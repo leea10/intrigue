@@ -34,14 +34,11 @@ app.service('EditorService', function($http, $location) {
             return snapshot;
         }
         // If the lookup misses, search through the snapshot array in story details.
-        let snapshots = this.storyDetails_.snapshots;
-        for(let i = 0; i < snapshots.length; i++){
-            let snapshot = snapshots[i];
-            if(snapshot._id === id){
-                // Add snapshot to the lookup.
-                this.snapshotLookup_[id] = snapshot;
-                return snapshot;
-            }
+        snapshot = this.searchById_(id, this.storyDetails_.snapshots);
+        if(snapshot !== null) {
+            // Cache the found object in the lookup.
+            this.snapshotLookup_[id] = snapshot;
+            return snapshot;
         }
         // Snapshot with given id does not exist in this story.
         return null;
@@ -65,14 +62,11 @@ app.service('EditorService', function($http, $location) {
             return character;
         }
         // If the lookup misses, search through the character array in story details.
-        let characters = this.storyDetails_.characters;
-        for(let i = 0; i < characters.length; i++){
-            let character = characters[i];
-            if(character._id === id){
-                // Add character to the lookup.
-                this.characterLookup_[id] = character;
-                return character;
-            }
+        character = this.searchById_(id, this.storyDetails_.characters);
+        if(character !== null) {
+            // Cache the found object in the lookup.
+            this.characterLookup_[id] = character;
+            return character;
         }
         // Character with given id does not exist in this story.
         return null;
@@ -123,13 +117,12 @@ app.service('EditorService', function($http, $location) {
         }
         // If a snapshotID was provided, restrict the search to the provided snapshot.
         if (snapshotID !== undefined) {
-            let nodes = this.getSnapshot(snapshotID).nodes;
-            for (let i = 0; i < nodes.length; i++) {
-                let node = nodes[i];
-                if (node._id === nodeID) {
-                    this.nodeLookup_[nodeID] = node;
-                    return node;
-                }
+            // If the lookup misses, search through the character array in story details.
+            node = this.searchById_(id, this.getSnapshot(snapshotID).nodes);
+            if(node !== null) {
+                // Cache the found object in the lookup.
+                this.nodeLookup_[nodeID] = node;
+                return node;
             }
         }
         // Last resort, search the rest of the snapshots.
@@ -140,13 +133,12 @@ app.service('EditorService', function($http, $location) {
             if(snapshot._id === snapshotID) {
                 continue;
             }
-            let nodes = snapshot.nodes;
-            for (let j = 0; j < nodes.length; j++) {
-                let node = nodes[j];
-                if (node._id === nodeID) {
-                    this.nodeLookup_[nodeID] = node;
-                    return node;
-                }
+            // If the lookup misses, search through the character array in story details.
+            node = this.searchById_(nodeID, snapshot.nodes);
+            if(node !== null) {
+                // Cache the found object in the lookup.
+                this.nodeLookup_[nodeID] = node;
+                return node;
             }
         }
         // Node with given id does not exist in this story.
@@ -212,5 +204,21 @@ app.service('EditorService', function($http, $location) {
             updatedNode.x = x;
             updatedNode.y = y;
         });
+    };
+
+    /**
+     * @param id The ID of the object we are searching for.
+     * @param arr The array that we are searching through for the object.
+     * @returns {*} Reference to the object, or null if not found.
+     * @private
+     */
+    this.searchById_ = (id, arr) => {
+        for(let i = 0; i < arr.length; i++) {
+            let obj = arr[i];
+            if(obj._id === id){
+                return obj;
+            }
+        }
+        return null;
     };
 });
