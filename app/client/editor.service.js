@@ -1,44 +1,81 @@
 app.service('EditorService', function($http, $location) {
     this.storyId_ = $location.search().id;
-    this.storyDetails_ = null;
-    this.currentSnapshot_ = null;
-    this.characterLookup_ = null;
+    this.storyDetails_ = {};
+    this.characterLookup_ = {};
+    this.snapshotLookup_ = {};
+    this.nodeLookup_ = {};
 
     // Initialization code
     this.initPromise_ = $http.get('/api/story/detail?storyID=' + this.storyId_).then((response) => {
-        // Populate story details
+        // Populate story details.
         this.storyDetails_ = response.data.data;
-        this.characterLookup_ = {};
-        this.nodeLookup_ = {};
-        for(let i = 0; i < this.storyDetails_.characters.length; i++){
-            this.characterLookup_[this.storyDetails_.characters[i]._id] = this.storyDetails_.characters[i];
-        }
-        this.currentSnapshot_ = this.storyDetails_.snapshots[0];
-        console.log('Loading snapshot ' + this.currentSnapshot_._id);
     });
 
+    // THIS IS A TEMPORARY HACK
+    this.getFirstSnapshotID = () => {
+        return this.storyDetails_.snapshots[0]._id;
+    };
+
+    /**
+     * @returns {Promise} A promise that this editor service will initialize.
+     */
     this.init = () => {
         return this.initPromise_;
     };
 
-    this.getCharacter = (id) => {
-        let character = this.characterLookup_[id];
-        if(character !== undefined) {
-            return character;
+    /**
+     * @param id
+     * @returns {*} Snapshot object with the given id.
+     */
+    this.getSnapshot = (id) => {
+        // Checks the snapshot lookup.
+        let snapshot = this.snapshotLookup_[id];
+        if(snapshot !== undefined) {
+            return snapshot;
         }
-        for(let i = 0; i < this.storyDetails_.characters.length; i++){
-            if(this.storyDetails_.characters[i]._id === id){
-                this.characterLookup_[id] = this.storyDetails_.characters[i];
-                return this.storyDetails_.characters[i];
-            }
+        // If the lookup misses, search through the snapshot array in story details.
+        snapshot = this.searchById_(id, this.storyDetails_.snapshots);
+        if(snapshot !== null) {
+            // Cache the found object in the lookup.
+            this.snapshotLookup_[id] = snapshot;
+            return snapshot;
         }
+        // Snapshot with given id does not exist in this story.
         return null;
     };
 
+    /**
+     * @returns {Array|*} An array of all the character objects in this story.
+     */
     this.getCharacters = () => {
         return this.storyDetails_.characters;
     };
 
+    /**
+     * @param id
+     * @returns {*} Character object with given id.
+     */
+    this.getCharacter = (id) => {
+        // Checks the character lookup.
+        let character = this.characterLookup_[id];
+        if(character !== undefined) {
+            return character;
+        }
+        // If the lookup misses, search through the character array in story details.
+        character = this.searchById_(id, this.storyDetails_.characters);
+        if(character !== null) {
+            // Cache the found object in the lookup.
+            this.characterLookup_[id] = character;
+            return character;
+        }
+        // Character with given id does not exist in this story.
+        return null;
+    };
+
+    /**
+     * @param characterObj Character to add to the story.
+     * @returns {Promise}
+     */
     this.addCharacter = (characterObj) => {
         let fData = new FormData();
         for(let property in characterObj) {
@@ -60,62 +97,97 @@ app.service('EditorService', function($http, $location) {
     };
 
     /**
-     * Gets the node in the current snapshot with the given id.
+     * @param snapshotID
+     * @returns {Array|*} array of nodes in the given snapshot.
      */
-    this.getNode = (id) => {
-        let node = this.nodeLookup_[id];
-        if(node !== undefined) {
+    this.getNodes = (snapshotID) => {
+        return this.getSnapshot(snapshotID).nodes;
+    };
+
+    /**
+     * @param nodeID
+     * @param snapshotID [OPTIONAL] heuristic - snapshot that the node might belong to
+     * @returns {*} node object with the given node ID.
+     */
+    this.getNode = (nodeID, snapshotID) => {
+        // First, check the node index.
+        let node = this.nodeLookup_[nodeID];
+        if (node !== undefined) {
             return node;
         }
-        let nodes = this.currentSnapshot_.nodes;
-        for(let i = 0; i < nodes.length; i++){
-            let node = nodes[i];
-            if(node._id === id){
-                this.nodeLookup_[id] = node;
+        // If a snapshotID was provided, restrict the search to the provided snapshot.
+        if (snapshotID !== undefined) {
+            // If the lookup misses, search through the character array in story details.
+            node = this.searchById_(id, this.getSnapshot(snapshotID).nodes);
+            if(node !== null) {
+                // Cache the found object in the lookup.
+                this.nodeLookup_[nodeID] = node;
                 return node;
             }
         }
+        // Last resort, search the rest of the snapshots.
+        let snapshots = this.storyDetails_.snapshots;
+        for (let i = 0; i < snapshots.length; i++) {
+            let snapshot = snapshots[i];
+            // Skipped the snapshot we already checked
+            if(snapshot._id === snapshotID) {
+                continue;
+            }
+            // If the lookup misses, search through the character array in story details.
+            node = this.searchById_(nodeID, snapshot.nodes);
+            if(node !== null) {
+                // Cache the found object in the lookup.
+                this.nodeLookup_[nodeID] = node;
+                return node;
+            }
+        }
+        // Node with given id does not exist in this story.
         return null;
     };
 
-    this.getNodes = () => {
-        return this.currentSnapshot_.nodes;
-    };
-
-    this.getRelationships = () => {
-        return this.currentSnapshot_.relationships;
-    };
-
-    this.addNode = (x, y, characterID) => {
-        let currentSnapshot = this.currentSnapshot_;
+    /**
+     * Adds a new node for the given character to the given snapshot.
+     * @param snapshotID Snapshot this node should be added to.
+     * @param characterID Character that this node represents.
+     * @param x Coordinate of the node on the canvas editor.
+     * @param y Coordinate of the node of the canvas editor.
+     * @returns {Promise}
+     */
+    this.addNode = (snapshotID, characterID, x, y) => {
         return $http.post('/api/node', {
-            snapshot: this.currentSnapshot_._id,
+            snapshot: snapshotID,
             character: characterID,
             x: x,
             y: y
         }).then((response) => {
             console.log(response.data.message);
             let newNode = response.data.data;
-            currentSnapshot.nodes.push(newNode);
-            this.nodeLookup_[newNode._id] = newNode;
+            this.getSnapshot(snapshotID).nodes.push(newNode);
             return newNode;
         });
     };
 
     /**
+     * @param snapshotID
+     * @returns {Array|*} array of relationships in the given snapshot.
+     */
+    this.getRelationships = (snapshotID) => {
+        return this.getSnapshot(snapshotID).relationships;
+    };
+
+    /**
      * Add a relationship to the database
+     * @param snapshotID ID of the snapshot to add the relationship to.
      * @param from ID of the start node
      * @param to ID for the end node
      */
-    this.addRelationship = (from, to) => {
-        console.log(this.currentSnapshot_._id);
-        let currentSnapshot = this.currentSnapshot_;
+    this.addRelationship = (snapshotID, from, to) => {
         return $http.post('/api/relationship', {
-            snapshot: this.currentSnapshot_._id,
+            snapshot: snapshotID,
             start_node: from,
             end_node: to
         }).then((response) => {
-            currentSnapshot.relationships.push(response.data.data);
+            this.getSnapshot(snapshotID).relationships.push(response.data.data);
             console.log(response.data.message);
             return response.data.data;
         });
@@ -132,5 +204,21 @@ app.service('EditorService', function($http, $location) {
             updatedNode.x = x;
             updatedNode.y = y;
         });
+    };
+
+    /**
+     * @param id The ID of the object we are searching for.
+     * @param arr The array that we are searching through for the object.
+     * @returns {*} Reference to the object, or null if not found.
+     * @private
+     */
+    this.searchById_ = (id, arr) => {
+        for(let i = 0; i < arr.length; i++) {
+            let obj = arr[i];
+            if(obj._id === id){
+                return obj;
+            }
+        }
+        return null;
     };
 });

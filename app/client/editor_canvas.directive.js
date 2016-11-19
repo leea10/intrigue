@@ -10,6 +10,29 @@ app.directive('editor', function($window, EditorService) {
                 editorCanvas.changeSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
                 editorCanvas.draw();
             };
+
+            this.currentSnapshot_ = null; // TEMPORARY HACK.
+            this.nodes_ = null; // Holds a reference to current snapshot's nodes.
+            this.relationships_ = null; // Holds a reference to current snapshot's relationships.
+
+            // Initialization
+            EditorService.init().then(() => {
+                this.currentSnapshot_ = EditorService.getFirstSnapshotID(); // TEMPORARY HACK.
+                this.nodes_ = EditorService.getNodes(this.currentSnapshot_);
+                for(let i = 0; i < this.nodes_.length; i++) {
+                    let node = this.nodes_[i];
+                    let character = EditorService.getCharacter(node.character);
+                    let imageUrl = '/images/characters/' + node.character + '.' + character.img_extension;
+                    editorCanvas.addNode(node.x, node.y, imageUrl, node._id);
+                }
+                this.relationships_ = EditorService.getRelationships(this.currentSnapshot_);
+                for(let i = 0; i < this.relationships_.length; i++) {
+                    let relationship = this.relationships_[i];
+                    editorCanvas.addRelationship(relationship.start_node, relationship.end_node);
+                }
+                scope.onResize();
+            });
+
             angular.element($window).on('resize', scope.onResize);
 
             this.placingChar_ = null; // Selected character from the library.
@@ -46,7 +69,7 @@ app.directive('editor', function($window, EditorService) {
                             '/images/characters/' + this.placingChar_._id + '.' + this.placingChar_.img_extension
                         );
                         let savingNode = this.selectedNode_;
-                        EditorService.addNode(event.offsetX, event.offsetY, this.placingChar_._id).then((node) => {
+                        EditorService.addNode(this.currentSnapshot_, this.placingChar_._id, event.offsetX, event.offsetY).then((node) => {
                             editorCanvas.indexNode(node._id, savingNode);
                         });
                         this.selectedNode_.select();
@@ -57,7 +80,7 @@ app.directive('editor', function($window, EditorService) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
                         if (toNode !== null) {
                             editorCanvas.addRelationship(this.selectedNode_.id_, toNode.id_);
-                            EditorService.addRelationship(this.selectedNode_.id_, toNode.id_);
+                            EditorService.addRelationship(this.currentSnapshot_, this.selectedNode_.id_, toNode.id_);
                         }
                     }
                     this.selectedNode_.deselect();
@@ -104,23 +127,6 @@ app.directive('editor', function($window, EditorService) {
 
             element.on('contextmenu', (event) => {
                 event.preventDefault();
-            });
-
-            // Initialization
-            EditorService.init().then(() => {
-                let nodes = EditorService.getNodes();
-                for(let i = 0; i < nodes.length; i++) {
-                    let node = nodes[i];
-                    let character = EditorService.getCharacter(node.character);
-                    let imageUrl = '/images/characters/' + node.character + '.' + character.img_extension;
-                    editorCanvas.addNode(node.x, node.y, imageUrl, node._id);
-                }
-                let relationships = EditorService.getRelationships();
-                for(let i = 0; i < relationships.length; i++) {
-                    let relationship = relationships[i];
-                    editorCanvas.addRelationship(relationship.start_node, relationship.end_node);
-                }
-                scope.onResize();
             });
 
             this.releaseNode_ = () => {
