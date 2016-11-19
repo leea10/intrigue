@@ -44,7 +44,8 @@ app.directive('editor', function($window, EditorService) {
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
                 this.placingChar_ = data.character;
-                editorCanvas.toggleGhostNode(true);
+                let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
+                editorCanvas.toggleGhostNode(true, imageURL);
                 editorCanvas.draw();
             });
 

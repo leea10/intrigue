@@ -54,7 +54,7 @@ class EditorCanvas {
         // Draw the ghost node
         if(this.ghostNode_ !== null) {
             this.canvas_.save();
-            this.canvas_.globalAlpha = 0.2;
+            this.canvas_.globalAlpha = 0.3;
             this.ghostNode_.draw(this.canvas_);
             this.canvas_.restore();
         }
