@@ -5,14 +5,21 @@ const Relationship = schema.Relationship;
 const Node = schema.Node;
 const OIDType = mongoose.Types.ObjectId;
 
+/**
+ * @function Transforms complex objects to basic plain objects
+ * @param {object} obj
+ *   The object to transform
+ * @returns {object}
+ *   The transformed object
+ */
 let pojoify = (obj) => {
-    let pojo = {};
-    for(var trait in obj){
+    let plainObject = {};
+    for(let trait in obj){
         if(obj.hasOwnProperty(trait) && trait != '_id'){
-            pojo[trait] = obj[trait];
+            plainObject[trait] = obj[trait];
         }
     }
-    return pojo;
+    return plainObject;
 };
 
 

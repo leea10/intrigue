@@ -2,6 +2,7 @@ const config = require('config');
 
 // Bring Mongoose into the app
 const mongoose = require('mongoose');
+mongoose.promise = global.Promise;
 
 let mongoPort = config.get('mongo.mongoPort');
 let dbName = config.get('mongo.dbName');
