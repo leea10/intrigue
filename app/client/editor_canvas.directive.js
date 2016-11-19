@@ -6,7 +6,7 @@ app.directive('editor', function($window, EditorService) {
             let editorCanvas = new EditorCanvas(element[0], 10, 100);
             let canvasContainer = element.parent()[0];
 
-            scope.onResize = function() {
+            this.onResize_ = function() {
                 editorCanvas.changeSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
                 editorCanvas.draw();
             };
@@ -30,10 +30,10 @@ app.directive('editor', function($window, EditorService) {
                     let relationship = this.relationships_[i];
                     editorCanvas.addRelationship(relationship.start_node, relationship.end_node);
                 }
-                scope.onResize();
+                this.onResize_();
             });
 
-            angular.element($window).on('resize', scope.onResize);
+            angular.element($window).on('resize', this.onResize_);
 
             this.placingChar_ = null; // Selected character from the library.
             this.dragging_ = false;

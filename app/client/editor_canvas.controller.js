@@ -1,7 +1,6 @@
 app.controller('EditorCanvasController', function($scope, EditorService) {
     this.currentSnapshot_ = null;
     $scope.nodes = [];
-    $scope.nodeIndex_ = {};
     $scope.relationships = [];
 
     // Initialization
