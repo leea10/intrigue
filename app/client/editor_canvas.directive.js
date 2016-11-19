@@ -51,6 +51,7 @@ app.directive('editor', function($window, EditorService) {
             });
 
             scope.$on('contextmenu:removeNode', () => {
+                EditorService.deleteNode(this.selectedNode_.id_);
                 editorCanvas.removeNode(this.selectedNode_);
                 editorCanvas.draw();
             });
