@@ -101,12 +101,22 @@ exports.updateStory = (req, res) => {
  */
 exports.removeStory = (req, res) => {
     let id = OIDType(req.body._id);
-    Story.remove({ _id : id, author : req.session.uid}, (err, num) => {
+    Story.findOne({ _id : id, author : req.session.uid}, (err, story) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the story'});
         } else {
-            res.json({message: 'Successfully removed the story', data: num});
+            if(story){
+                story.remove((err, num) => {
+                    if(err){
+                        res.status(500).json({message: 'An error occurred removing the story'});
+                    } else {
+                        res.json({message: 'Successfully removed the story', data: num});
+                    }
+                });
+            } else {
+                res.status(500).json({message: 'No story found'});
+            }
         }
     });
 };
@@ -251,12 +261,22 @@ exports.updateCharacter = (req, res) => {
  */
 exports.removeCharacter = (req, res) => {
     let id = OIDType(req.body._id);
-    Character.remove({_id: id, owner : req.session.uid}, (err, num) => {
+    Character.findOne({_id: id, owner : req.session.uid}, (err, character) => {
         if (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred removing the character'});
         } else {
-            res.json({message: 'Successfully removed the character', data: num});
+            if(character){
+                character.remove((err, num) => {
+                    if(err) {
+                        res.status(500).json({message: 'An error occurred removing the character'});
+                    } else {
+                        res.json({message: 'Successfully removed the character', data: num});
+                    }
+                });
+            } else {
+                res.status(500).json({message: 'No character found'});
+            }
         }
     });
 };
