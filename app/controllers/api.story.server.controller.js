@@ -8,22 +8,34 @@ const Tag = schema.Tag;
 const path = require('path');
 const appDir = path.dirname(require.main.filename);
 
+/**
+ * @function Transforms complex objects to basic plain objects
+ * @param {object} obj
+ *   The object to transform
+ * @returns {object}
+ *   The transformed object
+ */
 let pojoify = (obj) => {
-    let pojo = {};
-    for(var trait in obj){
+    let plainObject = {};
+    for(let trait in obj){
         if(obj.hasOwnProperty(trait) && trait != '_id'){
-            pojo[trait] = obj[trait];
+            plainObject[trait] = obj[trait];
         }
     }
-    return pojo;
+    return plainObject;
 };
 
 /**
  * @function Endpoint for saving a new story
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - title : String
+ *   - img_extension : String
+ *   - description : String
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.saveStory = (req, res) => {
     let sObj = req.body;
@@ -62,9 +74,16 @@ exports.saveStory = (req, res) => {
 /**
  * @function Endpoint updating an existing story
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - possible fields:
+ *   - title : String
+ *   - img_extension : String
+ *   - description : String
+ *   - characters : [ObjectId]
+ *   - snapshots : [ObjectId]
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.updateStory = (req, res) => {
     let sObj = req.body;
@@ -95,9 +114,12 @@ exports.updateStory = (req, res) => {
 /**
  * @function Endpoint removing an existing story
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - _id : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.removeStory = (req, res) => {
     let id = OIDType(req.body._id);
@@ -124,9 +146,11 @@ exports.removeStory = (req, res) => {
 /**
  * @function Endpoint for getting all stories owned by the currently logged in user
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.getStories = (req, res) => {
     let userID = req.session.uid;
@@ -143,9 +167,12 @@ exports.getStories = (req, res) => {
 /**
  * @function Endpoint for getting details for a supplied story id
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - storyId : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.getStoryDetails = function (req, res) {
     let storyID = OIDType(req.query.storyID);
@@ -187,9 +214,18 @@ exports.getStoryDetails = function (req, res) {
 /**
  * @function Endpoint for saving a new character
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - name : String
+ *   - age : Number
+ *   - description : String
+ *   - history : String
+ *   - personality : String
+ *   - img_extension : String
+ *   - story : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.saveCharacter = function (req, res) {
     let cObj = req.body;
@@ -226,9 +262,19 @@ exports.saveCharacter = function (req, res) {
 /**
  * @function Endpoint for updating an existing character
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - possible fields:
+ *   - name : String
+ *   - age : Number
+ *   - description : String
+ *   - history : String
+ *   - personality : String
+ *   - img_extension : String
+ *   - story : ObjectId
+ *   - tags : [ObjectId]
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.updateCharacter = (req, res) => {
     let cObj = req.body;
@@ -255,9 +301,12 @@ exports.updateCharacter = (req, res) => {
 /**
  * @function Endpoint for removing an existing character
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - _id : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.removeCharacter = (req, res) => {
     let id = OIDType(req.body._id);
@@ -284,9 +333,12 @@ exports.removeCharacter = (req, res) => {
 /**
  * @function Endpoint for adding a tag to an existing story
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - storyId : ObjectId
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response - JSON object contains fields:
+ *   - message : String
+ *   - data : Object
  */
 exports.addTagToStory = (req, res) => {
     let storyId = OIDType(req.body.storyId);
