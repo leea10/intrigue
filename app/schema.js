@@ -124,7 +124,7 @@ const RelationshipSchema = new mongoose.Schema({
 //Before a relationship is removed, update its references in its parent snapshot
 RelationshipSchema.pre('remove', function(next){
     Snapshot.findByIdAndUpdate(this.snapshot, {$pull : {'relationships' : this._id}}).exec();
-    next()
+    next();
 });
 
 //After a relationship is saved, create its reference in its parent snapshot
