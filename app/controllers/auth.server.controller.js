@@ -5,17 +5,19 @@ const saltRounds = config.get('saltRounds');
 
 
 /**
- * Function to validate user registration inputs
- *
+ * @function Function to validate user registration inputs
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - name : String
+ *   - password : String
+ *   - email : String
  */
 let validateInputs = (req) =>{
     if(!req.body.name || req.body.name === ''){
         req.session.message = 'Please enter a valid name';
         return false;
     }
-    if(!req.body.password || req.body.password === ''){
+    if(!req.body.password || req.body.password === '' || req.body.password.length < 8){
         req.session.message = 'Please enter a valid password';
         return false;
     }
@@ -29,12 +31,14 @@ let validateInputs = (req) =>{
 };
 
 /**
- * Backend endpoint for registering a user
- *
+ * @function Backend endpoint for registering a user
  * @param {object} req
- *   The express HTTP request containing the information required for the function
+ *   The express HTTP request - should contain fields:
+ *   - name : String
+ *   - password : String
+ *   - email : String
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response object
  */
 exports.register = (req, res) => {
     if(!validateInputs(req)){
@@ -69,12 +73,13 @@ exports.register = (req, res) => {
 };
 
 /**
- * Backend endpoint for logging a user in
- *
+ * @function Backend endpoint for logging a user in
  * @param {object} req
- *   The express HTTP request containing the information require for the function
+ *   The express HTTP request - should contain fields:
+ *   - password : String
+ *   - email : String
  * @param {object} res
- *   The express HTTP response to be sent back to the requester
+ *   The express HTTP response object
  */
 exports.login = (req, res) => {
     let email = req.body.email;
@@ -122,8 +127,7 @@ exports.logout = (req, res) => {
 };
 
 /**
- * Backend endpoint for validating a users session
- *
+ * @function Backend endpoint for validating a users session
  * @param {object} req
  *   The express HTTP request containing the information require for the function
  * @param {object} res
@@ -140,9 +144,8 @@ exports.isLoggedIn = (req, res, next) => {
 };
 
 /**
- * Function which redirects a user to the dashboard from the index if they are
- * already logged in.
- *
+ * @function Function which redirects a user to the dashboard from the index if they are
+ *           already logged in.
  * @param {object} req
  *   The express HTTP request containing the information require for the function
  * @param {object} res

@@ -1,9 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 const graphAPI = require('../controllers/api.graph.server.controller.js');
 const storyAPI = require('../controllers/api.story.server.controller.js');
 
+/**
+ * @function Renders the dashboard page
+ * @param {object} req
+ *   The express HTTP request
+ * @param {object} res
+ *   The express HTTP response
+ * @param {function} next
+ *   The next middleware in the execution chain
+ */
 router.use((req, res, next) => {
     if(req.session && req.session.uid) {
         next();
@@ -13,7 +22,7 @@ router.use((req, res, next) => {
     }
 });
 
-//API
+//Defines the routes for the API calls
 router.get('/story/owned', storyAPI.getStories);
 router.get('/story/detail', storyAPI.getStoryDetails);
 
