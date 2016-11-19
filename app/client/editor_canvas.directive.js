@@ -3,7 +3,7 @@ app.directive('editor', function($window, EditorService) {
         restrict: 'A',
         link: function(scope, element) {
             // Initialization
-            let editorCanvas = new EditorCanvas(element[0], 10, 100);
+            let editorCanvas = new EditorCanvas(element[0], 10, 100, '/images/characters/');
             let canvasContainer = element.parent()[0];
 
             scope.onResize = function() {
@@ -48,6 +48,12 @@ app.directive('editor', function($window, EditorService) {
 
             scope.$on('contextmenu:addRelationship', () => {
                 this.placingRelationship_ = true;
+            });
+
+            scope.$on('contextmenu:removeNode', () => {
+                EditorService.deleteNode(this.selectedNode_.id_);
+                editorCanvas.removeNode(this.selectedNode_);
+                editorCanvas.draw();
             });
 
             element.on('mousedown', (event) => {
