@@ -227,7 +227,7 @@ exports.removeNode = (req, res) => {
             res.status(500).json({message: 'An error occurred removing the node'});
         } else {
             if(node){
-                node.remove((err) => {
+                node.remove((err, num) => {
                     if (err) {
                         console.error(err);
                         res.status(500).json({message: 'An error occurred removing the node'});
