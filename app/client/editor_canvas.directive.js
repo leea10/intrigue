@@ -18,7 +18,6 @@ app.directive('editor', function($window, EditorService) {
             // Initialization
             EditorService.init().then(() => {
                 this.currentSnapshot_ = EditorService.getFirstSnapshotID(); // TEMPORARY HACK.
-                console.log(this.currentSnapshot_);
                 this.nodes_ = EditorService.getNodes(this.currentSnapshot_);
                 for(let i = 0; i < this.nodes_.length; i++) {
                     let node = this.nodes_[i];
