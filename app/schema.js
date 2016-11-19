@@ -150,8 +150,9 @@ const NodeSchema = new mongoose.Schema({
 });
 
 NodeSchema.pre('remove', function(next){
-    Snapshot.findByIdAndUpdate(this.snapshot, {$pull : {'nodes' : this._id}}).exec();
+    Snapshot.update({_id : this.snapshot}, {$pull : {'nodes' : this._id}}).exec();
     Relationship.remove({ $or:[ {'start_node':this._id}, {'end_node':this._id} ] }).exec();
+    next();
 });
 
 NodeSchema.post('save', function(doc, next){
