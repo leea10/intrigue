@@ -50,6 +50,11 @@ app.directive('editor', function($window, EditorService) {
                 this.placingRelationship_ = true;
             });
 
+            scope.$on('contextmenu:removeNode', () => {
+                editorCanvas.removeNode(this.selectedNode_);
+                editorCanvas.draw();
+            });
+
             element.on('mousedown', (event) => {
                 event.preventDefault();
                 // Deselect the currently selected node.

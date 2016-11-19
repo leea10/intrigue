@@ -90,6 +90,30 @@ class EditorCanvas {
     }
 
     /**
+     * Removes a node and its attached relationships from the editor canvas.
+     * @param node The node to remove.
+     */
+    removeNode(node) {
+        // Remove the node from the lookup.
+        delete this.nodeIndex_[node.id];
+        // Remove the node from the nodes array.
+        for(let i = 0; i < this.nodes_.length; i++) {
+            if(this.nodes_[i].id_ === node.id_) {
+                this.nodes_.splice(i, 1);
+                i--;
+            }
+        }
+        // Remove any relationships that involved this node.
+        for(let i = 0; i < this.relationships_.length; i++) {
+            let relationship = this.relationships_[i];
+            if(relationship.from_ === node.id_ || relationship.to_ === node.id_) {
+                this.relationships_.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    /**
      * adds node to index under a unique id
      * @param id
      * @param node
