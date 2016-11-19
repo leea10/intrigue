@@ -46,6 +46,7 @@ app.directive('editor', function($window, EditorService) {
                 this.placingChar_ = data.character;
                 let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
                 editorCanvas.toggleGhostNode(true, imageURL);
+                element.css('cursor', 'none');
                 editorCanvas.draw();
             });
 
@@ -85,6 +86,7 @@ app.directive('editor', function($window, EditorService) {
                     } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
                     editorCanvas.toggleGhostNode(false);
+                    element.css('cursor', 'initial');
                 } else if(this.placingRelationship_ === true) {
                     if(event.button === 0) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
