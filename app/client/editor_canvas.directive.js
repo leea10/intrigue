@@ -52,6 +52,10 @@ app.directive('editor', function($window, EditorService) {
 
             scope.$on('contextmenu:addRelationship', () => {
                 this.placingRelationship_ = true;
+                let node = this.selectedNode_;
+                editorCanvas.toggleGhostEdge(true, node.id_, node.x_, node.y_);
+                element.css('cursor', 'none');
+                editorCanvas.draw();
             });
 
             scope.$on('contextmenu:removeNode', () => {
@@ -98,6 +102,8 @@ app.directive('editor', function($window, EditorService) {
                     this.selectedNode_.deselect();
                     this.selectedNode_ = null;
                     this.placingRelationship_ = null;
+                    editorCanvas.toggleGhostEdge(false);
+                    element.css('cursor', 'initial');
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
@@ -127,6 +133,9 @@ app.directive('editor', function($window, EditorService) {
                } else if (this.placingChar_ !== null) {
                    editorCanvas.ghostNode_.x_ = event.offsetX;
                    editorCanvas.ghostNode_.y_ = event.offsetY;
+                   editorCanvas.draw();
+               } else if (this.placingRelationship_ === true) {
+                   editorCanvas.moveGhostEdge(event.offsetX, event.offsetY);
                    editorCanvas.draw();
                }
             });
