@@ -28,11 +28,12 @@
                 <form role="form">
                     <image-input>
                         <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
-                        <input type="file" accept="image/*" name="image">
+                        <input type="file" accept="image/*" name="newImage">
                     </image-input>
-                    <input type="text" name="name" ng-model="character.name" placeholder="Name">
-                    <input type="text" name="age" ng-model="character.age" placeholder="Age">
-                    <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
+                    <span class="error-message">{{ newErrorMsg }}</span>
+                    <input type="text" name="name" ng-model="newCharacter.name" placeholder="Name">
+                    <input type="text" name="age" ng-model="newCharacter.age" placeholder="Age">
+                    <textarea type="text" rows="6" name="description" ng-model="newCharacter.description" placeholder="Blurb"></textarea>
                 </form>
                 <div class="footer">
                     <button ng-click="addCharacter()" class="create-btn"> Create </button>
@@ -65,6 +66,7 @@
                              default_img="/images/characters/{{character._id}}.{{character.img_extension}}"/>
                         <input type="file" accept="image/*" name="image">
                     </image-input>
+                    <span class="error-message">{{ errorMsg }}</span>
                     <input type="text" name="name" ng-model="character.name" placeholder="Name">
                     <input type="text" name="age" ng-model="character.age" placeholder="Age">
                     <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
