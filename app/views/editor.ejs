@@ -3,11 +3,11 @@
 <%- contentFor('stylesheets') %>
     <link rel="stylesheet" href="/css/editor.css"/>
 <%- contentFor('scripts') %>
+    <script type="text/javascript" src="/js/filters-compiled.js"></script>
     <script type="text/javascript" src="/js/editor_canvas-compiled.js"></script>
     <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
     <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
-    <script type="text/javascript" src="/js/character.controller-compiled.js"></script>
     <script type="text/javascript" src="/js/context_menu.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
 <%- contentFor('body') %>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="characters">
                     <div ng-repeat="character in characters" class="character" ng-click="selectCharacter(character)">
-                        <img ng-src="/images/characters/{{character._id}}.{{character.img_extension}}"/>
+                        <img ng-src="{{'/images/characters/' + character._id + '.' + character.img_extension | decache }}"/>
                         {{ character.name }}
                     </div>
                     <span class="message" ng-show="characters.length === 0">
@@ -61,7 +61,7 @@
                 <form role="form">
                     <image-input>
                         <img class="preview-img"
-                             ng-src="/images/characters/{{character._id}}.{{character.img_extension}}"
+                             ng-src="{{ '/images/characters/' + character._id + '.' + character.img_extension | decache }}"
                              default_img="/images/characters/{{character._id}}.{{character.img_extension}}"/>
                         <input type="file" accept="image/*" name="image">
                     </image-input>
