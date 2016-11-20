@@ -97,6 +97,18 @@ class EditorCanvas {
     }
 
     /**
+     * Moves the ghost node to x,y.
+     * @param x
+     * @param y
+     */
+    moveGhostNode(x, y) {
+        if(this.ghostNode_ !== null) {
+            this.ghostNode_.x_ = x;
+            this.ghostNode_.y_ = y;
+        }
+    }
+
+    /**
      * Sets the ghost edge
      * @param isVisible
      * @param startNode The node that the edge will start at.
