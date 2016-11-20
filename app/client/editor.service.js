@@ -108,7 +108,8 @@ app.service('EditorService', function($http, $location) {
             }
         }
         if (characterObj.image !== undefined) {
-            fData.append('img_extension', characterObj.image.name.split('.')[1]);
+            characterObj.img_extension = characterObj.image.name.split('.')[1];
+            fData.append('img_extension', characterObj.img_extension);
         }
         fData.append('owner', this.storyDetails_.author);
         fData.append('story', this.storyDetails_._id);

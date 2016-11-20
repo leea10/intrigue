@@ -9,7 +9,7 @@ app.controller('ToolbarController', ($scope, EditorService) => {
 
     $scope.onToolClick = (toolName) => {
         if($scope.activeTool === toolName) {
-            $scope.setActiveTool(null);
+            $scope.onClose();
         } else {
             $scope.setActiveTool(toolName);
         }
@@ -50,7 +50,8 @@ app.controller('ToolbarController', ($scope, EditorService) => {
     };
 
     $scope.$on('editCharacter', (_, data) => {
-        $scope.character = EditorService.getCharacter(data.id);
+        // Make a deep copy of the given character reference, so we don't accidentally override when editing.
+        $scope.character = JSON.parse(JSON.stringify(EditorService.getCharacter(data.id)));
         $scope.setActiveTool('editChar');
     });
 
