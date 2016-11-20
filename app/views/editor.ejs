@@ -60,7 +60,7 @@
                 </div>
                 <form role="form">
                     <image-input>
-                        <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
+                        <img class="preview-img" src="/images/characters/" default_img="/images/characters/{{character._id}}.{{character.img_extension}}"/>
                         <input type="file" accept="image/*" name="image">
                     </image-input>
                     <input type="text" name="name" ng-model="character.name" placeholder="Name">

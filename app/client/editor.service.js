@@ -107,8 +107,9 @@ app.service('EditorService', function($http, $location) {
                 }
             }
         }
-        let imgExtension = characterObj.image ? characterObj.image.name.split('.')[1] : '';
-        fData.append('img_extension', imgExtension);
+        if (characterObj.image !== undefined) {
+            fData.append('img_extension', characterObj.image.name.split('.')[1]);
+        }
         fData.append('owner', this.storyDetails_.author);
         fData.append('story', this.storyDetails_._id);
         return $http.put('/api/character', fData, {
