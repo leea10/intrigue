@@ -74,11 +74,13 @@ app.directive('editor', function($window, EditorService) {
             scope.$on('editCharacterSuccessful', (_, data) => {
                 if(data.changedImage) {
                     let characterNode = getCharNode(data.id);
-                    let imgExt = EditorService.getCharacter(data.id).img_extension;
-                    let imgURL = 'images/characters/' + data.id + '.' + imgExt;
-                    editorCanvas.getNodeById(characterNode._id).reloadImage(imgURL).then(() => {
-                        editorCanvas.draw();
-                    });
+                    if (characterNode) {
+                        let imgExt = EditorService.getCharacter(data.id).img_extension;
+                        let imgURL = 'images/characters/' + data.id + '.' + imgExt;
+                        editorCanvas.getNodeById(characterNode._id).reloadImage(imgURL).then(() => {
+                            editorCanvas.draw();
+                        });
+                    }
                 }
             });
 
