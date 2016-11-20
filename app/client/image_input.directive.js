@@ -24,6 +24,7 @@ app.directive('imageInput', () => {
         this.clear = () => {
             input.value = '';
             preview.src = preview.attributes.default_img.nodeValue;
+            scope[input.name] = null;
         };
     };
 });

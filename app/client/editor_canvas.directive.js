@@ -14,6 +14,7 @@ app.directive('editor', function($window, EditorService) {
             this.currentSnapshot_ = null; // TEMPORARY HACK.
             this.nodes_ = null; // Holds a reference to current snapshot's nodes.
             this.relationships_ = null; // Holds a reference to current snapshot's relationships.
+            let characterLookup_ = {}; // A mapping of character IDs to node on this snapshot.
 
             // Initialization
             EditorService.init().then(() => {
@@ -68,6 +69,17 @@ app.directive('editor', function($window, EditorService) {
                 EditorService.deleteNode(this.selectedNode_.id_);
                 editorCanvas.removeNode(this.selectedNode_);
                 editorCanvas.draw();
+            });
+
+            scope.$on('editCharacterSuccessful', (_, data) => {
+                if(data.changedImage) {
+                    let characterNode = getCharNode(data.id);
+                    let imgExt = EditorService.getCharacter(data.id).img_extension;
+                    let imgURL = 'images/characters/' + data.id + '.' + imgExt;
+                    editorCanvas.getNodeById(characterNode._id).reloadImage(imgURL).then(() => {
+                        editorCanvas.draw();
+                    });
+                }
             });
 
             element.on('mousedown', (event) => {
@@ -166,6 +178,22 @@ app.directive('editor', function($window, EditorService) {
                     EditorService.updateNode(node.id_, node.x_, node.y_);
                 }
                 this.draggedNode_ = null;
+            };
+
+            let getCharNode = (charID) => {
+                let node = characterLookup_[charID];
+                if (node !== undefined) {
+                    return node;
+                }
+                for (let i = 0; i < this.nodes_.length; i++) {
+                    let node = this.nodes_[i];
+                    if (node.character === charID) {
+                        characterLookup_[charID] = node;
+                        return node;
+                    }
+                }
+                console.log('nope not found');
+                return null;
             };
         }
     };
