@@ -70,6 +70,10 @@ app.controller('ToolbarController', ($scope, EditorService) => {
                 $scope.character.image = $scope.image[0];
             }
             EditorService.editCharacter($scope.character).then(() => {
+                $scope.$broadcast('editCharacterSuccessful', {
+                    id: $scope.character._id,
+                    changedImage: !!$scope.image
+                });
                 $scope.character = null;
                 $scope.setActiveTool(null);
                 $scope.$broadcast('formSubmit');

@@ -8,6 +8,7 @@
     <script type="text/javascript" src="/js/editor_canvas.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/editor.service-compiled.js"></script>
     <script type="text/javascript" src="/js/toolbar.controller-compiled.js"></script>
+    <script type="text/javascript" src="/js/character.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/context_menu.directive-compiled.js"></script>
     <script type="text/javascript" src="/js/image_input.directive-compiled.js"></script>
 <%- contentFor('body') %>
@@ -45,8 +46,9 @@
                     <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
                 <div class="characters">
-                    <div ng-repeat="character in characters" class="character" ng-click="selectCharacter(character)">
-                        <img ng-src="{{'/images/characters/' + character._id + '.' + character.img_extension | decache }}"/>
+                    <div ng-repeat="character in characters" ng-click="selectCharacter(character)"
+                         class="character" character>
+                        <img ng-src="{{ character.image_url }}"/>
                         {{ character.name }}
                     </div>
                     <span class="message" ng-show="characters.length === 0">
