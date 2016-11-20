@@ -18,9 +18,12 @@ app.directive('imageInput', () => {
             }
         });
 
-        scope.$on('formSubmit', () => {
+        scope.$on('formSubmit', this.clear);
+        scope.$on('formClose', this.clear);
+
+        this.clear = () => {
             input.value = '';
             preview.src = preview.attributes.default_img.nodeValue;
-        });
+        };
     };
 });
