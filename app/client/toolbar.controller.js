@@ -25,7 +25,7 @@ app.controller('ToolbarController', ($scope, EditorService) => {
         $scope.activeTool = toolName;
     };
 
-    $scope.saveCharacter = () => {
+    $scope.addCharacter = () => {
         $scope.errorMsg = null;
         if(!$scope.character.name) {
             $scope.errorMsg = 'Please enter a character name';
@@ -53,4 +53,21 @@ app.controller('ToolbarController', ($scope, EditorService) => {
         $scope.character = EditorService.getCharacter(data.id);
         $scope.setActiveTool('editChar');
     });
+
+    $scope.saveCharacter = () => {
+        $scope.errorMsg = null;
+        if(!$scope.character.name) {
+            $scope.errorMsg = 'Please enter a character name';
+        }
+        if(!$scope.errorMsg){
+            if($scope.image) {
+                $scope.character.image = $scope.image[0];
+            }
+            EditorService.editCharacter($scope.character).then(() => {
+                $scope.character = null;
+                $scope.setActiveTool(null);
+                $scope.$broadcast('formSubmit');
+            });
+        }
+    };
 });
