@@ -31,7 +31,7 @@ app.controller('ToolbarController', ($scope, EditorService) => {
     };
 
     $scope.addCharacter = () => {
-        $scope.errorMsg = null;
+        $scope.newErrorMsg = null;
         if(!$scope.newCharacter || !$scope.newCharacter.name) {
             $scope.newErrorMsg = 'Please enter a character name';
         }
