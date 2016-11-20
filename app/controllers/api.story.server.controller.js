@@ -1,3 +1,4 @@
+const fs = require('fs');
 const mongoose = require('mongoose');
 const schema = require('./../schema');
 const OIDType = mongoose.Types.ObjectId;
@@ -278,6 +279,8 @@ exports.saveCharacter = function (req, res) {
  */
 exports.updateCharacter = (req, res) => {
     let cObj = req.body;
+    if(cObj.tags)
+        cObj.tags = JSON.parse(cObj.tags);
     Character.update({_id: OIDType(cObj._id), owner : req.session.uid}, {$set: pojoify(cObj)}, (err, rObj) => {
         if (err) {
             console.error(err);
@@ -285,11 +288,15 @@ exports.updateCharacter = (req, res) => {
         } else {
             if(req.files){
                 let characterImg = req.files.image;
-                characterImg.mv(`${appDir}/public/images/characters/${cObj._id}.${characterImg.name.split('.')[1]}`, (err) => {
-                    if(err){
-                        console.error(err);
-                    }
-                    res.json({message: 'Successfully saved the character', data: rObj});
+                require('glob').glob(`${appDir}/public/images/characters/${cObj._id}.*`,  (err, files) => {
+                    if(files)
+                        files.map((path) => {fs.unlinkSync(path)});
+                    characterImg.mv(`${appDir}/public/images/characters/${cObj._id}.${characterImg.name.split('.')[1]}`, (err) => {
+                        if(err){
+                            console.error(err);
+                        }
+                        res.json({message: 'Successfully saved the character', data: rObj});
+                    });
                 });
             } else {
                 res.json({message: 'Successfully saved the character', data: rObj});

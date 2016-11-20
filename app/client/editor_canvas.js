@@ -135,6 +135,10 @@ class EditorCanvas {
         }
     }
 
+    getNodeById(id) {
+        return this.nodeIndex_[id];
+    }
+
     /**
      * Adds a node of radius r at absolute position (x, y).
      * @param id
@@ -244,10 +248,24 @@ class EditorCanvas {
         this.img_.src = imgUrl;
     }
 
+    /**
+     * @returns {Promise} A promise that will resolve when the image is loaded.
+     */
     imageLoaded() {
         return new Promise((resolve) => {
             this.img_.onload = resolve;
         });
+    }
+
+    /**
+     * Reloads image drawn on the node.
+     * @param {string} newURL The URL of the new image to load.
+     * @returns {Promise} A promise that will resolve when the image is loaded.
+     */
+    reloadImage(newURL) {
+        this.img_ = new Image();
+        this.img_.src = newURL + '?' + new Date().getTime();
+        return this.imageLoaded();
     }
 
     draw(ctx) {

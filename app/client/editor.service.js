@@ -96,6 +96,37 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    this.editCharacter = (characterObj) => {
+        let fData = new FormData();
+        for(let property in characterObj) {
+            if(characterObj.hasOwnProperty(property)) {
+                if(property === 'tags') {
+                    fData.append(property, JSON.stringify(characterObj[property]));
+                } else {
+                    fData.append(property, characterObj[property]);
+                }
+            }
+        }
+        if (characterObj.image !== undefined) {
+            characterObj.img_extension = characterObj.image.name.split('.')[1];
+            fData.append('img_extension', characterObj.img_extension);
+        }
+        fData.append('owner', this.storyDetails_.author);
+        fData.append('story', this.storyDetails_._id);
+        return $http.put('/api/character', fData, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
+        }).then((response) => {
+            console.log(response.data.message);
+            let character = this.getCharacter(characterObj._id);
+            for(let property in characterObj) {
+                if(characterObj.hasOwnProperty(property)) {
+                    character[property] = characterObj[property];
+                }
+            }
+        });
+    };
+
     /**
      * @param snapshotID
      * @returns {Array|*} array of nodes in the given snapshot.
