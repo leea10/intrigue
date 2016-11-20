@@ -44,10 +44,24 @@ app.directive('editor', function($window, EditorService) {
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
                 this.placingChar_ = data.character;
+                let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
+                editorCanvas.toggleGhostNode(true, imageURL);
+                element.css('cursor', 'none');
+                editorCanvas.draw();
             });
 
             scope.$on('contextmenu:addRelationship', () => {
                 this.placingRelationship_ = true;
+                let node = this.selectedNode_;
+                editorCanvas.toggleGhostEdge(true, node.id_, node.x_, node.y_);
+                element.css('cursor', 'none');
+                editorCanvas.draw();
+            });
+
+            scope.$on('contextmenu:removeNode', () => {
+                EditorService.deleteNode(this.selectedNode_.id_);
+                editorCanvas.removeNode(this.selectedNode_);
+                editorCanvas.draw();
             });
 
             element.on('mousedown', (event) => {
@@ -75,6 +89,8 @@ app.directive('editor', function($window, EditorService) {
                         this.selectedNode_.select();
                     } // Any other button pressed will merely cancel the action.
                     this.placingChar_ = null;
+                    editorCanvas.toggleGhostNode(false);
+                    element.css('cursor', 'initial');
                 } else if(this.placingRelationship_ === true) {
                     if(event.button === 0) {
                         let toNode = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
@@ -86,6 +102,8 @@ app.directive('editor', function($window, EditorService) {
                     this.selectedNode_.deselect();
                     this.selectedNode_ = null;
                     this.placingRelationship_ = null;
+                    editorCanvas.toggleGhostEdge(false);
+                    element.css('cursor', 'initial');
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
@@ -111,6 +129,12 @@ app.directive('editor', function($window, EditorService) {
             element.on('mousemove', (event) => {
                if(this.dragging_ === true && this.draggedNode_ !== null) {
                    this.draggedNode_.move(event.movementX, event.movementY);
+                   editorCanvas.draw();
+               } else if (this.placingChar_ !== null) {
+                   editorCanvas.moveGhostNode(event.offsetX, event.offsetY);
+                   editorCanvas.draw();
+               } else if (this.placingRelationship_ === true) {
+                   editorCanvas.moveGhostEdge(event.offsetX, event.offsetY);
                    editorCanvas.draw();
                }
             });

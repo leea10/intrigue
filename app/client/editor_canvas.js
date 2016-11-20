@@ -6,6 +6,7 @@ class EditorCanvas {
      * @param domElement The element in the DOM that the editor should be associated with
      * @param sInc distance between lines on the fine grid.
      * @param bInc distance between lines on the main grid.
+     * @param defaultImgURL image URL for ghost node
      * @constructor
      */
     constructor(domElement, sInc, bInc) {
@@ -16,9 +17,10 @@ class EditorCanvas {
         this.nodes_ = [];
         this.nodeIndex_ = {};
         this.relationships_ = [];
+        this.ghostNode_ = null;
+        this.ghostEdge_ = null;
     }
 
-    // public methods
     /**
      * Changes the editor canvas's dimensions to (width, height).
      * @param width in pixels.
@@ -30,7 +32,7 @@ class EditorCanvas {
     }
 
     draw() {
-        // Clear the background
+        // Clear the background.
         this.canvas_.fillStyle = '#171717';
         this.canvas_.fillRect(0, 0, this.width(), this.height());
         this.drawGrid_();
@@ -46,9 +48,24 @@ class EditorCanvas {
                 {x: toNode.x_, y: toNode.y_}
             );
         }
-        // Draw the nodes
+        // Draw the ghost edge.
+        if(this.ghostEdge_ !== null) {
+            let startNode = this.nodeIndex_[this.ghostEdge_.startNode];
+            this.drawLine_(
+                {x: startNode.x_, y: startNode.y_},
+                {x: this.ghostEdge_.x, y: this.ghostEdge_.y}
+            );
+        }
+        // Draw the nodes.
         for(let i = 0; i < this.nodes_.length; i++) {
             this.nodes_[i].draw(this.canvas_);
+        }
+        // Draw the ghost node.
+        if(this.ghostNode_ !== null) {
+            this.canvas_.save();
+            this.canvas_.globalAlpha = 0.3;
+            this.ghostNode_.draw(this.canvas_);
+            this.canvas_.restore();
         }
     }
 
@@ -70,6 +87,55 @@ class EditorCanvas {
     }
 
     /**
+     * Sets the ghost node
+     * @param isVisible
+     * @param imageURL The image the ghost node should have.
+     */
+    toggleGhostNode(isVisible, imageURL) {
+        imageURL = imageURL === undefined ? '/images/characters/' : imageURL;
+        this.ghostNode_ = isVisible ? new Node(100, 100, imageURL) : null;
+    }
+
+    /**
+     * Moves the ghost node to x,y.
+     * @param x
+     * @param y
+     */
+    moveGhostNode(x, y) {
+        if(this.ghostNode_ !== null) {
+            this.ghostNode_.x_ = x;
+            this.ghostNode_.y_ = y;
+        }
+    }
+
+    /**
+     * Sets the ghost edge
+     * @param isVisible
+     * @param startNode The node that the edge will start at.
+     * @param x The x coordinate of the point that the edge will end at.
+     * @param y The y coordinate of the point that the edge will end at.
+     */
+    toggleGhostEdge(isVisible, startNode, x, y) {
+        this.ghostEdge_ = isVisible ? {
+            startNode: startNode,
+            x: x,
+            y: y
+        } : null;
+    }
+
+    /**
+     * Moves the end point of the ghost relationship to x,y.
+     * @param x
+     * @param y
+     */
+    moveGhostEdge(x, y) {
+        if(this.ghostEdge_ !== null) {
+            this.ghostEdge_.x = x;
+            this.ghostEdge_.y = y;
+        }
+    }
+
+    /**
      * Adds a node of radius r at absolute position (x, y).
      * @param id
      * @param x
@@ -87,6 +153,30 @@ class EditorCanvas {
             this.nodeIndex_[id] = newNode;
         }
         return newNode;
+    }
+
+    /**
+     * Removes a node and its attached relationships from the editor canvas.
+     * @param node The node to remove.
+     */
+    removeNode(node) {
+        // Remove the node from the lookup.
+        delete this.nodeIndex_[node.id];
+        // Remove the node from the nodes array.
+        for(let i = 0; i < this.nodes_.length; i++) {
+            if(this.nodes_[i].id_ === node.id_) {
+                this.nodes_.splice(i, 1);
+                i--;
+            }
+        }
+        // Remove any relationships that involved this node.
+        for(let i = 0; i < this.relationships_.length; i++) {
+            let relationship = this.relationships_[i];
+            if(relationship.from_ === node.id_ || relationship.to_ === node.id_) {
+                this.relationships_.splice(i, 1);
+                i--;
+            }
+        }
     }
 
     /**
