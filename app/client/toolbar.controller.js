@@ -15,6 +15,11 @@ app.controller('ToolbarController', ($scope, EditorService) => {
         }
     };
 
+    $scope.onClose = () => {
+        $scope.activeTool = null;
+        $scope.character = null;
+    };
+
     $scope.setActiveTool = (toolName) => {
         $scope.activeTool = toolName;
     };
@@ -42,4 +47,10 @@ app.controller('ToolbarController', ($scope, EditorService) => {
             character: character
         });
     };
+
+    $scope.$on('editCharacter', (_, data) => {
+        let character = EditorService.getCharacter(data.id);
+        $scope.character = character;
+        $scope.setActiveTool('editChar');
+    });
 });

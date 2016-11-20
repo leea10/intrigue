@@ -58,6 +58,12 @@ app.directive('editor', function($window, EditorService) {
                 editorCanvas.draw();
             });
 
+            scope.$on('contextmenu:editChar', () => {
+                scope.$broadcast('editCharacter', {
+                    id: EditorService.getNode(this.selectedNode_.id_).character
+                });
+            });
+
             scope.$on('contextmenu:removeNode', () => {
                 EditorService.deleteNode(this.selectedNode_.id_);
                 editorCanvas.removeNode(this.selectedNode_);

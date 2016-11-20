@@ -23,7 +23,7 @@
             <div class="popup-panel" ng-hide="activeTool !== 'addChar'">
                 <div class="header">
                     Create New Character
-                    <span class="close-icon" ng-click="setActiveTool(null)">×</span>
+                    <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
                 <form role="form">
                     <image-input>
@@ -41,7 +41,7 @@
             <div class="popup-panel character-library" ng-hide="activeTool != 'library'">
                 <div class="header">
                     Your Characters
-                    <span class="close-icon" ng-click="setActiveTool(null)">×</span>
+                    <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
                 <div class="characters">
                     <div ng-repeat="character in characters" class="character" ng-click="selectCharacter(character)">
@@ -53,11 +53,29 @@
                     </span>
                 </div>
             </div>
+            <div class="popup-panel" ng-hide="activeTool !== 'editChar'">
+                <div class="header">
+                    Edit Character
+                    <span class="close-icon" ng-click="onClose()">×</span>
+                </div>
+                <form role="form">
+                    <image-input>
+                        <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
+                        <input type="file" accept="image/*" name="image">
+                    </image-input>
+                    <input type="text" name="name" ng-model="character.name" placeholder="Name">
+                    <input type="text" name="age" ng-model="character.age" placeholder="Age">
+                    <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
+                </form>
+                <div class="footer">
+                    <button ng-click="saveCharacter()" class="create-btn"> Save </button>
+                </div>
+            </div>
         </div>
         <div class="canvas-container">
             <div class="context-menu" context-menu ng-show="contextMenuOpen === true">
                 <div class="menu-item" ng-click="selectOption('addRelationship')">Add Relationship</div>
-                <div class="menu-item" ng-click="selectOption('edit')">Edit</div>
+                <div class="menu-item" ng-click="selectOption('editChar')">Edit</div>
                 <div class="menu-item" ng-click="selectOption('removeNode')">Remove</div>
             </div>
             <canvas editor id="canvas" width="800" height="600">
