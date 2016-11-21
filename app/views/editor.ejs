@@ -46,13 +46,12 @@
                     <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
                 <div class="characters">
-                    <div ng-repeat="character in characters" ng-click="selectCharacter(character)"
-                         class="character" character>
+                    <div ng-repeat="character in characters" class="character" character>
                         <div class="character-actions" ng-show="hovered">
-                            <div>E</div>
-                            <div>+</div>
+                            <div class="icon" ng-click="$broadcast('editCharacter');">E</div>
+                            <div class="icon" ng-click="$broadcast('deleteCharacter');">x</div>
                         </div>
-                        <img ng-src="{{ character.image_url }}"/>
+                        <img ng-src="{{ character.image_url }}"  ng-click="selectCharacter(character)"/>
                         {{ character.name }}
                     </div>
                     <span class="message" ng-show="characters.length === 0">
