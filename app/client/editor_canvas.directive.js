@@ -14,6 +14,7 @@ app.directive('editor', function($window, EditorService) {
             this.currentSnapshot_ = null; // TEMPORARY HACK.
             this.nodes_ = null; // Holds a reference to current snapshot's nodes.
             this.relationships_ = null; // Holds a reference to current snapshot's relationships.
+            let characterLookup_ = {}; // A mapping of character IDs to node on this snapshot.
 
             // Initialization
             EditorService.init().then(() => {
@@ -43,21 +44,64 @@ app.directive('editor', function($window, EditorService) {
 
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
-                this.placingChar_ = data.character;
-                let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
-                editorCanvas.toggleGhostNode(true, imageURL);
-                element.css('cursor', 'none');
+                // Only let the user place the node if the character doesn't already exist on this snapshot.
+                let charNode = getCharNode(data.character._id);
+                if (charNode === null) {
+                    this.placingChar_ = data.character;
+                    let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
+                    editorCanvas.toggleGhostNode(true, imageURL);
+                    element.css('cursor', 'none');
+                } else {
+                    // Otherwise, select and focus the node on this snapshot that corresponds to this character.
+                    if (this.selectedNode_ !== null) {
+                        this.selectedNode_.deselect();
+                    }
+                    let node = editorCanvas.getNodeById(charNode._id);
+                    node.select();
+                    this.selectedNode_ = node;
+                }
                 editorCanvas.draw();
             });
 
             scope.$on('contextmenu:addRelationship', () => {
                 this.placingRelationship_ = true;
+                let node = this.selectedNode_;
+                editorCanvas.toggleGhostEdge(true, node.id_, node.x_, node.y_);
+                element.css('cursor', 'none');
+                editorCanvas.draw();
+            });
+
+            scope.$on('contextmenu:editChar', () => {
+                scope.$broadcast('editCharacter', {
+                    id: EditorService.getNode(this.selectedNode_.id_).character
+                });
             });
 
             scope.$on('contextmenu:removeNode', () => {
-                EditorService.deleteNode(this.selectedNode_.id_);
+                // Remove this node from the character lookup
+                let charID = EditorService.getNode(this.selectedNode_.id_, this.currentSnapshot_).character;
+                delete characterLookup_[charID];
+                EditorService.deleteNode(this.selectedNode_.id_, this.currentSnapshot_);
                 editorCanvas.removeNode(this.selectedNode_);
+                this.selectedNode_ = null;
                 editorCanvas.draw();
+            });
+
+            scope.$on('editCharacterSuccessful', (_, data) => {
+                if(data.changedImage) {
+                    let characterNode = getCharNode(data.id);
+                    if (characterNode) {
+                        let imgExt = EditorService.getCharacter(data.id).img_extension;
+                        let imgURL = 'images/characters/' + data.id + '.' + imgExt;
+                        editorCanvas.getNodeById(characterNode._id).reloadImage(imgURL).then(() => {
+                            editorCanvas.draw();
+                        });
+                    }
+                }
+            });
+
+            scope.$on('deleteCharacterSuccessful', (_, data) => {
+                console.log(data.id);
             });
 
             element.on('mousedown', (event) => {
@@ -98,6 +142,8 @@ app.directive('editor', function($window, EditorService) {
                     this.selectedNode_.deselect();
                     this.selectedNode_ = null;
                     this.placingRelationship_ = null;
+                    editorCanvas.toggleGhostEdge(false);
+                    element.css('cursor', 'initial');
                 } else {
                     // Find the newly selected node.
                     this.selectedNode_ = editorCanvas.getNodeAtPoint(event.offsetX, event.offsetY);
@@ -125,8 +171,10 @@ app.directive('editor', function($window, EditorService) {
                    this.draggedNode_.move(event.movementX, event.movementY);
                    editorCanvas.draw();
                } else if (this.placingChar_ !== null) {
-                   editorCanvas.ghostNode_.x_ = event.offsetX;
-                   editorCanvas.ghostNode_.y_ = event.offsetY;
+                   editorCanvas.moveGhostNode(event.offsetX, event.offsetY);
+                   editorCanvas.draw();
+               } else if (this.placingRelationship_ === true) {
+                   editorCanvas.moveGhostEdge(event.offsetX, event.offsetY);
                    editorCanvas.draw();
                }
             });
@@ -152,6 +200,21 @@ app.directive('editor', function($window, EditorService) {
                     EditorService.updateNode(node.id_, node.x_, node.y_);
                 }
                 this.draggedNode_ = null;
+            };
+
+            let getCharNode = (charID) => {
+                let node = characterLookup_[charID];
+                if (node !== undefined) {
+                    return node;
+                }
+                for (let i = 0; i < this.nodes_.length; i++) {
+                    let node = this.nodes_[i];
+                    if (node.character === charID) {
+                        characterLookup_[charID] = node;
+                        return node;
+                    }
+                }
+                return null;
             };
         }
     };

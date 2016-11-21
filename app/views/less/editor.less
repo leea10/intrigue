@@ -2,6 +2,7 @@
 
 @button-color: #8E7CC3;;
 @button-hover-color: #695793;
+@error-color: #ffb5b5;
 
 @toolbar-width: 60px;
 @button-size: 40px;
@@ -20,6 +21,8 @@
 @input-height: 40px;
 @input-font-size: 25px;
 @input-gutter: 13px;
+
+@border-radius: 10px;
 
 .body-content {
   .border-box;
@@ -102,7 +105,12 @@
 
 .characters {
   .character {
+    img {
+      border-radius: @border-radius;
+      cursor: pointer;
+    }
     display: inline-block;
+    position: relative;
     text-align: center;
     margin: @character-margin;
     width: @character-width;
@@ -119,6 +127,22 @@
   justify-content: center;
   overflow: auto;
   padding: 20px;
+}
+
+.character-actions {
+  .icon {
+    &:hover {
+      color: @grey-md-lt;
+    }
+    cursor: pointer;
+    margin: 5px;
+  }
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: @border-radius;
+  left: 5px;
+  padding: 5px;
+  position: absolute;
+  top: 5px;
 }
 
 input[type=text] {
@@ -144,6 +168,14 @@ textarea {
   font-family: @main-font;
   width: 100%;
   resize: none;
+}
+
+.error-message {
+  color: @error-color;
+  display: block;
+  font-weight: bold;
+  margin: 10px 0;
+  text-align: center;
 }
 
 .footer {

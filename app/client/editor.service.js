@@ -96,6 +96,44 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    this.editCharacter = (characterObj) => {
+        let fData = new FormData();
+        for(let property in characterObj) {
+            if(characterObj.hasOwnProperty(property)) {
+                if(property === 'tags') {
+                    fData.append(property, JSON.stringify(characterObj[property]));
+                } else {
+                    fData.append(property, characterObj[property]);
+                }
+            }
+        }
+        if (characterObj.image !== undefined) {
+            characterObj.img_extension = characterObj.image.name.split('.')[1];
+            fData.append('img_extension', characterObj.img_extension);
+        }
+        fData.append('owner', this.storyDetails_.author);
+        fData.append('story', this.storyDetails_._id);
+        return $http.put('/api/character', fData, {
+            headers: {'Content-Type': undefined },
+            transformRequest: angular.identity
+        }).then((response) => {
+            console.log(response.data.message);
+            let character = this.getCharacter(characterObj._id);
+            for(let property in characterObj) {
+                if(characterObj.hasOwnProperty(property)) {
+                    character[property] = characterObj[property];
+                }
+            }
+        });
+    };
+
+    this.deleteCharacter = (id) => {
+        console.log('successfully deleted the character');
+        return Promise.resolve().then(() => {
+            this.removeById_(id, this.storyDetails_.characters, this.characterLookup_);
+        });
+    };
+
     /**
      * @param snapshotID
      * @returns {Array|*} array of nodes in the given snapshot.
@@ -118,7 +156,7 @@ app.service('EditorService', function($http, $location) {
         // If a snapshotID was provided, restrict the search to the provided snapshot.
         if (snapshotID !== undefined) {
             // If the lookup misses, search through the character array in story details.
-            node = this.searchById_(id, this.getSnapshot(snapshotID).nodes);
+            node = this.searchById_(nodeID, this.getSnapshot(snapshotID).nodes);
             if(node !== null) {
                 // Cache the found object in the lookup.
                 this.nodeLookup_[nodeID] = node;
@@ -180,7 +218,7 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
-    this.deleteNode = (nodeID) => {
+    this.deleteNode = (nodeID, snapshotID) => {
         $http({
             url: '/api/node',
             method: 'DELETE',
@@ -192,6 +230,7 @@ app.service('EditorService', function($http, $location) {
             }
         }).then((response) => {
             console.log(response.data.message);
+            this.removeById_(nodeID, this.getSnapshot(snapshotID).nodes, this.nodeLookup_);
         });
     };
 
@@ -235,5 +274,22 @@ app.service('EditorService', function($http, $location) {
             }
         }
         return null;
+    };
+
+    /**
+     * @param id The ID of the object to remove.
+     * @param arr The array to remove the object from.
+     * @param lookup The lookup to remove the object from.
+     * @private
+     */
+    this.removeById_ = (id, arr, lookup) => {
+        // Remove from lookup.
+        delete lookup[id];
+        // Remove from story details object.
+        for (let i = 0; i < arr.length; i++) {
+            if(arr[i]._id === id) {
+                arr.splice(i, 1);
+            }
+        }
     };
 });
