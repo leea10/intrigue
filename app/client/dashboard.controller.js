@@ -1,8 +1,15 @@
+/**
+ * @fileoverview Controller for handling interactions on the Dashboard page.
+ */
 app.controller('DashboardController', function($scope, $http){
+    // List of user stories to display.
     $scope.stories = [];
+    // Should the add story form be hidden?
     $scope.hideForm = true;
 
+    // Adds a new story.
     $scope.addStory = () => {
+        // Assemble form data to send to the database.
         let fData = new FormData();
         if($scope.image){
             fData.append('image', $scope.image[0]);
@@ -12,12 +19,12 @@ app.controller('DashboardController', function($scope, $http){
         }
         fData.append('title', $scope.title);
         fData.append('description', $scope.description);
+        // Submit the new story to the database.
         $http.post('/api/story', fData, {
             headers: {'Content-Type': undefined },
             transformRequest: angular.identity
         }).then((obj) => {
             console.log(obj.data.message);
-            // TODO(Ariel): Figure out how to move this back into EditorService.
             // Create the first snapshot for the story.
             $http.post('/api/snapshot', {
                 story: obj.data.data._id,
@@ -28,8 +35,6 @@ app.controller('DashboardController', function($scope, $http){
             });
             // Close and clear the form.
             $scope.showForm();
-            // TODO(Ariel): In the ng-model, make the form fields part of a "story" object
-            // so we set $scope.story = null instead of the individual fields.
             $scope.title = null;
             $scope.description = null;
             $scope.$broadcast('formSubmit');
@@ -39,16 +44,19 @@ app.controller('DashboardController', function($scope, $http){
 
     };
 
+    // Toggles the visibility of the add story form.
     $scope.showForm = () => {
         $scope.hideForm = !$scope.hideForm;
     };
 
+    // Initial fetch and display of all the stories.
     $http.get('/api/story/owned').then((res) => {
         $scope.stories = res.data.data;
     }, (res) => {
         console.log(res);
     });
 
+    // Delete a story from the database.
     $scope.deleteStory = (delStory) => {
         $http({
             url: '/api/story',
