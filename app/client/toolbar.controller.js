@@ -65,7 +65,6 @@ app.controller('ToolbarController', ($scope, EditorService) => {
             $scope.$broadcast('deleteCharacterSuccessful', {
                 id: data.id
             });
-            $scope.$digest();
         });
     });
 

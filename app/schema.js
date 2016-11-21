@@ -69,9 +69,17 @@ const CharacterSchema = new mongoose.Schema({
 
 //Before a character is removed, delete it's relationships
 CharacterSchema.pre('remove', function(next){
-    Relationship.remove({characters : this._id}).exec();
-    Node.remove({character : this._id}).exec();
-    next();
+    Node.find({character : this._id}, function(err, docs){
+        if(err){
+            console.error(err);
+            next();
+        } else {
+            for(let i = 0; i < docs.length; i++){
+                docs[i].remove(function(err, doc){});
+            }
+            next();
+        }
+    });
 });
 
 //After a character is saved the first time, add a reference to it to the story object

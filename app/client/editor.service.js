@@ -129,7 +129,16 @@ app.service('EditorService', function($http, $location, $rootScope) {
 
     this.deleteCharacter = (id) => {
         console.log('successfully deleted the character');
-        return Promise.resolve().then(() => {
+        return $http({
+            url: '/api/character',
+            method: 'DELETE',
+            data : {
+                _id : id
+            },
+            headers : {
+                "Content-Type" : "application/json;charset=utf8"
+            }
+        }).then(() => {
             // Remove the nodes associated with this character.
             let snapshots = this.storyDetails_.snapshots;
             for (let i = 0; i < snapshots.length; i++) {
