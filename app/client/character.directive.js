@@ -20,6 +20,12 @@ app.directive('character', ($filter) => {
                 }
             });
 
+            scope.charAction = (action) => {
+                scope.$emit(action, {
+                    id: scope.character._id
+                });
+            };
+
             let reloadImage = () => {
                 base_url = 'images/characters/' + scope.character._id + '.' + scope.character.img_extension;
                 scope.character.image_url = $filter('decache')(base_url);
