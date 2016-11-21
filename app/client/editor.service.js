@@ -1,4 +1,4 @@
-app.service('EditorService', function($http, $location) {
+app.service('EditorService', function($http, $location, $rootScope) {
     this.storyId_ = $location.search().id;
     this.storyDetails_ = {};
     this.characterLookup_ = {};
@@ -130,6 +130,21 @@ app.service('EditorService', function($http, $location) {
     this.deleteCharacter = (id) => {
         console.log('successfully deleted the character');
         return Promise.resolve().then(() => {
+            // Remove the nodes associated with this character.
+            let snapshots = this.storyDetails_.snapshots;
+            for (let i = 0; i < snapshots.length; i++) {
+                let nodes = snapshots[i].nodes;
+                for(let j = 0; j < nodes.length; j++) {
+                    let node = nodes[j];
+                    if (node.character === id) {
+                        delete this.nodeLookup_[node._id];
+                        nodes.splice(j, 1);
+                        $rootScope.$broadcast('deleteNodeSuccessful', {
+                            id: node._id
+                        });
+                    }
+                }
+            }
             this.removeById_(id, this.storyDetails_.characters, this.characterLookup_);
         });
     };

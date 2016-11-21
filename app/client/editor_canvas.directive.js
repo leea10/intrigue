@@ -100,8 +100,9 @@ app.directive('editor', function($window, EditorService) {
                 }
             });
 
-            scope.$on('deleteCharacterSuccessful', (_, data) => {
-                console.log(data.id);
+            scope.$on('deleteNodeSuccessful', (_, data) => {
+                editorCanvas.removeNodeById(data.id);
+                editorCanvas.draw();
             });
 
             element.on('mousedown', (event) => {
