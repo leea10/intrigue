@@ -68,8 +68,11 @@
   .small-shadow;
   form {
     .preview-img {
+      border-radius: @border-radius;
       display:block;
-      margin:auto;
+      margin: 10px auto;
+      height: 200px;
+      object-fit: cover;
       width: 200px;
     }
     padding: @form-padding;
@@ -106,9 +109,12 @@
 
 .characters {
   .character {
-    img {
+    .character-image {
       border-radius: @border-radius;
       cursor: pointer;
+      height: @character-width;
+      object-fit: cover;
+      width: @character-width;
     }
     display: inline-block;
     position: relative;
@@ -147,6 +153,13 @@
   padding: 5px;
   position: absolute;
   top: 5px;
+}
+
+input[type=file] {
+  border: 2px @grey-md solid;
+  display: block;
+  margin: 0 auto;
+  padding: 3px;
 }
 
 input[type=text] {
