@@ -44,10 +44,22 @@ app.directive('editor', function($window, EditorService) {
 
             // Event listeners
             scope.$on('library.characterSelected', (_, data) => {
-                this.placingChar_ = data.character;
-                let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
-                editorCanvas.toggleGhostNode(true, imageURL);
-                element.css('cursor', 'none');
+                // Only let the user place the node if the character doesn't already exist on this snapshot.
+                let charNode = getCharNode(data.character._id);
+                if (charNode === null) {
+                    this.placingChar_ = data.character;
+                    let imageURL = '/images/characters/' + data.character._id + '.' + data.character.img_extension;
+                    editorCanvas.toggleGhostNode(true, imageURL);
+                    element.css('cursor', 'none');
+                } else {
+                    // Otherwise, select and focus the node on this snapshot that corresponds to this character.
+                    if (this.selectedNode_ !== null) {
+                        this.selectedNode_.deselect();
+                    }
+                    let node = editorCanvas.getNodeById(charNode._id);
+                    node.select();
+                    this.selectedNode_ = node;
+                }
                 editorCanvas.draw();
             });
 
