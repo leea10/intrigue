@@ -48,6 +48,10 @@
                 <div class="characters">
                     <div ng-repeat="character in characters" ng-click="selectCharacter(character)"
                          class="character" character>
+                        <div class="character-actions" ng-show="hovered">
+                            <div>E</div>
+                            <div>+</div>
+                        </div>
                         <img ng-src="{{ character.image_url }}"/>
                         {{ character.name }}
                     </div>
