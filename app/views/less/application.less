@@ -33,7 +33,7 @@ body {
   }
 
 
-  #welcome {
+  .navbar-right {
     font-size: 30px;
     color: whitesmoke;
     float:right;
@@ -68,15 +68,14 @@ body {
   height: 100%;
   margin-right: 50px;
   /* Show the dropdown menu on hover */
-}
-
-.dropdown:hover {
-  /* Change the background color of the dropdown button when the dropdown content is shown */
-  .dropdown-content {
-    display: block;
-  }
-  .dropbtn {
-    background-color: @grey-md-dk;
+  &:hover {
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown-content {
+      display: block;
+    }
+    .dropbtn {
+      background-color: @grey-md-dk;
+    }
   }
 }
 
@@ -105,12 +104,13 @@ body {
     display: block;
     font-size: 15pt;
     text-align: center;
-  }
-  /* Change color of dropdown links on hover */
-  a:hover {
-    background-color: @grey-md-lt;
-  }
-  a:last-of-type {
-    border-radius: 0px 0px 10px 10px;
+    /* Change color of dropdown links on hover */
+    &:hover {
+      background-color: @grey-md-lt;
+    }
+    /* The bottom of the dropdown is rounded so the last link must be as well*/
+    &:last-of-type {
+      border-radius: 0px 0px 10px 10px;
+    }
   }
 }
