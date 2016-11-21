@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Manages the client side copy of the application's data and communicates with the server.
+ */
 app.service('EditorService', function($http, $location, $rootScope) {
     this.storyId_ = $location.search().id;
     this.storyDetails_ = {};
@@ -11,7 +14,9 @@ app.service('EditorService', function($http, $location, $rootScope) {
         this.storyDetails_ = response.data.data;
     });
 
-    // THIS IS A TEMPORARY HACK
+    /**
+     * @returns {*} The ID of the first snapshot in the story.
+     */
     this.getFirstSnapshotID = () => {
         return this.storyDetails_.snapshots[0]._id;
     };
@@ -74,9 +79,10 @@ app.service('EditorService', function($http, $location, $rootScope) {
 
     /**
      * @param characterObj Character to add to the story.
-     * @returns {Promise}
+     * @returns {Promise} A Promise that resolves when the creation succeeds on the server.
      */
     this.addCharacter = (characterObj) => {
+        // Assemble the form data to be sent.
         let fData = new FormData();
         for(let property in characterObj) {
             if(characterObj.hasOwnProperty(property)) {
@@ -87,16 +93,23 @@ app.service('EditorService', function($http, $location, $rootScope) {
         fData.append('img_extension', imgExtension);
         fData.append('owner', this.storyDetails_.author);
         fData.append('story', this.storyDetails_._id);
+        // Submit the new character to the database.
         return $http.post('/api/character', fData, {
             headers: {'Content-Type': undefined },
             transformRequest: angular.identity
         }).then((response) => {
             console.log(response.data.message);
+            // Add newly created story to the client.
             this.storyDetails_.characters.push(response.data.data);
         });
     };
 
+    /**
+     * @param characterObj The character to edit on the server, along with its new properties.
+     * @returns {Promise} A promise that resolves when the update succeeds on the server.
+     */
     this.editCharacter = (characterObj) => {
+        // Assemble the form data to send up to the server.
         let fData = new FormData();
         for(let property in characterObj) {
             if(characterObj.hasOwnProperty(property)) {
@@ -107,17 +120,21 @@ app.service('EditorService', function($http, $location, $rootScope) {
                 }
             }
         }
+        // If the user updated the character image, update the character's image's extension.
         if (characterObj.image !== undefined) {
             characterObj.img_extension = characterObj.image.name.split('.')[1];
             fData.append('img_extension', characterObj.img_extension);
         }
+        // Provide the user and story that this character belongs to.
         fData.append('owner', this.storyDetails_.author);
         fData.append('story', this.storyDetails_._id);
+        // Submit the update request to the server.
         return $http.put('/api/character', fData, {
             headers: {'Content-Type': undefined },
             transformRequest: angular.identity
         }).then((response) => {
             console.log(response.data.message);
+            // Update the character on the client data.
             let character = this.getCharacter(characterObj._id);
             for(let property in characterObj) {
                 if(characterObj.hasOwnProperty(property)) {
@@ -127,8 +144,13 @@ app.service('EditorService', function($http, $location, $rootScope) {
         });
     };
 
+    /**
+     * @param id The ID of the character to delete off the database.
+     * @returns {Promise} A promise that resolves when the operation succeeds.
+     */
     this.deleteCharacter = (id) => {
         console.log('successfully deleted the character');
+        // Submit the request to the server.
         return $http({
             url: '/api/character',
             method: 'DELETE',
@@ -154,6 +176,7 @@ app.service('EditorService', function($http, $location, $rootScope) {
                     }
                 }
             }
+            // Remove the character from the client copy of the data.
             this.removeById_(id, this.storyDetails_.characters, this.characterLookup_);
         });
     };
@@ -216,6 +239,7 @@ app.service('EditorService', function($http, $location, $rootScope) {
      * @returns {Promise}
      */
     this.addNode = (snapshotID, characterID, x, y) => {
+        // Submit create request to the server.
         return $http.post('/api/node', {
             snapshot: snapshotID,
             character: characterID,
@@ -229,6 +253,11 @@ app.service('EditorService', function($http, $location, $rootScope) {
         });
     };
 
+    /**
+     * @param nodeID The ID of the node to update.
+     * @param x The node's new x position
+     * @param y The node's new y position
+     */
     this.updateNode = (nodeID, x, y) => {
         $http.put('/api/node', {
             _id: nodeID,
@@ -242,7 +271,12 @@ app.service('EditorService', function($http, $location, $rootScope) {
         });
     };
 
+    /**
+     * @param nodeID The ID of the node to delete.
+     * @param snapshotID The ID of snapshot that the node belongs to.
+     */
     this.deleteNode = (nodeID, snapshotID) => {
+        // Submit delete request to the server.
         $http({
             url: '/api/node',
             method: 'DELETE',
@@ -254,6 +288,7 @@ app.service('EditorService', function($http, $location, $rootScope) {
             }
         }).then((response) => {
             console.log(response.data.message);
+            // Remove the node on the client copy of the data.
             this.removeById_(nodeID, this.getSnapshot(snapshotID).nodes, this.nodeLookup_);
         });
     };

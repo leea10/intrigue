@@ -6,7 +6,6 @@ class EditorCanvas {
      * @param domElement The element in the DOM that the editor should be associated with
      * @param sInc distance between lines on the fine grid.
      * @param bInc distance between lines on the main grid.
-     * @param defaultImgURL image URL for ghost node
      * @constructor
      */
     constructor(domElement, sInc, bInc) {
@@ -31,6 +30,9 @@ class EditorCanvas {
         this.domElement_.height = height;
     }
 
+    /**
+     * Displays the state of the canvas.
+     */
     draw() {
         // Clear the background.
         this.canvas_.fillStyle = '#171717';
@@ -69,7 +71,14 @@ class EditorCanvas {
         }
     }
 
+    /**
+     * @returns {number} The width of the canvas element in pixels.
+     */
     width() {   return this.canvas_.canvas.width;   }
+
+    /**
+     * @returns {number} The height of the canvas element in pixels.
+     */
     height() {  return this.canvas_.canvas.height;  }
 
     /**
@@ -135,6 +144,10 @@ class EditorCanvas {
         }
     }
 
+    /**
+     * @param id The node of the ID we're looking for.
+     * @returns {*} The node with the given id.
+     */
     getNodeById(id) {
         return this.nodeIndex_[id];
     }
@@ -150,9 +163,11 @@ class EditorCanvas {
     addNode(x, y, img, id) {
         let newNode = new Node(x, y, img, id);
         this.nodes_.push(newNode);
+        // Draw the node only after the image has loaded.
         newNode.imageLoaded().then(() => {
             this.draw();
         });
+        // Add the node to the lookup.
         if(id !== undefined) {
             this.nodeIndex_[id] = newNode;
         }
@@ -219,6 +234,7 @@ class EditorCanvas {
     drawGrid_() {
         for(let i = 0; i < this.width(); i += this.smallInc_) {
             this.canvas_.strokeStyle = '#2c2c2c';
+            // The line will show up thicker every this.bigInc_ intervals.
             this.canvas_.lineWidth = i % this.bigInc_ === 0 ? 2 : 1;
             // Draw vertical grid line
             this.drawLine_(
@@ -247,7 +263,10 @@ class EditorCanvas {
     }
 }
 
-/* export */ class Node {
+/**
+ * Class that holds data for a single node on the EditorCanvas.
+ */
+class Node {
     constructor(x, y, imgUrl, id) {
         this.id_ = id;
         this.x_ = x;
@@ -279,6 +298,10 @@ class EditorCanvas {
         return this.imageLoaded();
     }
 
+    /**
+     * Displays the state of the node on the given canvas.
+     * @param ctx The given canvas to draw on.
+     */
     draw(ctx) {
         // Set properties.
         ctx.fillStyle = '#fefefe';
@@ -342,6 +365,9 @@ class EditorCanvas {
     }
 }
 
+/**
+ * A class to represent an edge on the canvas.
+ */
 class Edge {
     constructor(from, to) {
         this.from_ = from;
