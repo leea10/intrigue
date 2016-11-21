@@ -1,11 +1,13 @@
 <div class="navbar">
     <a href="/dashboard" target="_self"><img class="logo" src="/assets/logo_taglessWhite.png"/></a>
-
-    <form action="/logout" method="post">
-        <input value="logout" type="submit">
-    </form>
-
-    <div id="welcome"> Welcome back, <%=name%>! </div>
-
-    <!-- TODO(Ariel): Add the user login info -->
+    <div class="navbar-right">
+        <div class="dropdown">
+            <div class="dropdown-root">Hello, <%=name%>  <span class="glyphicon glyphicon-chevron-down"></span></div>
+            <div class="dropdown-content">
+                <a href="#" target="_self">Settings</a>
+                <a href="#" target="_self">FAQ</a>
+                <a href="/logout" target="_self">Logout</a>
+            </div>
+        </div>
+    </div>
 </div>
