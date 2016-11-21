@@ -2,6 +2,7 @@
 
 @button-color: #8E7CC3;;
 @button-hover-color: #695793;
+@button-active-color: #8D7D9F;
 @error-color: #ffb5b5;
 
 @toolbar-width: 60px;
@@ -37,9 +38,18 @@
   .icon {
     height: 100%;
   }
+  
   &:hover {
     cursor: pointer;
+    background-color: @button-hover-color;
+    border-radius: 10px;
   }
+
+  &:active {
+    cursor: pointer;
+    background-color: @button-active-color;
+  }
+
   height: @button-size;
   margin: 15px 10px;
   width: @button-size;
