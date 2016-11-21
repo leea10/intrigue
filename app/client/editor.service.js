@@ -149,7 +149,7 @@ app.service('EditorService', function($http, $location) {
         // If a snapshotID was provided, restrict the search to the provided snapshot.
         if (snapshotID !== undefined) {
             // If the lookup misses, search through the character array in story details.
-            node = this.searchById_(id, this.getSnapshot(snapshotID).nodes);
+            node = this.searchById_(nodeID, this.getSnapshot(snapshotID).nodes);
             if(node !== null) {
                 // Cache the found object in the lookup.
                 this.nodeLookup_[nodeID] = node;
@@ -211,7 +211,7 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
-    this.deleteNode = (nodeID) => {
+    this.deleteNode = (nodeID, snapshotID) => {
         $http({
             url: '/api/node',
             method: 'DELETE',
@@ -223,6 +223,7 @@ app.service('EditorService', function($http, $location) {
             }
         }).then((response) => {
             console.log(response.data.message);
+            this.removeById_(nodeID, this.getSnapshot(snapshotID).nodes, this.nodeLookup_);
         });
     };
 
@@ -266,5 +267,22 @@ app.service('EditorService', function($http, $location) {
             }
         }
         return null;
+    };
+
+    /**
+     * @param id The ID of the object to remove.
+     * @param arr The array to remove the object from.
+     * @param lookup The lookup to remove the object from.
+     * @private
+     */
+    this.removeById_ = (id, arr, lookup) => {
+        // Remove from lookup.
+        delete lookup[id];
+        // Remove from story details object.
+        for (let i = 0; i < arr.length; i++) {
+            if(arr[i]._id === id) {
+                arr.splice(i, 1);
+            }
+        }
     };
 });

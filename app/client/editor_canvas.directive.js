@@ -78,8 +78,12 @@ app.directive('editor', function($window, EditorService) {
             });
 
             scope.$on('contextmenu:removeNode', () => {
-                EditorService.deleteNode(this.selectedNode_.id_);
+                // Remove this node from the character lookup
+                let charID = EditorService.getNode(this.selectedNode_.id_, this.currentSnapshot_).character;
+                delete characterLookup_[charID];
+                EditorService.deleteNode(this.selectedNode_.id_, this.currentSnapshot_);
                 editorCanvas.removeNode(this.selectedNode_);
+                this.selectedNode_ = null;
                 editorCanvas.draw();
             });
 
@@ -206,7 +210,6 @@ app.directive('editor', function($window, EditorService) {
                         return node;
                     }
                 }
-                console.log('nope not found');
                 return null;
             };
         }
