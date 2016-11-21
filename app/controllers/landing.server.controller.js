@@ -6,5 +6,7 @@
  *   The express HTTP response
  */
 exports.render = (req, res) => {
-    res.render('landing', {message : req.session.message});
+    let message = req.session.message;
+    req.session.message = '';
+    res.render('landing', {message : message});
 };
