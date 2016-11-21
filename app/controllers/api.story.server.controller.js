@@ -290,7 +290,7 @@ exports.updateCharacter = (req, res) => {
                 let characterImg = req.files.image;
                 require('glob').glob(`${appDir}/public/images/characters/${cObj._id}.*`,  (err, files) => {
                     if(files)
-                        files.map((path) => {fs.unlinkSync(path)});
+                        files.map((path) => {fs.unlinkSync(path);});
                     characterImg.mv(`${appDir}/public/images/characters/${cObj._id}.${characterImg.name.split('.')[1]}`, (err) => {
                         if(err){
                             console.error(err);
