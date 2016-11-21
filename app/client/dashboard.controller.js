@@ -68,6 +68,7 @@ app.controller('DashboardController', function($scope, $http){
                 "Content-Type" : "application/json;charset=utf8"
             }
         }).then(function (obj){
+            // Delete story from display.
             for (let i = 0; i < $scope.stories.length; i++){
                 if ($scope.stories[i]._id == delStory._id ){
                     if (i > -1) {
