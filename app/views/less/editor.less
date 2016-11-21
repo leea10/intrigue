@@ -91,6 +91,8 @@
     }
   }
   background-color: @grey-md-dk;
+  display: flex;
+  flex-flow: column nowrap;
   height: 100%;
   left: @toolbar-width;
   position: absolute;
@@ -98,9 +100,8 @@
   width: @panel-width;
 }
 
-.character-library {
-  display: flex;
-  flex-flow: column nowrap;
+.form-container {
+  overflow: auto;
 }
 
 .characters {
