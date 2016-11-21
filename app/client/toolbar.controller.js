@@ -61,11 +61,23 @@ app.controller('ToolbarController', ($scope, EditorService) => {
     });
 
     $scope.$on('deleteCharacter', (_, data) => {
-        EditorService.deleteCharacter(data.id).then(() => {
-            $scope.$broadcast('deleteCharacterSuccessful', {
-                id: data.id
+        swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this imaginary file!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Delete",
+                closeOnConfirm: false
+            },
+            () => {
+                EditorService.deleteCharacter(data.id).then(() => {
+                    $scope.$broadcast('deleteCharacterSuccessful', {
+                        id: data.id
+                    });
+                    swal('Delete Successful!', 'Your character has been deleted', 'success');
+                });
             });
-        });
     });
 
     $scope.saveCharacter = () => {
