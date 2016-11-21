@@ -184,6 +184,17 @@ class EditorCanvas {
     }
 
     /**
+     * Removes a node and its attached relationships from the editor canvas.
+     * @param id The ID of node to remove.
+     */
+    removeNodeById(id) {
+        let node = this.nodeIndex_[id];
+        if(node) {
+            this.removeNode(node);
+        }
+    }
+
+    /**
      * adds node to index under a unique id
      * @param id
      * @param node

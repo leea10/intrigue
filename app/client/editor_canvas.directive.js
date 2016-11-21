@@ -100,6 +100,11 @@ app.directive('editor', function($window, EditorService) {
                 }
             });
 
+            scope.$on('deleteNodeSuccessful', (_, data) => {
+                editorCanvas.removeNodeById(data.id);
+                editorCanvas.draw();
+            });
+
             element.on('mousedown', (event) => {
                 event.preventDefault();
                 // Deselect the currently selected node.

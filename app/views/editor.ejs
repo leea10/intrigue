@@ -26,18 +26,20 @@
                     Create New Character
                     <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
-                <form role="form">
-                    <image-input>
-                        <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
-                        <input type="file" accept="image/*" name="newImage">
-                    </image-input>
-                    <span class="error-message">{{ newErrorMsg }}</span>
-                    <input type="text" name="name" ng-model="newCharacter.name" placeholder="Name">
-                    <input type="text" name="age" ng-model="newCharacter.age" placeholder="Age">
-                    <textarea type="text" rows="6" name="description" ng-model="newCharacter.description" placeholder="Blurb"></textarea>
-                </form>
-                <div class="footer">
-                    <button ng-click="addCharacter()" class="create-btn"> Create </button>
+                <div class="form-container">
+                    <form role="form">
+                        <image-input>
+                            <img class="preview-img" src="/images/characters/" default_img="/images/characters/"/>
+                            <input type="file" accept="image/*" name="newImage">
+                        </image-input>
+                        <span class="error-message">{{ newErrorMsg }}</span>
+                        <input type="text" name="name" ng-model="newCharacter.name" placeholder="Name">
+                        <input type="text" name="age" ng-model="newCharacter.age" placeholder="Age">
+                        <textarea type="text" rows="6" name="description" ng-model="newCharacter.description" placeholder="Blurb"></textarea>
+                    </form>
+                    <div class="footer">
+                        <button ng-click="addCharacter()" class="create-btn"> Create </button>
+                    </div>
                 </div>
             </div>
             <div class="popup-panel character-library" ng-hide="activeTool != 'library'">
@@ -46,9 +48,12 @@
                     <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
                 <div class="characters">
-                    <div ng-repeat="character in characters" ng-click="selectCharacter(character)"
-                         class="character" character>
-                        <img ng-src="{{ character.image_url }}"/>
+                    <div ng-repeat="character in characters" class="character" character>
+                        <div class="character-actions" ng-show="hovered">
+                            <div class="icon" ng-click="charAction('editCharacter');">E</div>
+                            <div class="icon" ng-click="charAction('deleteCharacter');">x</div>
+                        </div>
+                        <img ng-src="{{ character.image_url }}"  ng-click="selectCharacter(character)"/>
                         {{ character.name }}
                     </div>
                     <span class="message" ng-show="characters.length === 0">
@@ -61,20 +66,22 @@
                     Edit Character
                     <span class="close-icon" ng-click="onClose()">×</span>
                 </div>
-                <form role="form">
-                    <image-input>
-                        <img class="preview-img"
-                             ng-src="{{ '/images/characters/' + character._id + '.' + character.img_extension | decache }}"
-                             default_img="/images/characters/{{character._id}}.{{character.img_extension}}"/>
-                        <input type="file" accept="image/*" name="image">
-                    </image-input>
-                    <span class="error-message">{{ errorMsg }}</span>
-                    <input type="text" name="name" ng-model="character.name" placeholder="Name">
-                    <input type="text" name="age" ng-model="character.age" placeholder="Age">
-                    <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
-                </form>
-                <div class="footer">
-                    <button ng-click="saveCharacter()" class="create-btn"> Save </button>
+                <div class="form-container">
+                    <form role="form">
+                        <image-input>
+                            <img class="preview-img"
+                                 ng-src="{{ '/images/characters/' + character._id + '.' + character.img_extension | decache }}"
+                                 default_img="/images/characters/{{character._id}}.{{character.img_extension}}"/>
+                            <input type="file" accept="image/*" name="image">
+                        </image-input>
+                        <span class="error-message">{{ errorMsg }}</span>
+                        <input type="text" name="name" ng-model="character.name" placeholder="Name">
+                        <input type="text" name="age" ng-model="character.age" placeholder="Age">
+                        <textarea type="text" rows="6" name="description" ng-model="character.description" placeholder="Blurb"></textarea>
+                    </form>
+                    <div class="footer">
+                        <button ng-click="saveCharacter()" class="create-btn"> Save </button>
+                    </div>
                 </div>
             </div>
         </div>
