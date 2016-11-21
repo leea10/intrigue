@@ -60,6 +60,15 @@ app.controller('ToolbarController', ($scope, EditorService) => {
         $scope.setActiveTool('editChar');
     });
 
+    $scope.$on('deleteCharacter', (_, data) => {
+        EditorService.deleteCharacter(data.id).then(() => {
+            $scope.$broadcast('deleteCharacterSuccessful', {
+                id: data.id
+            });
+            $scope.$digest();
+        });
+    });
+
     $scope.saveCharacter = () => {
         $scope.errorMsg = null;
         if(!$scope.character || !$scope.character.name) {

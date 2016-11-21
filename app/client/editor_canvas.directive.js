@@ -100,6 +100,10 @@ app.directive('editor', function($window, EditorService) {
                 }
             });
 
+            scope.$on('deleteCharacterSuccessful', (_, data) => {
+                console.log(data.id);
+            });
+
             element.on('mousedown', (event) => {
                 event.preventDefault();
                 // Deselect the currently selected node.

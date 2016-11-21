@@ -127,6 +127,13 @@ app.service('EditorService', function($http, $location) {
         });
     };
 
+    this.deleteCharacter = (id) => {
+        console.log('successfully deleted the character');
+        return Promise.resolve().then(() => {
+            this.removeById_(id, this.storyDetails_.characters, this.characterLookup_);
+        });
+    };
+
     /**
      * @param snapshotID
      * @returns {Array|*} array of nodes in the given snapshot.
