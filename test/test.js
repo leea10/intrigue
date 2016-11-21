@@ -390,6 +390,7 @@ describe('Endpoint Testing', function () {
                         throw err;
                     characterObj._id = cObj._id;
                     characterObj.description = 'New Test Character Description';
+                    characterObj.tags = "[]";
                     request(server)
                         .put('/api/character')
                         .send(characterObj)
