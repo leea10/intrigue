@@ -2,6 +2,8 @@
 
 @button-color: #8E7CC3;;
 @button-hover-color: #695793;
+@button-active-color: #8D7D9F;
+@error-color: #ffb5b5;
 
 @toolbar-width: 60px;
 @button-size: 40px;
@@ -21,11 +23,14 @@
 @input-font-size: 25px;
 @input-gutter: 13px;
 
+@border-radius: 10px;
+
 .body-content {
   .border-box;
   display: flex;
   flex-direction: row;
   height: calc(~"100vh - " @navbar-height);
+  position: relative;
 }
 
 .button {
@@ -33,9 +38,18 @@
   .icon {
     height: 100%;
   }
+  
   &:hover {
     cursor: pointer;
+    background-color: @button-hover-color;
+    border-radius: 10px;
   }
+
+  &:active {
+    cursor: pointer;
+    background-color: @button-active-color;
+  }
+
   height: @button-size;
   margin: 15px 10px;
   width: @button-size;
@@ -56,6 +70,7 @@
   .border-box;
   flex: 0 1 100vw;
   overflow: hidden;
+  position: relative;
 }
 
 .popup-panel {
@@ -63,8 +78,11 @@
   .small-shadow;
   form {
     .preview-img {
+      border-radius: @border-radius;
       display:block;
-      margin:auto;
+      margin: 10px auto;
+      height: 200px;
+      object-fit: cover;
       width: 200px;
     }
     padding: @form-padding;
@@ -86,6 +104,8 @@
     }
   }
   background-color: @grey-md-dk;
+  display: flex;
+  flex-flow: column nowrap;
   height: 100%;
   left: @toolbar-width;
   position: absolute;
@@ -93,14 +113,21 @@
   width: @panel-width;
 }
 
-.character-library {
-  display: flex;
-  flex-flow: column nowrap;
+.form-container {
+  overflow: auto;
 }
 
 .characters {
   .character {
+    .character-image {
+      border-radius: @border-radius;
+      cursor: pointer;
+      height: @character-width;
+      object-fit: cover;
+      width: @character-width;
+    }
     display: inline-block;
+    position: relative;
     text-align: center;
     margin: @character-margin;
     width: @character-width;
@@ -117,6 +144,32 @@
   justify-content: center;
   overflow: auto;
   padding: 20px;
+}
+
+.character-actions {
+  .icon {
+    &:hover {
+      color: @grey-md-lt;
+    }
+    img {
+      max-width: 25px;
+    }
+    cursor: pointer;
+    margin: 5px;
+  }
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: @border-radius;
+  left: 5px;
+  padding: 5px;
+  position: absolute;
+  top: 5px;
+}
+
+input[type=file] {
+  border: 2px @grey-md solid;
+  display: block;
+  margin: 0 auto;
+  padding: 3px;
 }
 
 input[type=text] {
@@ -144,6 +197,14 @@ textarea {
   resize: none;
 }
 
+.error-message {
+  color: @error-color;
+  display: block;
+  font-weight: bold;
+  margin: 10px 0;
+  text-align: center;
+}
+
 .footer {
   padding-right: @form-padding;
 }
@@ -162,4 +223,20 @@ textarea {
   &:hover {
     background-color: @button-hover-color;
   }
+}
+
+.context-menu {
+  .menu-item {
+    &:hover {
+      background-color: @grey-md-dk;
+      cursor: pointer;
+    }
+    padding: 8px;
+    font-size: 10pt;
+  }
+  .menu-item:not(:first-child) {
+    /*border-top: 1px solid @grey-md;*/
+  }
+  background-color: @grey-v-dk;
+  position: absolute;
 }

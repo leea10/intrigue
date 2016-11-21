@@ -282,8 +282,8 @@ describe('Endpoint Testing', function () {
                         res.should.have.status(200);
                         res.should.be.json;
                         res.body.should.have.property('data');
-                        res.body.data.should.have.property('n');
-                        res.body.data.n.should.equal(1);
+                        res.body.data.should.have.property('_id');
+                        res.body.data._id.should.equal(rObj._id.toString());
                         done();
                     });
             });
@@ -390,6 +390,7 @@ describe('Endpoint Testing', function () {
                         throw err;
                     characterObj._id = cObj._id;
                     characterObj.description = 'New Test Character Description';
+                    characterObj.tags = "[]";
                     request(server)
                         .put('/api/character')
                         .send(characterObj)

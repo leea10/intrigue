@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const objId = mongoose.Schema.Types.ObjectId;
 
+//Create the user model
 const UserSchema = new mongoose.Schema({
     name : String,
     email : { type : String, unique : true, required : true },
@@ -18,6 +19,7 @@ UserSchema.pre('remove', (next) => {
 
 const User = mongoose.model('User', UserSchema);
 
+//Create the story model
 const StorySchema = new mongoose.Schema({
     author :  {type : objId, required : true, ref : 'User'},
     title : {type : String, required : true},
@@ -52,6 +54,7 @@ StorySchema.post('save', function(doc, next){
 
 const Story = mongoose.model('Story', StorySchema);
 
+//Create the character model
 const CharacterSchema = new mongoose.Schema({
     story : {type : objId, required : true, ref : 'Story'},
     owner : {type : objId, required : true, ref : 'User'},
@@ -66,8 +69,17 @@ const CharacterSchema = new mongoose.Schema({
 
 //Before a character is removed, delete it's relationships
 CharacterSchema.pre('remove', function(next){
-    Relationship.remove({characters : this._id}).exec();
-    next();
+    Node.find({character : this._id}, function(err, docs){
+        if(err){
+            console.error(err);
+            next();
+        } else {
+            for(let i = 0; i < docs.length; i++){
+                docs[i].remove(function(err, doc){});
+            }
+            next();
+        }
+    });
 });
 
 //After a character is saved the first time, add a reference to it to the story object
@@ -78,6 +90,7 @@ CharacterSchema.post('save', function(doc, next){
 
 const Character = mongoose.model('Character', CharacterSchema);
 
+//Create the snapshot model
 const SnapshotSchema = new mongoose.Schema({
     owner : {type : objId, required : true, ref : 'User'},
     story : {type : objId, required : true, ref : 'Story'},
@@ -106,20 +119,23 @@ SnapshotSchema.post('save', function(doc, next){
 
 const Snapshot = mongoose.model('Snapshot', SnapshotSchema);
 
+//Create the relationship model
 const RelationshipSchema = new mongoose.Schema({
     owner : {type : objId, required : true, ref : 'User'},
     snapshot : {type : objId, required : true, ref : 'Snapshot' },
-    characters : [{ type : mongoose.Schema.ObjectId, ref : 'Character' }],
-    nodes : [{ type : objId, ref : 'Node' }],
+    start_node : { type : objId, ref : 'Node' },
+    end_node : { type : objId, ref : 'Node' },
     description : String,
     tags : [{ type : objId, ref : 'Tag' }]
 });
 
-//
+//Before a relationship is removed, update its references in its parent snapshot
 RelationshipSchema.pre('remove', function(next){
     Snapshot.findByIdAndUpdate(this.snapshot, {$pull : {'relationships' : this._id}}).exec();
+    next();
 });
 
+//After a relationship is saved, create its reference in its parent snapshot
 RelationshipSchema.post('save', function(doc, next){
     Snapshot.findByIdAndUpdate(doc.snapshot, {$push : {'relationships' : doc._id}}).exec();
     next();
@@ -127,12 +143,14 @@ RelationshipSchema.post('save', function(doc, next){
 
 const Relationship = mongoose.model('Relationship', RelationshipSchema);
 
+//Create the tag model
 const TagSchema = new mongoose.Schema({
     owner : {type : objId, required : true, ref : 'User'},
     parent : {type : objId, required : true},
     name : {type : String, required : true}
 });
 
+//After a tag is saved, create its reference in the parent story
 TagSchema.post('save', function(doc, next){
     Story.findByIdAndUpdate(doc.parent, {$push : {'tags' : doc._id}}).exec();
     next();
@@ -140,6 +158,7 @@ TagSchema.post('save', function(doc, next){
 
 const Tag = mongoose.model('Tag', TagSchema);
 
+//Create the node model
 const NodeSchema = new mongoose.Schema({
     owner : {type : objId, required : true, ref : 'User'},
     snapshot : {type : objId, required : true, ref : 'Snapshot' },
@@ -148,14 +167,21 @@ const NodeSchema = new mongoose.Schema({
     y : {type : Number, required : true}
 });
 
+//Before the node is removed, update its reference in its parent snapshot and remove relationships tied to it
 NodeSchema.pre('remove', function(next){
-    Snapshot.findByIdAndUpdate(this.snapshot, {$pull : {'nodes' : this._id}}).exec();
+    Snapshot.update({_id : this.snapshot}, {$pull : {'nodes' : this._id}}).exec();
+    Relationship.remove({ $or:[ {'start_node':this._id}, {'end_node':this._id} ] }).exec();
+    next();
 });
 
+//After a node is created, create the reference in its parent snapshot
 NodeSchema.post('save', function(doc, next){
     Snapshot.findByIdAndUpdate(doc.snapshot, {$push : {'nodes' : doc._id}}).exec();
     next();
 });
+
+//There should not be two nodes for one character in a single snapshot
+NodeSchema.index({snapshot : 1, character : 1}, {unique : true});
 
 const Node = mongoose.model('Node', NodeSchema);
 

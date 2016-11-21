@@ -16,6 +16,7 @@ body {
     height: 100%;
     float:left;
   }
+
   input[type=submit] {
     border-color: transparent;
     background-color: transparent;
@@ -25,7 +26,25 @@ body {
     margin-right: 10px;
     margin-left: 10px;
     cursor: pointer;
+
+    &:hover{
+      color: #999;
+    }
   }
+
+
+  .navbar-right {
+    font-size: 30px;
+    color: whitesmoke;
+    float:right;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    height: @navbar-height;
+  }
+
+
+
   background-color: @grey-md;
   box-shadow: 3px 3px 5px @grey-dk;
   -webkit-box-sizing: border-box;
@@ -40,4 +59,58 @@ body {
 
 .body-content {
   margin-top: @navbar-height;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  margin-right: 15px;
+  /* Show the dropdown menu on hover */
+  &:hover {
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown-content {
+      display: block;
+    }
+    .dropdown-root {
+      background-color: @grey-md-dk;
+    }
+  }
+}
+
+/* Dropdown Button */
+.dropdown-root {
+  background-color: @grey-md;
+  color: @grey-lt;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: @grey-lt;
+  min-width: 120px;
+  border-radius: 0 0 10px 10px;
+  /* Links inside the dropdown */
+  a {
+    color: @grey-dk;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    font-size: 15pt;
+    text-align: center;
+    /* Change color of dropdown links on hover */
+    &:hover {
+      background-color: @grey-md-lt;
+    }
+    /* The bottom of the dropdown is rounded so the last link must be as well*/
+    &:last-of-type {
+      border-radius: 0 0 10px 10px;
+    }
+  }
 }

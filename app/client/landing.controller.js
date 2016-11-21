@@ -1,3 +1,6 @@
+/**
+ * @fileoverview Controller for the logic on the login page.
+ */
 app.controller('LandingController', function($scope){
     $scope.switchForm = (switchTo) => {
         let eReg = document.getElementById("register-form");
