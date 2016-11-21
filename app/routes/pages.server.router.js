@@ -11,6 +11,7 @@ const editor = require('../controllers/editor.server.controller');
 router.get('/', auth.indexRedirect, landing.render);
 router.get('/dashboard', auth.isLoggedIn, dashboard.render);
 router.get('/editor', auth.isLoggedIn, editor.render);
+router.get('/logout', auth.isLoggedIn, auth.logout);
 
 //Defines the routes for user authentication
 router.post('/register', auth.register);
