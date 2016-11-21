@@ -53,7 +53,7 @@
                             <div class="icon" ng-click="charAction('editCharacter');"><img src="/assets/icon_edit-01.png"/></div>
                             <div class="icon" ng-click="charAction('deleteCharacter');">x</div>
                         </div>
-                        <img ng-src="{{ character.image_url }}"  ng-click="selectCharacter(character)"/>
+                        <img class="character-image" ng-src="{{ character.image_url }}"  ng-click="selectCharacter(character)"/>
                         {{ character.name }}
                     </div>
                     <span class="message" ng-show="characters.length === 0">

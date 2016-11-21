@@ -2,6 +2,7 @@
 
 @button-color: #8E7CC3;;
 @button-hover-color: #695793;
+@button-active-color: #8D7D9F;
 @error-color: #ffb5b5;
 
 @toolbar-width: 60px;
@@ -37,9 +38,18 @@
   .icon {
     height: 100%;
   }
+  
   &:hover {
     cursor: pointer;
+    background-color: @button-hover-color;
+    border-radius: 10px;
   }
+
+  &:active {
+    cursor: pointer;
+    background-color: @button-active-color;
+  }
+
   height: @button-size;
   margin: 15px 10px;
   width: @button-size;
@@ -68,8 +78,11 @@
   .small-shadow;
   form {
     .preview-img {
+      border-radius: @border-radius;
       display:block;
-      margin:auto;
+      margin: 10px auto;
+      height: 200px;
+      object-fit: cover;
       width: 200px;
     }
     padding: @form-padding;
@@ -106,9 +119,12 @@
 
 .characters {
   .character {
-    img {
+    .character-image {
       border-radius: @border-radius;
       cursor: pointer;
+      height: @character-width;
+      object-fit: cover;
+      width: @character-width;
     }
     display: inline-block;
     position: relative;
@@ -147,6 +163,13 @@
   padding: 5px;
   position: absolute;
   top: 5px;
+}
+
+input[type=file] {
+  border: 2px @grey-md solid;
+  display: block;
+  margin: 0 auto;
+  padding: 3px;
 }
 
 input[type=text] {
