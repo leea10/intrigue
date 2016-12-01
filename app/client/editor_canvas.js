@@ -316,7 +316,10 @@ class Node {
         ctx.save();
         ctx.clip();
         ctx.drawImage(
-            this.img_,
+            this.img_, 0,
+            this.img_.height/4,
+            this.img_.width,
+            this.img_.width,
             this.x_ - this.radius_,
             this.y_ - this.radius_,
             this.radius_ * 2,
