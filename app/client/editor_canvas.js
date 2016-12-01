@@ -315,11 +315,15 @@ class Node {
         // Draw the image inside the circle.
         ctx.save();
         ctx.clip();
+        // Determine how the image is drawn based on aspect ratio.
+        let isTaller = this.img_.height >= this.img_.width;
+        let sourceX = isTaller ? 0 : this.img_.width / 4;
+        let sourceY = isTaller ? this.img_.height / 4 : 0;
+        let squareDimension = isTaller ? this.img_.width : this.img_.height;
         ctx.drawImage(
-            this.img_, 0,
-            this.img_.height/4,
-            this.img_.width,
-            this.img_.width,
+            this.img_,
+            sourceX, sourceY,
+            squareDimension, squareDimension,
             this.x_ - this.radius_,
             this.y_ - this.radius_,
             this.radius_ * 2,
